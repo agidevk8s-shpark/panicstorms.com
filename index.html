@@ -1,0 +1,811 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests" />
+  <title>Knowledge Officer — Panicstorms Co., Ltd.</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&family=Roboto:wght@300;400;500;700&family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    /* ══════════════════════════════
+       MATERIAL DESIGN 3 TOKENS
+    ══════════════════════════════ */
+    :root {
+      --md-primary:            #006874;
+      --md-on-primary:         #ffffff;
+      --md-primary-container:  #97F0FF;
+      --md-on-primary-container:#001F24;
+      --md-secondary:          #4A6267;
+      --md-on-secondary:       #ffffff;
+      --md-secondary-container:#CCE8ED;
+      --md-on-secondary-container:#051F23;
+      --md-tertiary:           #525E7D;
+      --md-tertiary-container: #DAE2FF;
+      --md-on-tertiary-container:#0D1B37;
+      --md-error:              #BA1A1A;
+      --md-surface:            #F5FAFB;
+      --md-surface-1:          #EEF6F8;
+      --md-surface-2:          #E7F2F4;
+      --md-on-surface:         #171D1E;
+      --md-on-surface-var:     #3F484A;
+      --md-outline:            #6F797A;
+      --md-outline-var:        #BEC8CA;
+      --md-inverse-surface:    #2B3133;
+      --md-inverse-on-surface: #ECF2F3;
+      --elev-1: 0 1px 2px rgba(0,0,0,.12),0 1px 3px 1px rgba(0,0,0,.08);
+      --elev-2: 0 1px 2px rgba(0,0,0,.12),0 2px 6px 2px rgba(0,0,0,.08);
+      --elev-3: 0 1px 3px rgba(0,0,0,.12),0 4px 8px 3px rgba(0,0,0,.08);
+    }
+
+    html { scroll-behavior: smooth; }
+    body { font-family:'Noto Sans KR',sans-serif; background:var(--md-surface); color:var(--md-on-surface); overflow-x:hidden; line-height:1.5; }
+
+    ::-webkit-scrollbar { width:8px; }
+    ::-webkit-scrollbar-track { background:var(--md-surface-1); }
+    ::-webkit-scrollbar-thumb { background:var(--md-primary); border-radius:999px; }
+
+    /* ── TOP APP BAR ── */
+    nav {
+      position:fixed; top:0; left:0; right:0; z-index:100;
+      height:64px; display:flex; align-items:center;
+      padding:0 1.5rem 0 1.25rem; gap:1rem;
+      background:var(--md-surface-2); box-shadow:var(--elev-2);
+    }
+    .nav-logo { font:700 1.2rem/1 'Noto Sans KR',sans-serif; color:var(--md-on-surface); text-decoration:none; white-space:nowrap; }
+    .nav-logo span { color:var(--md-primary); }
+    .nav-links { display:flex; gap:.25rem; list-style:none; margin-left:auto; }
+    .nav-links a { font:500 .8rem/1 'Roboto',sans-serif; letter-spacing:.05em; color:var(--md-on-surface-var); text-decoration:none; padding:.5rem .8rem; border-radius:999px; transition:background .2s,color .2s; }
+    .nav-links a:hover { background:color-mix(in srgb,var(--md-primary) 8%,transparent); color:var(--md-primary); }
+    .nav-cta { font:500 .85rem/1 'Roboto',sans-serif; letter-spacing:.05em; padding:.625rem 1.5rem; background:var(--md-primary); color:#fff; text-decoration:none; border-radius:999px; transition:box-shadow .2s; box-shadow:var(--elev-1); white-space:nowrap; }
+    .nav-cta:hover { box-shadow:var(--elev-2); background:color-mix(in srgb,var(--md-primary) 88%,#000); }
+
+    /* ── HERO ── */
+    #hero { min-height:100vh; display:grid; grid-template-columns:1fr 1fr; padding-top:64px; }
+    .hero-left { display:flex; flex-direction:column; justify-content:center; padding:5rem 3rem 5rem 4.5rem; }
+    .hero-eyebrow { font:500 .75rem/1 'Roboto',sans-serif; letter-spacing:.14em; text-transform:uppercase; color:var(--md-primary); margin-bottom:1rem; display:flex; align-items:center; gap:.75rem; }
+    .hero-eyebrow::before { content:''; display:block; width:2rem; height:2px; background:var(--md-primary); border-radius:2px; }
+    .hero-title { font:700 3.2rem/1.1 'Noto Sans KR',sans-serif; margin-bottom:1.5rem; }
+    .hero-title em { font-style:normal; color:var(--md-primary); }
+    .hero-subtitle { font-size:.975rem; line-height:1.8; color:var(--md-on-surface-var); max-width:46ch; margin-bottom:2.5rem; }
+    .hero-subtitle em { font-style:normal; color:var(--md-primary); font-weight:500; }
+    .hero-buttons { display:flex; gap:.875rem; flex-wrap:wrap; }
+    .btn-filled { font:500 .875rem/1 'Roboto',sans-serif; letter-spacing:.04em; padding:.8rem 1.75rem; background:var(--md-primary); color:#fff; text-decoration:none; border-radius:999px; box-shadow:var(--elev-1); transition:box-shadow .2s; display:inline-flex; align-items:center; gap:.4rem; }
+    .btn-filled:hover { box-shadow:var(--elev-3); }
+    .btn-tonal { font:500 .875rem/1 'Roboto',sans-serif; letter-spacing:.04em; padding:.8rem 1.75rem; background:var(--md-secondary-container); color:var(--md-on-secondary-container); text-decoration:none; border-radius:999px; transition:box-shadow .2s; display:inline-flex; align-items:center; gap:.4rem; }
+    .btn-tonal:hover { box-shadow:var(--elev-1); }
+    .hero-right { position:relative; background:var(--md-primary); display:flex; align-items:center; justify-content:center; overflow:hidden; }
+    .hero-art { position:absolute; inset:0; display:flex; align-items:center; justify-content:center; }
+    .hero-art svg { width:100%; height:100%; opacity:.08; }
+    .hero-card { position:relative; z-index:2; background:rgba(255,255,255,.12); border:1px solid rgba(255,255,255,.22); border-radius:28px; padding:2.5rem 3rem; text-align:center; max-width:290px; backdrop-filter:blur(8px); }
+    .hero-card-label { font:500 .65rem/1 'Roboto',sans-serif; letter-spacing:.14em; text-transform:uppercase; color:var(--md-primary-container); margin-bottom:1rem; }
+    .hero-card-main { font:700 4rem/1 'Noto Sans KR',sans-serif; color:#fff; margin-bottom:.25rem; }
+    .hero-card-sub { font:.95rem/1 'Noto Sans KR',sans-serif; color:var(--md-primary-container); margin-bottom:1.5rem; }
+    .hero-card-divider { width:2rem; height:2px; background:var(--md-primary-container); border-radius:2px; margin:0 auto 1.5rem; }
+    .hero-card-text { font:.8rem/1.7 'Noto Sans KR',sans-serif; color:rgba(255,255,255,.7); }
+
+    /* ── MARQUEE ── */
+    .marquee-wrap { background:var(--md-inverse-surface); padding:.75rem 0; overflow:hidden; }
+    .marquee-track { display:flex; gap:2.5rem; animation:marquee 34s linear infinite; width:max-content; }
+    .marquee-item { font:500 .7rem/1 'Roboto',sans-serif; letter-spacing:.12em; text-transform:uppercase; color:var(--md-inverse-on-surface); white-space:nowrap; display:flex; align-items:center; gap:2.5rem; }
+    .marquee-item::after { content:'◆'; color:var(--md-primary-container); font-size:.4rem; }
+    @keyframes marquee { from{transform:translateX(0)} to{transform:translateX(-50%)} }
+
+    /* ── SECTION COMMON ── */
+    .sec { padding:5rem 4.5rem; }
+    .sec-s1 { background:var(--md-surface-1); }
+    .sec-s2 { background:var(--md-surface-2); }
+    .sec-inv { background:var(--md-inverse-surface); }
+    .eyebrow { font:500 .75rem/1 'Roboto',sans-serif; letter-spacing:.14em; text-transform:uppercase; color:var(--md-primary); margin-bottom:.875rem; display:flex; align-items:center; gap:.75rem; }
+    .eyebrow::before { content:''; display:block; width:2rem; height:2px; background:var(--md-primary); border-radius:2px; }
+    .sec-inv .eyebrow { color:var(--md-primary-container); }
+    .sec-inv .eyebrow::before { background:var(--md-primary-container); }
+    .sec-title { font:400 2rem/1.25 'Noto Sans KR',sans-serif; margin-bottom:.875rem; }
+    .sec-title em { font-style:normal; color:var(--md-primary); }
+    .sec-inv .sec-title { color:var(--md-inverse-on-surface); }
+    .sec-inv .sec-title em { color:var(--md-primary-container); }
+    .sec-desc { font-size:.9rem; line-height:1.75; color:var(--md-on-surface-var); max-width:60ch; }
+    .sec-inv .sec-desc { color:rgba(255,255,255,.55); }
+    .sec-header { margin-bottom:2.5rem; }
+
+    /* ── ABOUT ── */
+    .about-grid { display:grid; grid-template-columns:auto 1fr; gap:4rem; align-items:start; }
+    .about-num { font:700 5.5rem/1 'Roboto',sans-serif; color:var(--md-outline-var); margin-top:2.5rem; }
+    .about-body { font-size:.95rem; line-height:1.8; color:var(--md-on-surface-var); }
+    .about-body+.about-body { margin-top:.875rem; }
+    .stat-row { display:grid; grid-template-columns:repeat(3,1fr); gap:1rem; margin-top:2rem; }
+    .stat-card { background:var(--md-surface); border:1px solid var(--md-outline-var); border-radius:16px; padding:1.5rem; box-shadow:var(--elev-1); }
+    .stat-num { font:700 1.875rem/1 'Roboto',sans-serif; color:var(--md-primary); display:block; margin-bottom:.4rem; }
+    .stat-label { font-size:.8rem; line-height:1.5; color:var(--md-on-surface-var); }
+
+    /* ── RESPONSIBILITIES ── */
+    .resp-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:1rem; }
+    .resp-wide { grid-column:span 2; }
+    .resp-card { background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.1); border-radius:16px; padding:2rem; transition:background .2s,transform .2s; position:relative; overflow:hidden; }
+    .resp-card:hover { background:rgba(255,255,255,.1); transform:translateY(-2px); }
+    .resp-card::before { content:''; position:absolute; top:0; left:0; right:0; height:3px; background:linear-gradient(90deg,var(--md-primary),var(--md-primary-container)); border-radius:16px 16px 0 0; opacity:0; transition:opacity .2s; }
+    .resp-card:hover::before { opacity:1; }
+    .resp-num { font:500 .7rem/1 'Roboto Mono',monospace; letter-spacing:.14em; color:rgba(255,255,255,.3); margin-bottom:.5rem; display:block; }
+    .resp-card-title { font:500 1rem/1.3 'Noto Sans KR',sans-serif; color:var(--md-inverse-on-surface); margin-bottom:.75rem; }
+    .resp-card-body { font-size:.82rem; line-height:1.75; color:rgba(255,255,255,.52); }
+    .resp-chips { display:flex; flex-wrap:wrap; gap:.4rem; margin-top:1.25rem; }
+    .resp-chip { font:500 .7rem/1 'Roboto',sans-serif; letter-spacing:.05em; padding:.28rem .75rem; background:color-mix(in srgb,var(--md-primary) 22%,transparent); color:var(--md-primary-container); border-radius:999px; border:1px solid color-mix(in srgb,var(--md-primary) 45%,transparent); }
+
+    /* ── TRENDS ── */
+    .trends-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:1rem; margin-bottom:1.5rem; }
+    .trend-card { background:var(--md-surface); border:1px solid var(--md-outline-var); border-radius:16px; padding:1.75rem; box-shadow:var(--elev-1); transition:box-shadow .2s,transform .2s; }
+    .trend-card:hover { box-shadow:var(--elev-3); transform:translateY(-3px); }
+    .trend-featured { background:var(--md-primary-container); border-color:var(--md-primary); }
+    .trend-featured .trend-num { color:var(--md-primary); }
+    .trend-featured .trend-title { color:var(--md-on-primary-container); }
+    .trend-featured .trend-body { color:color-mix(in srgb,var(--md-on-primary-container) 72%,transparent); }
+    .trend-featured .trend-chip { background:color-mix(in srgb,var(--md-primary) 15%,transparent); color:var(--md-primary); border-color:var(--md-primary); }
+    .trend-icon { font-size:1.4rem; color:var(--md-primary); margin-bottom:.75rem; display:block; }
+    .trend-num { font:500 .7rem/1 'Roboto',sans-serif; letter-spacing:.1em; text-transform:uppercase; color:var(--md-on-surface-var); margin-bottom:.4rem; display:block; }
+    .trend-title { font:500 1rem/1.35 'Noto Sans KR',sans-serif; margin-bottom:.6rem; color:var(--md-on-surface); }
+    .trend-body { font-size:.8rem; line-height:1.72; color:var(--md-on-surface-var); margin-bottom:.875rem; }
+    .trend-chip { display:inline-block; font:500 .68rem/1 'Roboto',sans-serif; letter-spacing:.06em; text-transform:uppercase; padding:.28rem .75rem; border-radius:999px; background:color-mix(in srgb,var(--md-secondary) 10%,transparent); color:var(--md-secondary); border:1px solid color-mix(in srgb,var(--md-secondary) 30%,transparent); }
+
+    .stat-bar { display:grid; grid-template-columns:repeat(4,1fr); gap:1rem; }
+    .tsb-card { background:var(--md-inverse-surface); border-radius:16px; padding:1.5rem; text-align:center; }
+    .tsb-num { font:700 1.875rem/1 'Roboto',sans-serif; color:var(--md-primary-container); display:block; margin-bottom:.4rem; }
+    .tsb-label { font-size:.78rem; line-height:1.5; color:rgba(255,255,255,.5); }
+
+    /* ── ROLES ── */
+    .roles-header { display:grid; grid-template-columns:1fr 1fr; gap:3rem; margin-bottom:2rem; align-items:end; }
+    .roles-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:1rem; }
+    .role-card { background:var(--md-surface-1); border:1px solid var(--md-outline-var); border-radius:16px; padding:2rem 1.75rem; box-shadow:var(--elev-1); transition:box-shadow .2s,transform .2s; position:relative; overflow:hidden; }
+    .role-card:hover { box-shadow:var(--elev-3); transform:translateY(-2px); }
+    .role-card::after { content:''; position:absolute; bottom:0; left:0; right:0; height:3px; background:var(--md-primary); transform:scaleX(0); transform-origin:left; transition:transform .3s; }
+    .role-card:hover::after { transform:scaleX(1); }
+    .role-abbr { font:700 2rem/1 'Roboto',sans-serif; color:var(--md-primary); display:block; margin-bottom:.25rem; }
+    .role-full { font:.7rem/1.5 'Roboto',sans-serif; color:var(--md-on-surface-var); margin-bottom:1rem; display:block; }
+    .role-desc { font-size:.82rem; line-height:1.7; color:var(--md-on-surface-var); }
+
+    /* ── HISTORY ── */
+    .history-inner { display:grid; grid-template-columns:1fr 2fr; gap:4rem; }
+    .timeline { display:flex; flex-direction:column; }
+    .tl-item { display:grid; grid-template-columns:5.5rem 1fr; gap:1.5rem; padding:1.75rem 0; border-bottom:1px solid var(--md-outline-var); }
+    .tl-item:first-child { padding-top:0; }
+    .tl-year { font:700 1.2rem/1 'Roboto',sans-serif; color:var(--md-primary); align-self:flex-start; padding-top:.2rem; }
+    .tl-title { font:500 .975rem/1.3 'Noto Sans KR',sans-serif; color:var(--md-on-surface); margin-bottom:.5rem; }
+    .tl-text { font-size:.82rem; line-height:1.72; color:var(--md-on-surface-var); margin-bottom:.75rem; }
+    .tl-chip { display:inline-block; font:500 .68rem/1 'Roboto',sans-serif; letter-spacing:.05em; padding:.25rem .8rem; border-radius:999px; background:var(--md-primary-container); color:var(--md-on-primary-container); }
+
+    /* ── AI NEWS ── */
+    .news-top { display:flex; justify-content:space-between; align-items:flex-end; margin-bottom:1.25rem; }
+    .news-updated { font:.75rem/1 'Roboto',sans-serif; color:var(--md-on-surface-var); display:block; margin-bottom:.5rem; }
+    .news-refresh-btn { font:500 .8rem/1 'Roboto',sans-serif; padding:.5rem 1.25rem; background:var(--md-secondary-container); color:var(--md-on-secondary-container); border:none; border-radius:999px; cursor:pointer; transition:box-shadow .2s; display:inline-flex; align-items:center; gap:.35rem; }
+    .news-refresh-btn:hover { box-shadow:var(--elev-1); }
+    .news-refresh-btn:disabled { opacity:.4; cursor:not-allowed; }
+    .news-filters { display:flex; gap:.5rem; flex-wrap:wrap; margin-bottom:1.25rem; }
+    .news-filter-btn { font:500 .8rem/1 'Roboto',sans-serif; padding:.4rem 1.1rem; background:transparent; color:var(--md-on-surface-var); border:1px solid var(--md-outline); border-radius:999px; cursor:pointer; transition:all .2s; }
+    .news-filter-btn.active,.news-filter-btn:hover { background:var(--md-secondary-container); color:var(--md-on-secondary-container); border-color:var(--md-secondary-container); }
+    .news-scroll { overflow-x:auto; padding-bottom:.5rem; }
+    .news-scroll::-webkit-scrollbar { height:4px; }
+    .news-scroll::-webkit-scrollbar-thumb { background:var(--md-primary); border-radius:999px; }
+    .news-row { display:flex; gap:1rem; width:max-content; }
+    .news-card { width:296px; background:var(--md-surface); border:1px solid var(--md-outline-var); border-radius:16px; padding:1.5rem; box-shadow:var(--elev-1); display:flex; flex-direction:column; transition:box-shadow .2s,transform .2s; flex-shrink:0; }
+    .news-card:hover { box-shadow:var(--elev-3); transform:translateY(-2px); }
+    .news-card-top { display:flex; align-items:center; justify-content:space-between; margin-bottom:.625rem; }
+    .news-card-src { font:.68rem/1 'Roboto',sans-serif; letter-spacing:.08em; color:var(--md-primary); }
+    .news-card-badge { font:.65rem/1 'Roboto',sans-serif; padding:.18rem .6rem; background:var(--md-primary-container); color:var(--md-on-primary-container); border-radius:999px; }
+    .news-card-lang { font:.72rem/1 'Roboto',sans-serif; color:var(--md-on-surface-var); margin-bottom:.5rem; }
+    .news-card-title { font:500 .9rem/1.45 'Noto Sans KR',sans-serif; color:var(--md-on-surface); flex:1; padding-bottom:.875rem; }
+    .news-card-foot { display:flex; align-items:center; justify-content:space-between; padding-top:.75rem; border-top:1px solid var(--md-outline-var); margin-top:auto; }
+    .news-card-date { font:.7rem/1 'Roboto',sans-serif; color:var(--md-on-surface-var); }
+    .news-card-link { font:500 .75rem/1 'Roboto',sans-serif; color:var(--md-primary); text-decoration:none; display:inline-flex; align-items:center; gap:.2rem; }
+    .news-state { display:flex; flex-direction:column; align-items:center; justify-content:center; padding:3rem 2rem; gap:.75rem; width:100%; }
+    .news-spinner { width:36px; height:36px; border:3px solid var(--md-outline-var); border-top-color:var(--md-primary); border-radius:50%; animation:spin .7s linear infinite; }
+    @keyframes spin { to{transform:rotate(360deg)} }
+    .news-state-text { font:.8rem/1 'Roboto',sans-serif; color:var(--md-on-surface-var); }
+
+    /* ── CTA ── */
+    #cta { background:var(--md-primary); padding:5rem 4.5rem; display:flex; align-items:center; justify-content:space-between; gap:3rem; }
+    .cta-title { font:700 2.625rem/1.15 'Noto Sans KR',sans-serif; color:#fff; }
+    .cta-title em { font-style:normal; color:var(--md-primary-container); }
+    .cta-btns { display:flex; gap:1rem; flex-wrap:wrap; flex-shrink:0; }
+    .btn-white { font:500 .875rem/1 'Roboto',sans-serif; letter-spacing:.04em; padding:.875rem 2rem; background:#fff; color:var(--md-primary); text-decoration:none; border-radius:999px; box-shadow:var(--elev-1); transition:box-shadow .2s; }
+    .btn-white:hover { box-shadow:var(--elev-3); }
+    .btn-outline-white { font:500 .875rem/1 'Roboto',sans-serif; letter-spacing:.04em; padding:.875rem 2rem; background:transparent; color:#fff; border:2px solid rgba(255,255,255,.6); text-decoration:none; border-radius:999px; transition:background .2s,border-color .2s; }
+    .btn-outline-white:hover { background:rgba(255,255,255,.1); border-color:#fff; }
+
+    /* ── FOOTER ── */
+    footer { background:var(--md-inverse-surface); padding:3.5rem 4.5rem 2rem; }
+    .footer-top { display:grid; grid-template-columns:2fr 1fr 1fr; gap:3rem; margin-bottom:2.5rem; padding-bottom:2.5rem; border-bottom:1px solid rgba(255,255,255,.1); }
+    .footer-logo { font:700 1.35rem/1 'Noto Sans KR',sans-serif; color:var(--md-inverse-on-surface); display:block; margin-bottom:.875rem; }
+    .footer-logo span { color:var(--md-primary-container); }
+    .footer-tagline { font-size:.82rem; line-height:1.7; color:rgba(255,255,255,.5); }
+    .footer-col-title { font:500 .72rem/1 'Roboto',sans-serif; letter-spacing:.1em; text-transform:uppercase; color:rgba(255,255,255,.45); margin-bottom:.875rem; }
+    .footer-links { list-style:none; }
+    .footer-links li+li { margin-top:.5rem; }
+    .footer-links a { font-size:.82rem; color:rgba(255,255,255,.62); text-decoration:none; transition:color .2s; }
+    .footer-links a:hover { color:var(--md-primary-container); }
+    .footer-bottom { display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:.5rem; }
+    .footer-bottom span { font-size:.78rem; color:rgba(255,255,255,.38); }
+
+    /* ── ANIMATIONS ── */
+    .fade-up { opacity:0; animation:fadeUp .7s ease forwards; }
+    .d1 { animation-delay:.12s; } .d2 { animation-delay:.24s; } .d3 { animation-delay:.36s; }
+    @keyframes fadeUp { from{opacity:0;transform:translateY(24px)} to{opacity:1;transform:none} }
+
+    /* ── RESPONSIVE ── */
+    @media(max-width:1100px){
+      .sec{padding:4rem 2.5rem;}
+      #hero{grid-template-columns:1fr;}
+      .hero-right{min-height:340px;}
+      .hero-left{padding:4rem 2.5rem 3rem;}
+      .about-grid{grid-template-columns:1fr;}
+      .about-num{display:none;}
+      .trends-grid{grid-template-columns:1fr 1fr;}
+      .stat-bar{grid-template-columns:1fr 1fr;}
+      .roles-header{grid-template-columns:1fr;}
+      .roles-grid{grid-template-columns:1fr 1fr;}
+      .history-inner{grid-template-columns:1fr;}
+      #cta{flex-direction:column;padding:4rem 2.5rem;}
+      .footer-top{grid-template-columns:1fr 1fr;}
+      nav{padding:0 1.25rem;}
+    }
+    @media(max-width:680px){
+      .nav-links{display:none;}
+      .hero-left{padding:3rem 1.5rem 2rem;}
+      .hero-title{font-size:2.4rem;}
+      .sec{padding:3rem 1.5rem;}
+      .resp-grid{grid-template-columns:1fr;}
+      .resp-wide{grid-column:span 1;}
+      .trends-grid{grid-template-columns:1fr;}
+      .roles-grid{grid-template-columns:1fr;}
+      .stat-row{grid-template-columns:1fr 1fr;}
+      .footer-top{grid-template-columns:1fr;}
+      footer{padding:2.5rem 1.5rem 1.5rem;}
+      #cta{padding:3rem 1.5rem;}
+      .stat-bar{grid-template-columns:1fr 1fr;}
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-logo" href="#"><span>PANICSTORMS</span></a>
+  <ul class="nav-links">
+    <li><a href="#about">개요</a></li>
+    <li><a href="#responsibilities">역할 체계</a></li>
+    <li><a href="#trends">핵심활동</a></li>
+    <li><a href="#roles">직책비교</a></li>
+    <li><a href="#history">배경</a></li>
+    <li><a href="#ai-news">AI 뉴스</a></li>
+  </ul>
+  <a class="nav-cta" href="#cta">문의하기</a>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-left">
+    <p class="hero-eyebrow fade-up">Knowledge Leadership</p>
+    <h1 class="hero-title fade-up d1">지식을 <em>자본</em>으로,<br>가치를 <em>성장</em>으로</h1>
+    <p class="hero-subtitle fade-up d2">지식책임자(Knowledge Officer)는 조직 안에서 지식이 부서·직군을 넘어 잘 흐르도록 만드는 <em>협업 촉진자이자 조정자</em>입니다. 지식 전략 수립부터 협업 인프라 설계, AI 거버넌스까지 조직 전체의 지식 흐름을 책임집니다.</p>
+    <div class="hero-buttons fade-up d3">
+      <a class="btn-filled" href="#about"><span class="material-icons-round" style="font-size:17px">explore</span>더 알아보기</a>
+      <a class="btn-tonal"  href="#responsibilities"><span class="material-icons-round" style="font-size:17px">account_tree</span>역할 체계</a>
+    </div>
+  </div>
+  <div class="hero-right">
+    <div class="hero-art">
+      <svg viewBox="0 0 600 700" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="300" cy="350" r="280" stroke="white" stroke-width="1"/>
+        <circle cx="300" cy="350" r="200" stroke="white" stroke-width="1"/>
+        <circle cx="300" cy="350" r="120" stroke="white" stroke-width="1"/>
+        <circle cx="300" cy="350" r="40"  stroke="white" stroke-width="1"/>
+        <line x1="20" y1="350" x2="580" y2="350" stroke="white" stroke-width=".7"/>
+        <line x1="300" y1="70" x2="300" y2="630" stroke="white" stroke-width=".7"/>
+        <line x1="102" y1="152" x2="498" y2="548" stroke="white" stroke-width=".5"/>
+        <line x1="498" y1="152" x2="102" y2="548" stroke="white" stroke-width=".5"/>
+      </svg>
+    </div>
+    <div class="hero-card fade-up d2">
+      <p class="hero-card-label">Chief Knowledge Officer</p>
+      <p class="hero-card-main">CKO</p>
+      <p class="hero-card-sub">智識責任者</p>
+      <div class="hero-card-divider"></div>
+      <p class="hero-card-text">지식의 보존과 활용을 통해<br>기업가치가 최대가 되도록<br>책임을 지는 최고 임원</p>
+    </div>
+  </div>
+</section>
+
+<!-- MARQUEE -->
+<div class="marquee-wrap">
+  <div class="marquee-track">
+    <span class="marquee-item">AI 지식관리</span><span class="marquee-item">GenAI Governance</span><span class="marquee-item">시맨틱 레이어</span><span class="marquee-item">Knowledge-AI Symbiosis</span><span class="marquee-item">경험지식 자동 포착</span><span class="marquee-item">Enterprise Knowledge Graph</span><span class="marquee-item">지식 ROI</span><span class="marquee-item">DIKW Pyramid</span>
+    <span class="marquee-item">AI 지식관리</span><span class="marquee-item">GenAI Governance</span><span class="marquee-item">시맨틱 레이어</span><span class="marquee-item">Knowledge-AI Symbiosis</span><span class="marquee-item">경험지식 자동 포착</span><span class="marquee-item">Enterprise Knowledge Graph</span><span class="marquee-item">지식 ROI</span><span class="marquee-item">DIKW Pyramid</span>
+  </div>
+</div>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="sec">
+    <div class="about-grid">
+      <div>
+        <p class="eyebrow">Overview</p>
+        <div class="about-num">01</div>
+      </div>
+      <div>
+        <h2 class="sec-title" style="margin-bottom:1.25rem">Knowledge Officer란 <em>무엇인가</em></h2>
+        <p class="about-body">지식책임자(Knowledge Officer)는 단순히 정보책임자(CIO)의 명칭을 변경한 것이 아닙니다. 조직 안에서 지식이 부서·직군을 넘어 잘 흐르도록 만드는 협업 촉진자이자 조정자로서, 현업·IT·경영진 사이에서 정보 사일로를 줄이고 공통 언어와 공용 프로세스를 설계합니다.</p>
+        <p class="about-body">지식 전략 수립, 협업 인프라 설계, 거버넌스 체계 구축, AI 도입 관리까지— Knowledge Officer는 지식이 조직의 실질적 경쟁력으로 전환되도록 전략과 실행을 동시에 책임지는 임원입니다.</p>
+        <div class="stat-row">
+          <div class="stat-card"><span class="stat-num">$7.71B</span><span class="stat-label">2025년 AI 기반 지식관리 시장 규모 (전년 대비 +47%)</span></div>
+          <div class="stat-card"><span class="stat-num">80%</span><span class="stat-label">2026년까지 GenAI 도입 예정 기업 비율 (Gartner)</span></div>
+          <div class="stat-card"><span class="stat-num">+25%</span><span class="stat-label">AI KM 도입 기업의 경쟁사 대비 성과 우위 (Gartner)</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- RESPONSIBILITIES -->
+<section id="responsibilities">
+  <div class="sec sec-inv">
+    <div class="sec-header">
+      <p class="eyebrow">Roles &amp; Responsibilities</p>
+      <h2 class="sec-title">Knowledge Officer의 <em>5대 역할 체계</em></h2>
+      <p class="sec-desc">협업 촉진자이자 조정자로서 Knowledge Officer가 수행하는 핵심 역할을 소개합니다.</p>
+    </div>
+    <div class="resp-grid">
+      <div class="resp-card resp-wide">
+        <span class="resp-num">01</span>
+        <h3 class="resp-card-title">협업 관점의 핵심 역할</h3>
+        <p class="resp-card-body">조직의 지식 전략을 수립하고, 이를 각 부서의 협업 방식·프로세스와 정렬시킵니다. 사람·프로세스·데이터를 연결하는 지식 인프라(위키, 포털, 커뮤니티 등)를 설계·운영해 부서 간 협업을 구조적으로 지원합니다. 현업, IT, 경영진 사이에서 요구사항과 제약을 조율하며, 정보 사일로를 줄이고 공통 언어·공용 템플릿을 만드는 브리지 역할을 합니다.</p>
+        <div class="resp-chips"><span class="resp-chip">전략 수립</span><span class="resp-chip">인프라 설계</span><span class="resp-chip">브리지 역할</span></div>
+      </div>
+      <div class="resp-card">
+        <span class="resp-num">02</span>
+        <h3 class="resp-card-title">협업 문화 조성·확산</h3>
+        <p class="resp-card-body">지식 공유와 협업을 장려하는 규범·보상 체계를 설계하고 평가·인센티브와 연결해 "공유하는 사람이 이득을 보는" 문화를 만듭니다. 직무·도메인별 CoP(Community of Practice)를 조직해 자연스러운 교차 협업이 일어나도록 장(場)을 설계하고, 성공 사례와 실패에서의 학습을 스토리화해 조직 전반에 전파합니다.</p>
+        <div class="resp-chips"><span class="resp-chip">공유 문화</span><span class="resp-chip">CoP 운영</span><span class="resp-chip">베스트 프랙티스</span></div>
+      </div>
+      <div class="resp-card">
+        <span class="resp-num">03</span>
+        <h3 class="resp-card-title">협업 운영·실무</h3>
+        <p class="resp-card-body">Teams/Slack·문서 관리·지식 포털 등 협업 플랫폼을 선정하고, 사용 원칙과 정보 구조를 설계해 "어디에 무엇을 남기고 어떻게 함께 일할지"를 표준화합니다. 부서 간 이슈에 대한 워크숍·회의를 설계·주관하며, 신규 입사자가 다른 팀과의 협업에 빠르게 편입될 수 있도록 온보딩 프로그램을 설계합니다.</p>
+        <div class="resp-chips"><span class="resp-chip">도구 표준화</span><span class="resp-chip">퍼실리테이션</span><span class="resp-chip">온보딩</span></div>
+      </div>
+      <div class="resp-card">
+        <span class="resp-num">04</span>
+        <h3 class="resp-card-title">거버넌스·성과 관리</h3>
+        <p class="resp-card-body">누가 어떤 지식의 오너인지, 어떤 협업 프로세스와 승인 체계를 따를지에 대한 룰을 정하고 관리합니다. 부서 간 프로젝트 수, 중복 업무 감소, 온보딩 기간, 재사용률 등 협업 KPI를 설계·모니터링하고, CEO·C레벨과 협력해 지식·협업 이니셔티브를 전략 과제와 연결합니다.</p>
+        <div class="resp-chips"><span class="resp-chip">지식 거버넌스</span><span class="resp-chip">KPI 설계</span><span class="resp-chip">경영진 정렬</span></div>
+      </div>
+      <div class="resp-card">
+        <span class="resp-num">05</span>
+        <h3 class="resp-card-title">IT·현업 사이의 중재자</h3>
+        <p class="resp-card-body">현업 사용자 요구를 구조화해 IT·개발팀에 전달하고, 반대로 기술적 제약과 설계를 현업이 이해할 수 있는 언어로 풀어 설명하는 "통역자" 역할을 합니다. 협업·지식 시스템 사용 데이터를 분석하고 사용자 인터뷰·현장 관찰을 통해 실제 업무 협업에 도움이 되는 기능·프로세스 개선을 이끕니다.</p>
+        <div class="resp-chips"><span class="resp-chip">요구사항 중재</span><span class="resp-chip">사용 데이터 분석</span><span class="resp-chip">프로세스 개선</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TRENDS -->
+<section id="trends">
+  <div class="sec sec-s1">
+    <div class="sec-header">
+      <p class="eyebrow">2026 Knowledge Trends</p>
+      <h2 class="sec-title">AI 시대의 <em>Knowledge Officer 핵심 활동</em></h2>
+      <p class="sec-desc">AI 거버넌스 설계와 지식 데이터 큐레이션을 통해 변화 리더십을 발휘하며, CEO 역할을 대체할 만큼 핵심적인 KO·CKO의 2026년 핵심 활동을 소개합니다.</p>
+    </div>
+    <div class="trends-grid">
+      <div class="trend-card trend-featured">
+        <span class="trend-icon">⬡</span>
+        <p class="trend-num">Track 01</p>
+        <h3 class="trend-title">AI 통합 리더십</h3>
+        <p class="trend-body">AI를 지식관리 핵심 도구로 활용해 기업 지식의 AI 학습 품질을 관리하고, 조직 AI 도입 전략을 총괄합니다. AI 윤리·전략 수립으로 디지털 전환을 주도하며, 경영진 교육을 통해 변화 적응력을 높입니다.</p>
+        <span class="trend-chip">AI 거버넌스</span>
+      </div>
+      <div class="trend-card">
+        <span class="trend-icon">◈</span>
+        <p class="trend-num">Track 02</p>
+        <h3 class="trend-title">변화 관리 역할</h3>
+        <p class="trend-body">AI 도입 시 이해관계자 참여와 소통으로 저항을 줄이며, DIKW 피라미드를 활용해 업무를 최적화합니다. CAIO와 연계해 AI 이니셔티브를 비즈니스 목표에 맞춰 실행합니다.</p>
+        <span class="trend-chip">변화 관리</span>
+      </div>
+      <div class="trend-card">
+        <span class="trend-icon">◎</span>
+        <p class="trend-num">Track 03</p>
+        <h3 class="trend-title">실무 적용 — KLC 품질 향상</h3>
+        <p class="trend-body">AI 생각 파트너를 통해 리더십 도전 과제를 명확화하면 KLC 품질이 24점 만점에 21점으로 향상되고, 성장 지향적 과제가 90% 증가합니다.</p>
+        <span class="trend-chip">실무 적용</span>
+      </div>
+      <div class="trend-card">
+        <span class="trend-icon">◇</span>
+        <p class="trend-num">Trend 04</p>
+        <h3 class="trend-title">엔터프라이즈 시맨틱 레이어</h3>
+        <p class="trend-body">조직 전체 AI의 기반이 되는 시맨틱 레이어 구축이 본격화되고 있습니다. 2025년에는 80%의 데이터 혁신이 그래프 기술을 활용할 것으로 예측됐습니다.</p>
+        <span class="trend-chip">인프라 전략</span>
+      </div>
+      <div class="trend-card">
+        <span class="trend-icon">△</span>
+        <p class="trend-num">Trend 05</p>
+        <h3 class="trend-title">경험지식의 자동 포착 & 보존</h3>
+        <p class="trend-body">회의·교육·고객 응대에서 사라지던 전문가 경험지식을 AI가 자동으로 전사화·구조화합니다. 조직 기억(Organizational Memory)을 영속적으로 유지합니다.</p>
+        <span class="trend-chip">지식 보존</span>
+      </div>
+      <div class="trend-card">
+        <span class="trend-icon">○</span>
+        <p class="trend-num">Trend 06</p>
+        <h3 class="trend-title">AI 투자 ROI 증명 책임</h3>
+        <p class="trend-body">2025년 생성형 AI 투자가 전년 대비 3.2배 증가한 370억 달러에 달했습니다. Knowledge Officer는 지식 기반 AI 투자 효과를 정량화해 경영진에게 보고합니다.</p>
+        <span class="trend-chip">성과 측정</span>
+      </div>
+    </div>
+    <div class="stat-bar">
+      <div class="tsb-card"><span class="tsb-num">21/24</span><span class="tsb-label">AI 생각 파트너 활용 시 KLC 품질 점수</span></div>
+      <div class="tsb-card"><span class="tsb-num">+90%</span><span class="tsb-label">AI 도입 후 성장 지향적 리더십 과제 증가율</span></div>
+      <div class="tsb-card"><span class="tsb-num">70%</span><span class="tsb-label">2025년 말까지 AI 기반 KM 시스템 도입 기업 비율</span></div>
+      <div class="tsb-card"><span class="tsb-num">$35.8B</span><span class="tsb-label">2029년 AI 지식관리 시장 예상 규모</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ROLES -->
+<section id="roles">
+  <div class="sec">
+    <p class="eyebrow">C-Suite Knowledge Roles</p>
+    <div class="roles-header">
+      <h2 class="sec-title">지식 경영 관련 <em>핵심 직책</em> 비교</h2>
+      <p class="sec-desc">정보 중심의 경영환경으로 급변함에 따라, 정보화 문제를 총괄하는 고위직 책임자의 수요가 증가하고 있습니다. CKO를 포함한 새로운 C-레벨 직책들을 비교합니다.</p>
+    </div>
+    <div class="roles-grid">
+      <div class="role-card"><span class="role-abbr">CKO</span><span class="role-full">Chief Knowledge Officer<br>지식책임자</span><p class="role-desc">기업이 보유한 지식자본을 관리·활용하여 기업가치를 극대화합니다. CIO의 역할에서 확장된 개념으로, 지식 전체를 다룹니다.</p></div>
+      <div class="role-card"><span class="role-abbr">CIO</span><span class="role-full">Chief Information / Innovation Officer<br>정보·혁신책임자</span><p class="role-desc">경영 전략에 따른 정보 전략 및 IT 투자 계획을 책정합니다. 매출 증가 전략 수립, 신사업 발굴, 외부 제휴를 주도합니다.</p></div>
+      <div class="role-card"><span class="role-abbr">CCO</span><span class="role-full">Chief Culture Officer<br>문화책임자</span><p class="role-desc">조직 문화를 설계하고 강화합니다. 구성원의 가치관과 행동 양식을 기업 비전에 정렬시키는 역할을 담당합니다.</p></div>
+      <div class="role-card"><span class="role-abbr">CSO</span><span class="role-full">Chief Sustainability Officer<br>지속가능경영책임자</span><p class="role-desc">ESG 경영 및 지속가능성 전략을 총괄합니다. 환경·사회·지배구조 측면에서 기업의 장기 생존 기반을 마련합니다.</p></div>
+      <div class="role-card"><span class="role-abbr">CFO</span><span class="role-full">Chief Financial Officer<br>재무책임자</span><p class="role-desc">재무 전략 및 투자 집행을 총괄합니다. CIO는 경우에 따라 CEO 대신 CFO에게 보고하는 체계를 취하기도 합니다.</p></div>
+      <div class="role-card"><span class="role-abbr">CEO</span><span class="role-full">Chief Executive Officer<br>경영책임자</span><p class="role-desc">기업 전체를 총괄하는 최고 의사결정자입니다. CKO를 비롯한 대부분의 C-레벨 임원은 CEO에게 직접 보고합니다.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- HISTORY -->
+<section id="history">
+  <div class="sec sec-s2">
+    <p class="eyebrow">History &amp; Background</p>
+    <div class="history-inner">
+      <div>
+        <h2 class="sec-title">Knowledge Officer의<br><em>등장 배경</em></h2>
+        <p class="sec-desc" style="margin-top:.875rem">경영환경이 정보 중심으로 급격히 변화하면서 지식을 전략적 자산으로 관리하는 전담 임원의 필요성이 부각되었습니다.</p>
+      </div>
+      <div class="timeline">
+        <div class="tl-item">
+          <span class="tl-year">1998</span>
+          <div><p class="tl-title">CIO 개념의 문헌화</p><p class="tl-text">윌리엄 밀러가 저술한 『4세대 혁신』에서 CIO(혁신책임자) 개념이 처음으로 언급되었습니다. 밀러는 기업의 필수 생존 조건으로 혁신을 강조하며 이를 전담하는 임원의 필요성을 역설했습니다.</p><span class="tl-chip">출판 · 개념 정립</span></div>
+        </div>
+        <div class="tl-item">
+          <span class="tl-year">2000s</span>
+          <div><p class="tl-title">GE·애플의 선도 도입</p><p class="tl-text">미국의 GE, 애플 등 글로벌 선도 기업들이 Knowledge Officer·CIO 제도를 도입하며 지식 경영을 본격화했습니다. 대한민국에서는 삼성, 아시아나항공 등이 이 제도를 수용하였습니다.</p><span class="tl-chip">글로벌 확산</span></div>
+        </div>
+        <div class="tl-item">
+          <span class="tl-year">2013</span>
+          <div><p class="tl-title">블랙베리 사례 — 전략적 C-suite 재편</p><p class="tl-text">블랙베리는 신임 CEO 주도로 소비자 시장에서 비즈니스 시장으로의 전략 전환을 추진하면서 CFO·COO·CMO 등 고위 임원진을 대거 교체했습니다.</p><span class="tl-chip">전략 전환 · 인선 재편</span></div>
+        </div>
+        <div class="tl-item">
+          <span class="tl-year">2024</span>
+          <div><p class="tl-title">GenAI가 KM의 핵심 도구로 정착</p><p class="tl-text">기업들의 AI 도입률이 55%에서 78%로 급등했습니다. Knowledge Officer는 전사적 AI 거버넌스 프레임워크를 설계하는 역할을 맡았습니다.</p><span class="tl-chip">GenAI 도입 · 거버넌스</span></div>
+        </div>
+        <div class="tl-item">
+          <span class="tl-year">현재</span>
+          <div><p class="tl-title">2026 — AI 시대의 Knowledge Officer 재정립</p><p class="tl-text">생성형 AI가 조직의 모든 업무에 침투하면서 Knowledge Officer의 역할이 근본적으로 재정의되고 있습니다. AI 지식관리 시장은 2024년 52억 달러에서 2025년 77억 달러로 47.2% 성장했으며, 2029년에는 358억 달러에 달할 전망입니다.</p><span class="tl-chip">AI 거버넌스 · 지식 인프라</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- AI NEWS -->
+<section id="ai-news">
+  <div class="sec sec-s1">
+    <div class="news-top">
+      <div>
+        <p class="eyebrow">Daily AI Intelligence</p>
+        <h2 class="sec-title">AI <em>최신 뉴스</em></h2>
+      </div>
+      <div style="text-align:right">
+        <span class="news-updated" id="news-updated">업데이트 중...</span>
+        <button class="news-refresh-btn" id="news-btn" onclick="loadNews(true)">
+          <span class="material-icons-round" style="font-size:15px">refresh</span>새로고침
+        </button>
+      </div>
+    </div>
+    <div class="news-filters">
+      <button class="news-filter-btn active" onclick="filterNews(this,'all')">전체</button>
+      <button class="news-filter-btn" onclick="filterNews(this,'tag:AI')">AI</button>
+      <button class="news-filter-btn" onclick="filterNews(this,'tag:Claude')">Claude</button>
+      <button class="news-filter-btn" onclick="filterNews(this,'tag:Gemini')">Gemini</button>
+      <button class="news-filter-btn" onclick="filterNews(this,'tag:NotebookLM')">NotebookLM</button>
+    </div>
+    <div class="news-scroll">
+      <div class="news-row" id="news-row">
+        <div class="news-state">
+          <div class="news-spinner"></div>
+          <span class="news-state-text">뉴스를 불러오는 중...</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section id="cta">
+  <div class="cta-title">지식 경영 전략,<br><em>지금 시작하세요</em></div>
+  <div class="cta-btns">
+    <a class="btn-white" href="/cdn-cgi/l/email-protection#3e5f59575a5b4855064d7e4e5f50575d4d4a514c534d105d5153">이메일 문의</a>
+    <a class="btn-outline-white" href="tel:+8202000000">전화 상담</a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-top">
+    <div>
+      <span class="footer-logo"><span>Panicstorms</span> Co., Ltd.</span>
+      <p class="footer-tagline">지식을 전략적 자산으로 관리하여 기업가치를 극대화하는 지식책임자 전문 컨설팅 기관입니다.</p>
+    </div>
+    <div>
+      <p class="footer-col-title">서비스</p>
+      <ul class="footer-links">
+        <li><a href="#">지식경영 컨설팅</a></li>
+        <li><a href="#">AI 지식 거버넌스</a></li>
+        <li><a href="#">시맨틱 레이어 설계</a></li>
+        <li><a href="#">지식관리 전략</a></li>
+        <li><a href="#">임원 교육 · 조직 진단</a></li>
+      </ul>
+    </div>
+    <div>
+      <p class="footer-col-title">회사</p>
+      <ul class="footer-links">
+        <li><a href="#">회사 소개</a></li>
+        <li><a href="#">팀</a></li>
+        <li><a href="#">뉴스</a></li>
+        <li><a href="#">채용</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2026 Panicstorms Co., Ltd. All rights reserved.</span>
+    <span>Knowledge Management · AI Governance · Semantic Layer</span>
+  </div>
+</footer>
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+  // ── Animations ──
+  const io = new IntersectionObserver(es => es.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible'); }), {threshold:.12});
+  document.querySelectorAll('.fade-up').forEach(el => io.observe(el));
+
+  // ══════════════════════════════
+  // AI NEWS — Google News RSS
+  // 다중 CORS 프록시 fallback으로 외부 접속 안정성 확보
+  // ══════════════════════════════
+  const CACHE_KEY = 'ai_news_v10';
+  const CACHE_TTL = 60 * 60 * 1000; // 1시간 캐시 유지
+
+  // 프록시 후보 목록 — 순서대로 시도
+  const PROXIES = [
+    rss => `https://api.allorigins.win/get?url=${encodeURIComponent(rss)}`,
+    rss => `https://corsproxy.io/?${encodeURIComponent(rss)}`,
+    rss => `https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(rss)}`,
+  ];
+
+  // Google News 토픽 RSS — /topics/{ID} → /rss/topics/{ID}
+  const QUERIES = [
+    {
+      rssUrl: 'https://news.google.com/rss/topics/CAAqKAgKIiJDQkFTRXdvSkwyMHZNR1ptZHpWbUVnSnJieG9DUzFJb0FBUAE?hl=ko&gl=KR&ceid=KR%3Ako',
+      pageUrl:'https://news.google.com/topics/CAAqKAgKIiJDQkFTRXdvSkwyMHZNR1ptZHpWbUVnSnJieG9DUzFJb0FBUAE?hl=ko&gl=KR&ceid=KR%3Ako',
+      topic:'AI 뉴스', ll:'한국어'
+    },
+    {
+      rssUrl: 'https://news.google.com/rss/topics/CAAqJggKIiBDQkFTRWdvSUwyMHZNRGx6TVdZU0FtdHZHZ0pMVWlnQVAB?hl=ko&gl=KR&ceid=KR%3Ako',
+      pageUrl:'https://news.google.com/topics/CAAqJggKIiBDQkFTRWdvSUwyMHZNRGx6TVdZU0FtdHZHZ0pMVWlnQVAB?hl=ko&gl=KR&ceid=KR%3Ako',
+      topic:'테크', ll:'한국어'
+    },
+    {
+      rssUrl: 'https://news.google.com/rss/topics/CAAqKAgKIiJDQkFTRXdvSkwyMHZNR1ptZHpWbUVnSnFZUm9DU2xBb0FBUAE?hl=ja&gl=JP&ceid=JP%3Aja',
+      pageUrl:'https://news.google.com/topics/CAAqKAgKIiJDQkFTRXdvSkwyMHZNR1ptZHpWbUVnSnFZUm9DU2xBb0FBUAE?hl=ja&gl=JP&ceid=JP%3Aja',
+      topic:'AI ニュース', ll:'日本語'
+    },
+    {
+      rssUrl: 'https://news.google.com/rss/topics/CAAqJggKIiBDQkFTRWdvSUwyMHZNRGx6TVdZU0FtcGhHZ0pLVUNnQVAB?hl=ja&gl=JP&ceid=JP%3Aja',
+      pageUrl:'https://news.google.com/topics/CAAqJggKIiBDQkFTRWdvSUwyMHZNRGx6TVdZU0FtcGhHZ0pLVUNnQVAB?hl=ja&gl=JP&ceid=JP%3Aja',
+      topic:'テクノロジー', ll:'日本語'
+    },
+  ];
+
+  let allNews = [], currentTopic = 'all';
+
+  // 날짜 표시: 오늘/어제 + 시각
+  function fmtDate(s) {
+    try {
+      const d = new Date(s);
+      if (isNaN(d)) return '';
+      const now = new Date();
+      const todayStart = new Date(now); todayStart.setHours(0,0,0,0);
+      const yestStart  = new Date(todayStart); yestStart.setDate(todayStart.getDate()-1);
+      const label = d >= todayStart ? '오늘' : d >= yestStart ? '어제' : d.toLocaleDateString('ko-KR',{month:'long',day:'numeric'});
+      return label + ' ' + d.toLocaleTimeString('ko-KR',{hour:'2-digit',minute:'2-digit'});
+    } catch { return ''; }
+  }
+
+  // 오늘 or 어제 해당 여부
+  function isTodayOrYesterday(dateStr) {
+    try {
+      const d = new Date(dateStr);
+      if (isNaN(d)) return true; // 날짜 파싱 불가 → 포함
+      const yestStart = new Date(); yestStart.setDate(yestStart.getDate()-1); yestStart.setHours(0,0,0,0);
+      return d >= yestStart;
+    } catch { return true; }
+  }
+
+  // RSS XML에서 모든 item 반환
+  function parseRssItems(xmlText) {
+    const doc = new DOMParser().parseFromString(xmlText, 'text/xml');
+    return Array.from(doc.querySelectorAll('item'));
+  }
+
+  // 단일 쿼리: 프록시 순서대로 시도 → 오늘·어제 기사 배열 반환
+  async function fetchOne(q) {
+    const rss     = q.rssUrl;
+    const pageUrl = q.pageUrl;
+
+    for (const makeUrl of PROXIES) {
+      try {
+        const url = makeUrl(rss);
+        const res = await fetch(url, {signal: AbortSignal.timeout(12000)});
+        if (!res.ok) continue;
+
+        let xmlText = '';
+        const ct = res.headers.get('content-type') || '';
+        if (ct.includes('application/json') || url.includes('allorigins')) {
+          const json = await res.json();
+          xmlText = json.contents || json.data || '';
+        } else {
+          xmlText = await res.text();
+        }
+
+        const items = parseRssItems(xmlText);
+        if (!items.length) continue;
+
+        // 제목에서 키워드 감지 → 배지용 tag 반환 (없으면 null)
+        const detectTag = title => {
+          const t = title.toLowerCase();
+          // 고유명사 우선
+          if (t.includes('notebooklm'))  return 'NotebookLM';
+          if (t.includes('gemini'))      return 'Gemini';
+          if (t.includes('claude'))      return 'Claude';
+          // AI — 한/일/영 다양한 표기 커버
+          const aiPatterns = [
+            ' ai', 'ai ', 'ai・', 'ai、', 'ai。', 'ai（', '(ai)', '/ai',
+            '인공지능', '생성ai', '생성형 ai',
+            '人工知能', '生成ai', '生成AI', 'aiエージェント', 'aiシステム',
+            'aiモデル', 'aiツール', 'aiサービス', 'aiを', 'aiが', 'aiの', 'aiで',
+            'chatgpt', 'llm', 'generative', '대규모 언어', '大規模言語',
+          ];
+          if (t.startsWith('ai') || aiPatterns.some(p => t.includes(p))) return 'AI';
+          // 원문(대소문자 유지)에서 독립 단어 AI 재확인
+          if (/AI/.test(title)) return 'AI';
+          return null;
+        };
+
+        const toNews = item => {
+          const title   = item.querySelector('title')?.textContent?.replace(/ - [^-]+$/, '') || '';
+          const pubDate = item.querySelector('pubDate')?.textContent || '';
+          const link    = item.querySelector('link')?.textContent || pageUrl;
+          if (!title) return null;
+          const tag = detectTag(title);
+          if (!tag) return null; // 키워드 없으면 제외
+          return { topic: q.topic, tag, ll: q.ll, title, date: pubDate, url: link };
+        };
+
+        // 오늘·어제 + 키워드 필터
+        let news = items.map(toNews).filter(n => n && isTodayOrYesterday(n.date));
+
+        // 오늘·어제 기사가 없으면 키워드 매칭 최신 5개 fallback
+        if (!news.length) news = items.map(toNews).filter(Boolean).slice(0,5);
+
+        return news;
+      } catch(e) { /* 다음 프록시로 */ }
+    }
+    return [];
+  }
+
+  async function fetchAll() {
+    const results = await Promise.allSettled(QUERIES.map(q => fetchOne(q)));
+    const flat = results
+      .filter(r => r.status === 'fulfilled' && r.value?.length)
+      .flatMap(r => r.value);
+
+    // 제목 앞 40자 기준 중복 제거
+    const seen = new Set();
+    const deduped = flat.filter(n => {
+      const key = n.topic + '|' + n.title.slice(0,40);
+      if (seen.has(key)) return false;
+      seen.add(key); return true;
+    });
+
+    // 최신순 정렬
+    deduped.sort((a,b) => new Date(b.date) - new Date(a.date));
+    return deduped;
+  }
+
+  function render(items) {
+    const row = document.getElementById('news-row');
+    const list = currentTopic === 'all'
+      ? items
+      : currentTopic.startsWith('tag:')
+        ? items.filter(n => n.tag === currentTopic.slice(4))
+        : items.filter(n => n.topic === currentTopic);
+    if (!list.length) {
+      row.innerHTML = `<div class="news-state" style="width:100%"><span class="material-icons-round" style="font-size:2rem;color:var(--md-outline)">info</span><span class="news-state-text">표시할 뉴스가 없습니다.</span></div>`;
+      return;
+    }
+    row.innerHTML = list.map(n => `
+      <article class="news-card">
+        <div class="news-card-top">
+          <span class="news-card-src">news.google.com</span>
+          <span class="news-card-badge">${n.tag || n.topic}</span>
+        </div>
+        <p class="news-card-lang">${n.ll} · ${n.topic}</p>
+        <h3 class="news-card-title">${n.title}</h3>
+        <div class="news-card-foot">
+          <span class="news-card-date">${fmtDate(n.date)}</span>
+          <a class="news-card-link" href="${n.url}" target="_blank" rel="noopener">검색 보기 <span class="material-icons-round" style="font-size:13px">open_in_new</span></a>
+        </div>
+      </article>`).join('');
+  }
+
+  async function loadNews(force = false) {
+    const row  = document.getElementById('news-row');
+    const btn  = document.getElementById('news-btn');
+    const dtEl = document.getElementById('news-updated');
+
+    if (!force) {
+      try {
+        const c = JSON.parse(localStorage.getItem(CACHE_KEY) || 'null');
+        if (c && Date.now() - c.ts < CACHE_TTL) {
+          allNews = c.items; render(allNews);
+          dtEl.textContent = '업데이트: ' + new Date(c.ts).toLocaleString('ko-KR',{month:'short',day:'numeric',hour:'2-digit',minute:'2-digit'});
+          return;
+        }
+      } catch(e) {}
+    }
+
+    row.innerHTML = `<div class="news-state" style="width:100%"><div class="news-spinner"></div><span class="news-state-text">최신 뉴스를 가져오는 중...</span></div>`;
+    btn.disabled = true;
+
+    try {
+      const items = await fetchAll();
+      if (!items.length) throw new Error('empty');
+      allNews = items;
+      const now = Date.now();
+      try { localStorage.setItem(CACHE_KEY, JSON.stringify({items, ts: now})); } catch(e) {}
+      render(allNews);
+      dtEl.textContent = '업데이트: ' + new Date(now).toLocaleString('ko-KR',{month:'short',day:'numeric',hour:'2-digit',minute:'2-digit'});
+    } catch(err) {
+      console.error(err);
+      row.innerHTML = `<div class="news-state" style="width:100%"><span class="material-icons-round" style="font-size:2rem;color:var(--md-error)">error_outline</span><span class="news-state-text">뉴스를 불러오지 못했습니다. 새로고침을 눌러주세요.</span></div>`;
+      dtEl.textContent = '업데이트 실패';
+    } finally { btn.disabled = false; }
+  }
+
+  function filterNews(btn, topic) {
+    document.querySelectorAll('.news-filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    currentTopic = topic;
+    render(allNews);
+  }
+
+  // 페이지 로드 시 자동 실행
+  document.addEventListener('DOMContentLoaded', () => loadNews());
+</script>
+</body>
+</html>
