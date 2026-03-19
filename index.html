@@ -684,11 +684,9 @@
           if (t.includes('claude'))      return 'Claude';
           // AI — 한/일/영 다양한 표기 커버
           const aiPatterns = [
-            ' ai', 'ai ', 'ai・', 'ai、', 'ai。', 'ai（', '(ai)', '/ai',
-            '인공지능', '생성ai', '생성형 ai',
+            'ai', '인공지능', '생성ai', '생성형 ai',
             '人工知能', '生成ai', '生成AI', 'aiエージェント', 'aiシステム',
             'aiモデル', 'aiツール', 'aiサービス', 'aiを', 'aiが', 'aiの', 'aiで',
-            'chatgpt', 'llm', 'generative', '대규모 언어', '大規模言語',
           ];
           if (t.startsWith('ai') || aiPatterns.some(p => t.includes(p))) return 'AI';
           // 원문(대소문자 유지)에서 독립 단어 AI 재확인
