@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Panicstorms Archive — Strategic Intelligence Dashboard</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&family=Roboto:wght@400;700;900&family=Roboto+Mono:wght@400;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet" />
+  <style>
+    /* ══════════════════════════════
+       V34 SPECIFIC ARCHITECTURE STYLE
+    ══════════════════════════════ */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+    :root {
+      --md-primary: #005AC1; 
+      --md-flow: #4285F4;
+      --md-bridge: #FFB900;
+      --md-stock: #1A1C1E;
+      --md-surface: #F8F9FF; 
+      --md-on-surface: #191C20;
+      --content-width: 1200px;
+      --safe-padding: clamp(1.5rem, 5vw, 4rem);
+    }
+
+    html { scroll-behavior: smooth; }
+    body { font-family:'Noto Sans KR',sans-serif; background:var(--md-surface); color:var(--md-on-surface); line-height:1.7; overflow-x: hidden; word-break: keep-all; }
+
+    .container { max-width: var(--content-width); margin: 0 auto; width: 100%; }
+
+    /* ── NAV ── */
+    nav {
+      position:fixed; top:0; left:0; right:0; z-index:100;
+      height:72px; display:flex; align-items:center;
+      padding:0 var(--safe-padding); background:rgba(255, 255, 255, 0.85); 
+      backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px);
+      box-shadow: 0 1px 0 rgba(0,0,0,0.05);
+    }
+    .nav-logo { font: 900 1.4rem 'Roboto'; color: var(--md-primary); text-decoration: none; letter-spacing: -1px; }
+    .nav-links { display: flex; gap: 0.5rem; list-style: none; margin-left: auto; }
+    .nav-links a { font: 700 0.85rem 'Noto Sans KR'; color: #555; text-decoration: none; padding: 0.6rem 1rem; border-radius: 12px; transition: 0.3s; }
+    .nav-links a:hover { color: var(--md-primary); background: rgba(0,90,193,0.05); }
+    .nav-cta { font: 700 0.85rem 'Roboto'; padding: 0.75rem 1.4rem; background: var(--md-primary); color: white; text-decoration: none; border-radius: 14px; margin-left: 1rem; box-shadow: 0 4px 12px rgba(0,90,193,0.2); }
+
+    /* ── HERO ── */
+    #hero { min-height: 80vh; display: flex; align-items: center; padding: 6rem var(--safe-padding) 4rem; background: radial-gradient(circle at 5% 10%, #E8F1FF 0%, #FFFFFF 100%); }
+    .sec-title { font: 900 clamp(2.5rem, 6vw, 4.2rem) 'Noto Sans KR'; letter-spacing: -0.05em; line-height: 1.1; margin-bottom: 2rem; }
+    .sec-title em { font-style: normal; color: var(--md-primary); border-bottom: 10px solid rgba(0,90,193,0.08); }
+    .hero-desc { font: 300 1.4rem 'Noto Sans KR'; color: #444; margin-bottom: 4rem; max-width: 900px; }
+
+    /* ── TICKER ── */
+    #ticker-section { background: #000; color: white; padding: 0.8rem 0; overflow: hidden; border-bottom: 1px solid #333; }
+    .ticker-track { display: flex; gap: 5rem; animation: ticker-scroll 60s linear infinite; white-space: nowrap; align-items: center; }
+    .ticker-item { display: flex; align-items: center; gap: 0.6rem; text-decoration: none; color: inherit; transition: 0.2s; font-size: 0.9rem; }
+    .ticker-item:hover { color: var(--md-bridge); }
+    .tag-kr { background: var(--md-flow); color: white; padding: 2px 8px; border-radius: 4px; font-size: 0.75rem; font-weight: 900; }
+    .tag-jp { background: #BC002D; color: white; padding: 2px 8px; border-radius: 4px; font-size: 0.75rem; font-weight: 900; }
+    @keyframes ticker-scroll { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+    /* ── SECTIONS ── */
+    .sec { padding: clamp(5rem, 10vw, 8rem) var(--safe-padding); }
+    .sec-header { margin-bottom: 4rem; text-align: left; }
+    .sec-eyebrow { font: 700 0.9rem 'Roboto Mono'; color: var(--md-primary); margin-bottom: 1rem; text-transform: uppercase; display: block; letter-spacing: 2px; }
+    .sec-h2 { font: 700 clamp(2.2rem, 5vw, 3.2rem) 'Noto Sans KR'; letter-spacing: -0.03em; }
+
+    /* ── GLOSSARY ── */
+    .glossary-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-bottom: 5rem; }
+    .glossary-card { background: #f0f4ff; border-radius: 36px; padding: 3rem; border: 1px solid rgba(0,90,193,0.1); }
+    .glossary-card h4 { font: 900 1.7rem 'Roboto'; color: var(--md-primary); margin-bottom: 1.2rem; display: flex; align-items: center; gap: 0.8rem; }
+
+    /* ── GRID WRAP ── */
+    .grid-wrap { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; }
+    .info-card { background: white; border-radius: 40px; padding: 3rem; box-shadow: 0 15px 45px rgba(0,0,0,0.03); border: 1px solid rgba(0,0,0,0.02); transition: 0.4s; }
+    .info-card.span-2 { grid-column: span 2; }
+    .icon-box { width: 64px; height: 64px; background: #F0F4FF; border-radius: 20px; display: flex; align-items: center; justify-content: center; margin-bottom: 2rem; color: var(--md-primary); font-size: 2.2rem; }
+    .card-title { font: 700 1.6rem 'Noto Sans KR'; margin-bottom: 1.5rem; }
+    .card-desc { font-size: 1rem; color: #555; line-height: 1.8; }
+
+    /* ── PIPELINE (SPECIFIC & DETAILED) ── */
+    .pipeline-visual { background: white; border-radius: 60px; padding: 5rem 3rem; margin: 3rem 0; box-shadow: 0 20px 60px rgba(0,0,0,0.05); }
+    .pipeline-grid { display: grid; grid-template-columns: 1fr auto 1fr auto 1fr; align-items: start; gap: 1.5rem; }
+    .pipe-step { background: #F8F9FF; padding: 2.5rem 1.5rem; border-radius: 40px; text-align: left; border: 2px solid #eee; transition: 0.3s; min-height: 380px; }
+    .pipe-step:hover { border-color: var(--md-primary); transform: translateY(-10px); }
+    .pipe-icon { font-size: 3rem; color: var(--md-primary); margin-bottom: 1.5rem; display: block; text-align: center; }
+    .pipe-label { font: 900 1.3rem 'Roboto'; margin-bottom: 1rem; display: block; color: var(--md-primary); text-align: center; border-bottom: 2px solid #eee; padding-bottom: 1rem; }
+    .pipe-list { list-style: none; font-size: 0.9rem; color: #444; line-height: 1.6; }
+    .pipe-list li { margin-bottom: 0.8rem; display: flex; gap: 0.5rem; }
+    .pipe-list li::before { content: '•'; color: var(--md-primary); font-weight: 900; }
+    .pipe-arrow { color: #D8E2FF; font-size: 3.5rem; align-self: center; }
+
+    /* ── HUB GRID ── */
+    .hub-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; margin-top: 4rem; }
+    .hub-card { background: white; border-radius: 50px; padding: 4.5rem 3.5rem; box-shadow: 0 20px 60px rgba(0,0,0,0.05); border: 1px solid #eee; }
+    .hub-card.active { border-top: 15px solid var(--md-primary); }
+    .hub-card.special { border-top: 15px solid var(--md-bridge); background: #fffdf8; }
+    .hub-header { display: flex; align-items: center; gap: 1.2rem; margin-bottom: 2.5rem; }
+    .hub-header i { font-size: 3.8rem; color: var(--md-primary); }
+    .hub-card.special .hub-header i { color: var(--md-bridge); }
+    .hub-title { font: 900 2.3rem 'Noto Sans KR'; letter-spacing: -1.5px; }
+    .hub-list { list-style: none; display: grid; gap: 1.5rem; }
+    .hub-list li { display: flex; align-items: flex-start; gap: 1.2rem; font-size: 1.1rem; line-height: 1.7; color: #333; }
+    .hub-list li i { font-size: 1.8rem; color: var(--md-primary); margin-top: 0.2rem; }
+    .hub-card.special li i { color: var(--md-bridge); }
+
+    /* ── PILLARS ── */
+    .pillar-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; }
+    .pillar-card { padding: 4rem; border-radius: 40px; background: white; border-left: 18px solid var(--md-primary); box-shadow: 0 25px 50px rgba(0,0,0,0.04); }
+    .pillar-card h3 { font: 900 1.8rem 'Noto Sans KR'; margin-bottom: 1.5rem; color: var(--md-primary); }
+
+    footer { background: #000; color: rgba(255,255,255,0.4); padding: 6rem var(--safe-padding); text-align: left; }
+
+    @media(max-width: 1100px) {
+      .nav-links { display: none; }
+      .grid-wrap, .hub-grid, .pillar-grid, .pipeline-grid, .glossary-grid { grid-template-columns: 1fr !important; }
+      .info-card.span-2 { grid-column: span 1; }
+      .pipe-arrow { transform: rotate(90deg); margin: 2rem 0; }
+      .pipe-step { min-height: auto; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <div class="container" style="display:flex; align-items:center;">
+    <a class="nav-logo" href="#">PANICSTORMS</a>
+    <ul class="nav-links">
+      <li><a href="#responsibilities">업무 체계</a></li>
+      <li><a href="#tech-bridge">지능 파이프라인</a></li>
+      <li><a href="#solutions">통합 솔루션</a></li>
+      <li><a href="#trends">핵심 활동</a></li>
+    </ul>
+    <a class="nav-cta" href="#cta">전략 실사 요청</a>
+  </div>
+</nav>
+
+<section id="hero">
+  <div class="container hero-content">
+    <span class="hero-eyebrow">Fused Intelligence & Knowledge DB Command</span>
+    <h1 class="sec-title">지식의 <em>흐름</em>을 설계하고<br>자산의 <em>맥락</em>을 보존합니다</h1>
+    <p class="hero-desc">
+      Panicstorms는 Google Workspace의 동적 협업 데이터와 국가 기록 전략의 정밀성을 융합하여, 휘발되는 비즈니스 정보를 영속적인 '전략적 지능 자산'으로 전환합니다.
+    </p>
+    <a href="#tech-bridge" class="nav-cta" style="padding: 1.4rem 3.5rem; font-size: 1.1rem; margin-left: 0;">아키텍처 명세 보기</a>
+  </div>
+</section>
+
+<div id="ticker-section">
+  <div class="ticker-track" id="ticker-track"></div>
+</div>
+
+<section id="responsibilities" class="sec">
+  <div class="container">
+    <div class="sec-header">
+      <span class="sec-eyebrow">I. Governance Foundation</span>
+      <h2 class="sec-h2">융합된 <em>KO+DA 업무 체계</em></h2>
+    </div>
+
+    <div class="glossary-grid">
+      <div class="glossary-card">
+        <h4><span class="material-icons-round">psychology</span> KO (Knowledge Officer)</h4>
+        <p>조직의 성장을 위해 지식의 흐름을 설계하는 **지식 전략 전문가**입니다. 협업 데이터에서 상업적 가치를 발굴하고, AI 에이전트가 정확한 맥락을 학습하도록 지식 인프라를 최적화합니다.</p>
+      </div>
+      <div class="glossary-card">
+        <h4><span class="material-icons-round">inventory</span> DA (Digital Archivist)</h4>
+        <p>데이터의 맥락과 무결성을 보존하는 **기록 기술 전문가**입니다. 국제 표준(OAIS)에 따른 보존 체계를 구축하고, M&A나 위기 상황에서도 데이터 주권과 불변성을 기술적으로 증명합니다.</p>
+      </div>
+    </div>
+
+    <div class="grid-wrap">
+      <div class="info-card">
+        <div class="icon-box"><span class="material-icons-round">account_tree</span></div>
+        <h3 class="card-title">지능형 시맨틱 인프라</h3>
+        <p class="card-desc">단순 저장을 넘어 비즈니스 목표와 데이터 간의 상관관계를 정의합니다. AI가 조직 특유의 의사결정 맥락을 오해 없이 학습하도록 '지식 계보(Lineage)' 중심의 그래프 인프라를 구축합니다.</p>
+      </div>
+      <div class="info-card">
+        <div class="icon-box"><span class="material-icons-round">menu_book</span></div>
+        <h3 class="card-title">경험 지식의 자산화</h3>
+        <p class="card-desc">실시간 소통 속의 암묵적 노하우와 의사결정 막전막후를 데이터로 정밀 기록합니다. 이를 단순 보존이 아닌 **혁신과 브랜딩의 '비밀스러운 상업적 무기'**로 전환하여 조직 정체성을 강화합니다.</p>
+      </div>
+      <div class="info-card">
+        <div class="icon-box"><span class="material-icons-round">hub</span></div>
+        <h3 class="card-title">지식 계보 및 상호연계</h3>
+        <p class="card-desc">기록물, 프로젝트 연표, 전문 용어를 고유 식별자로 정밀 연동합니다. 입체적 지식 지도를 통해 과거의 결정 맥락을 즉시 추적할 수 있어 비즈니스 연속성을 완벽히 보장합니다.</p>
+      </div>
+      <div class="info-card span-2">
+        <div class="icon-box"><span class="material-icons-round">security</span></div>
+        <h3 class="card-title">데이터 주권 및 비용 최적화</h3>
+        <p class="card-desc">기계가독형 포맷을 통해 시스템 종속성 없는 데이터 무결성을 보장합니다. 선진 국가 전략을 벤치마킹하여 아카이브 운영 비용을 법인 세무상 이점으로 최적화하고 경영 리스크를 선제 관리합니다.</p>
+      </div>
+      <div class="info-card">
+        <div class="icon-box"><span class="material-icons-round">insights</span></div>
+        <h3 class="card-title">AI Ready & ROI</h3>
+        <p class="card-desc">비정형 데이터를 AI가 즉각 학습 가능한 고품질 정형 데이터로 변환합니다. GraphRAG 효율 극대화는 물론, 실질적 경영 ROI에 미치는 영향을 정량화하여 보고합니다.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="tech-bridge" class="sec">
+  <div class="container">
+    <div class="sec-header">
+      <span class="sec-eyebrow">II. Technical Integration</span>
+      <h2 class="sec-h2">지능형 <em>지식 파이프라인 명세</em></h2>
+      <p style="margin-top:1.5rem; color:#666; max-width:800px;">실시간 협업 데이터가 단순한 로그를 넘어 기업의 영구 지능 자산으로 진화하는 3단계 엔지니어링 프로세스입니다.</p>
+    </div>
+    
+    <div class="pipeline-visual">
+      <div class="pipeline-grid">
+        <div class="pipe-step">
+          <i class="material-icons-round pipe-icon">cloud_sync</i>
+          <b class="pipe-label">01. Dynamic Ingestion</b>
+          <ul class="pipe-list">
+            <li>Google Workspace 실시간 스트리밍 인입</li>
+            <li>문서 버전 이력 기반 의사결정 시퀀스 추적</li>
+            <li>채팅/댓글 등 휘발성 '암묵지' 자동 포착</li>
+            <li>비정형 데이터의 원시 무결성 검증</li>
+          </ul>
+        </div>
+        <i class="material-icons-round pipe-arrow">double_arrow</i>
+        <div class="pipe-step" style="border-color: var(--md-bridge);">
+          <i class="material-icons-round pipe-icon" style="color:var(--md-bridge)">psychology_alt</i>
+          <b class="pipe-label">02. Semantic Reasoning</b>
+          <ul class="pipe-list">
+            <li>GraphRAG 기반 엔티티 간 관계망 구축</li>
+            <li>비즈니스 도메인별 온톨로지 자동 매핑</li>
+            <li>NotebookLM 연동 맞춤형 지식 레이어 생성</li>
+            <li>컨텍스트 인지형 메타데이터 자동 추출</li>
+          </ul>
+        </div>
+        <i class="material-icons-round pipe-arrow">double_arrow</i>
+        <div class="pipe-step" style="border-color: var(--md-stock);">
+          <i class="material-icons-round pipe-icon" style="color:var(--md-stock)">history_edu</i>
+          <b class="pipe-label">03. Permanent Fixation</b>
+          <ul class="pipe-list">
+            <li>OAIS 표준 기반 장기 보존 패키지(AIP) 변환</li>
+            <li>WORM 스토리지 기반 데이터 불변성 확보</li>
+            <li>디지털 계보(Lineage) 증명 체계 수립</li>
+            <li>시스템 독립적 JSON/PDF-A 정규화</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="solutions" class="sec">
+  <div class="container">
+    <div class="sec-header">
+      <span class="sec-eyebrow">III. Solution Ecosystem</span>
+      <h2 class="sec-h2">성공을 위한 <em>지능형 통합 솔루션</em></h2>
+    </div>
+
+    <div class="hub-grid">
+      <div class="hub-card active">
+        <div class="hub-header">
+          <i class="material-icons-round">web_asset</i>
+          <h3 class="hub-title">Google Workspace<br><small style="font-size:1.15rem; color:#001A41; font-weight:700;">지능형 지식 DB (Flow Engine)</small></h3>
+        </div>
+        <ul class="hub-list">
+          <li><i class="material-icons-round">check_circle</i> **실시간 지식 합성:** Docs, Sheets 동시 편집 이력을 분석하여 팀의 협업 맥락을 실시간 데이터베이스화합니다.</li>
+          <li><i class="material-icons-round">check_circle</i> **NotebookLM AI 비서:** Drive 내 방대한 기록을 AI가 즉각 학습하여, 사내 전문가 수준의 답변을 제공하는 전용 챗봇을 운영합니다.</li>
+          <li><i class="material-icons-round">check_circle</i> **지능형 전문 검색:** 시맨틱 검색 엔진을 통해 파일 제목이 아닌 '의미와 맥락'으로 0.1초 만에 필요한 정보를 확보합니다.</li>
+        </ul>
+      </div>
+      <div class="hub-card special">
+        <div class="hub-header">
+          <i class="material-icons-round">security</i>
+          <h3 class="hub-title">Archive & Rescue<br><small style="font-size:1.15rem; color:#4E342E; font-weight:700;">영구 보존 및 위기 대응 (Stock Anchor)</small></h3>
+        </div>
+        <ul class="hub-list">
+          <li><i class="material-icons-round">check_circle</i> **M&A Crisis Rescue:** 인수합병이나 청산 시 소중한 기록 자산을 안전하게 구출하고 실사(Due Diligence) 근거를 자동 생성합니다.</li>
+          <li><i class="material-icons-round">check_circle</i> **글로벌 표준 무결성:** 특정 플랫폼에 종속되지 않는 독립적 포맷으로 변환하여 100년 기업의 데이터 영속성을 보장합니다.</li>
+          <li><i class="material-icons-round">check_circle</i> **전략적 가치 보전:** 10대 핵심 경영 기록물을 관리하여 브랜드 정체성을 강화하고 법적/세무적 리스크를 제거합니다.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="trends" class="sec">
+  <div class="container">
+    <div class="sec-header">
+      <span class="sec-eyebrow">IV. Strategic Pillars</span>
+      <h2 class="sec-h2">융합 리더십의 <em>핵심 활동</em></h2>
+    </div>
+    <div class="pillar-grid">
+      <div class="pillar-card">
+        <h3>AI 지식 거버넌스 및 큐레이션</h3>
+        <p style="font-size:1.1rem; color:#555; line-height:1.9;">방대한 데이터 중 AI 답변의 신뢰할 수 있는 근거가 될 정제된 지식만을 선별합니다. 할루시네이션을 원천 차단하고 기업 전용 지능의 정확도를 극대화합니다.</p>
+      </div>
+      <div class="pillar-card" style="border-left-color: var(--md-bridge);">
+        <h3>부서 간 지식 사일로(Silo) 완전 해소</h3>
+        <p style="font-size:1.1rem; color:#555; line-height:1.9;">현업 부서의 실무 요구사항을 구조화된 데이터 언어로 정의하고 정보가 전사적으로 흐르고 재사용될 수 있는 표준 프로세스를 정립합니다.</p>
+      </div>
+      <div class="pillar-card" style="border-left-color: #575E71;">
+        <h3>디지털 헤리티지 & 상업적 자산화</h3>
+        <p style="font-size:1.1rem; color:#555; line-height:1.9;">기록물의 가치를 발굴하여 시각화된 인터랙티브 타임라인으로 재구성합니다. 이를 전략적 마케팅과 브랜드 정체성 강화의 소스로 활용합니다.</p>
+      </div>
+      <div class="pillar-card" style="border-left-color: #000;">
+        <h3>무결성 데이터 주권 거버넌스</h3>
+        <p style="font-size:1.1rem; color:#555; line-height:1.9;">시스템 교체나 환경 변화에도 데이터 통제권을 유지합니다. 글로벌 선진 사례 기반의 비용 최적화 모델을 적용하여 아카이브가 성장에 기여하도록 설계합니다.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <p style="font: 900 1.6rem 'Roboto'; color: white; margin-bottom: 1.5rem;">PANICSTORMS</p>
+    <p style="font-size: 0.95rem; line-height: 1.8;">© 2026 Panicstorms Co., Ltd. All rights reserved. <br> Powered by Google Workspace & Strategic Archive Solutions.</p>
+  </div>
+</footer>
+
+<script>
+  const TRENDS_DATA = [
+    { tag: "KR", url: "https://www.dt.co.kr/contents.html?article_no=2026041002109931820002", text: "2026 AI 패러다임 전환: 명령형에서 자율형 에이전틱 AI로의 진화 본격화" },
+    { tag: "JP", url: "https://www.nikkei.com/article/DGXZQOUC131800X10C26A4000000/", text: "「組織記憶」の永続化、生成AI導入企業でデジタルアーカイブ需要이 급증" },
+    { tag: "KR", url: "https://www.mk.co.kr/news/business/10987654", text: "기업 M&A 실사 필수 항목으로 부상한 '지식 자산 계보' 가치 입증 사례 확산" },
+    { tag: "JP", url: "https://japan.zdnet.com/article/35216543/", text: "Google Workspace, NotebookLM과의 통합으로 기업 내 지능형 DB 활용 가속" }
+  ];
+
+  function renderTicker() {
+    const track = document.getElementById('ticker-track');
+    const items = [...TRENDS_DATA, ...TRENDS_DATA]; 
+    track.innerHTML = items.map(n => `
+      <a href="${n.url}" target="_blank" class="ticker-item">
+        <span class="${n.tag === 'KR' ? 'tag-kr' : 'tag-jp'}">${n.tag}</span>
+        <span>${n.text}</span>
+      </a>
+    `).join('');
+  }
+  document.addEventListener('DOMContentLoaded', renderTicker);
+</script>
+
+</body>
+</html>
