@@ -3,409 +3,212 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
-  <meta name="theme-color" content="#F7F8FC"/>
+  <meta name="theme-color" content="#ffffff"/>
   <meta name="format-detection" content="telephone=no"/>
   <title>Panicstorms — Knowledge Intelligence</title>
-  <!-- Pretendard: 한글 본문 (가변 폰트, 다이나믹 서브셋) -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css"/>
-  <!-- Plus Jakarta Sans: 헤딩 | JetBrains Mono: 라벨·태그 -->
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet"/>
   <style>
-    /* ── RESET & TOKENS ── */
+    /* ── MEGAZONE SOFT DESIGN SYSTEM (REFINED) ── */
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     :root {
-      --bg:       #F7F8FC;
-      --surface:  #FFFFFF;
-      --border:   #E8EAF2;
-      --text:     #0E1117;
-      --muted:    #6B7280;
-      --blue:     #2563EB;
-      --blue-lt:  #EFF4FF;
-      --amber:    #D97706;
-      --amber-lt: #FFFBEB;
-      --green:    #059669;
-      --green-lt: #ECFDF5;
-      --w: 1120px;
+      --m-blue:   #0066FF;
+      --m-cyan:   #00C2FF;
+      --m-navy:   #1A1E27;
+      --m-text:   #111111;
+      --m-muted:  #666666;
+      --m-bg:     #F8F9FA;
+      --m-border: #E9ECEF;
+      --white:    #FFFFFF;
+      --w: 1200px;
       --r: 16px;
+      --shadow: 0 12px 40px rgba(0, 0, 0, 0.06);
       --pad: clamp(1.25rem, 5vw, 3rem);
     }
 
     html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
     body {
-      font-family: 'Pretendard Variable', Pretendard, -apple-system, BlinkMacSystemFont, 'Apple SD Gothic Neo', sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      line-height: 1.85;
-      overflow-x: hidden;
-      -webkit-font-smoothing: antialiased;
-      -moz-osx-font-smoothing: grayscale;
-      font-weight: 500;
-      /* 한국어 어절 단위 줄바꿈 — 모바일 가독성 핵심 */
+      font-family: 'Pretendard Variable', -apple-system, sans-serif;
+      background: var(--white);
+      color: var(--m-text);
+      line-height: 1.75;
       word-break: keep-all;
-      overflow-wrap: break-word;
     }
-    h1, h2, h3, h4, p, li, a, span, div { word-break: keep-all; overflow-wrap: break-word; }
-    /* 길이가 긴 영문 토큰은 예외적으로 강제 분리 허용 */
-    .role-sub-en, .pipe-en, .std-iso, .sol-sub, .eyebrow, .ft-copy,
-    .tag, .kpi-key, .pillar-num, .cs-level, .hero-pill { overflow-wrap: anywhere; }
-    img, svg { max-width: 100%; height: auto; }
 
     .wrap { max-width: var(--w); margin: 0 auto; padding: 0 var(--pad); }
-    a { color: inherit; text-decoration: none; }
+    a { color: inherit; text-decoration: none; transition: 0.2s; }
 
     /* ── NAV ── */
     nav {
-      position: sticky; top: 0; z-index: 100;
-      background: rgba(247,248,252,0.9); backdrop-filter: blur(16px);
-      border-bottom: 1px solid var(--border);
-      height: 60px; display: flex; align-items: center; padding: 0 var(--pad);
+      position: sticky; top: 0; z-index: 1000;
+      background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--m-border); height: 80px; display: flex; align-items: center;
     }
-    .nav-inner { max-width: var(--w); margin: 0 auto; width: 100%; display: flex; align-items: center; gap: 1rem; }
-    .logo { font: 800 1.1rem 'Plus Jakarta Sans', sans-serif; letter-spacing: 0.04em; color: var(--text); }
-    .logo em { font-style: normal; color: var(--blue); }
-    .nav-links { display: flex; gap: 0.25rem; margin-left: auto; }
-    .nav-links a { font: 400 0.8rem 'JetBrains Mono', monospace; color: var(--muted); padding: 0.4rem 0.75rem; border-radius: 8px; transition: color .2s, background .2s; }
-    .nav-links a:hover { color: var(--text); background: var(--border); }
-    .nav-cta { margin-left: 0.5rem; padding: 0.5rem 1.1rem; font: 700 0.8rem 'JetBrains Mono', monospace; background: var(--text); color: white; border-radius: 8px; transition: opacity .2s; white-space: nowrap; }
-    .nav-cta:hover { opacity: 0.8; }
+    .nav-inner { max-width: var(--w); margin: 0 auto; width: 100%; display: flex; align-items: center; padding: 0 var(--pad); }
+    .logo { font: 800 1.5rem 'Inter', sans-serif; letter-spacing: -0.04em; color: var(--m-navy); }
+    .logo em { font-style: normal; color: var(--m-blue); }
+    .nav-links { display: flex; gap: 2.5rem; margin-left: auto; }
+    .nav-links a { font-size: 0.95rem; font-weight: 600; color: #333; }
+    .nav-links a:hover { color: var(--m-blue); }
+    .nav-cta { margin-left: 2.5rem; background: var(--m-blue); color: white; padding: 0.8rem 1.5rem; border-radius: 8px; font-weight: 700; font-size: 0.9rem; }
 
     /* ── HERO ── */
-    #hero { padding: clamp(4rem,10vw,7rem) var(--pad) clamp(3rem,8vw,5rem); position: relative; overflow: hidden; }
-    #hero::before {
-      content: ''; position: absolute; inset: 0; pointer-events: none;
-      background: radial-gradient(ellipse 60% 50% at 80% 20%, rgba(37,99,235,0.07) 0%, transparent 65%),
-                  radial-gradient(ellipse 40% 40% at 10% 80%, rgba(5,150,105,0.05) 0%, transparent 60%);
-    }
-    .hero-wrap { max-width: var(--w); margin: 0 auto; position: relative; z-index: 1; }
+    #hero { padding: 120px 0 100px; background: linear-gradient(180deg, #F0F5FF 0%, #FFFFFF 100%); text-align: center; }
     .hero-pill {
-      display: inline-flex; align-items: center; gap: 0.5rem; font: 600 0.7rem 'JetBrains Mono', monospace; letter-spacing: 0.06em; text-transform: uppercase;
-      color: var(--blue); background: var(--blue-lt); border: 1px solid rgba(37,99,235,0.2); padding: 0.35rem 0.9rem; border-radius: 99px; margin-bottom: 2rem;
+      display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.5rem 1.2rem; border-radius: 99px;
+      background: var(--white); color: var(--m-blue); font: 700 0.8rem 'Inter'; margin-bottom: 2rem;
+      box-shadow: 0 4px 15px rgba(0, 102, 255, 0.1); border: 1px solid rgba(0, 102, 255, 0.1);
     }
-    .hero-pill span { width: 6px; height: 6px; border-radius: 50%; background: var(--blue); animation: pulse 2s infinite; }
-    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.3} }
+    .hero-pill span { width: 8px; height: 8px; border-radius: 50%; background: var(--m-blue); animation: blink 2s infinite; }
+    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:.3} }
+    
+    h1 { font: 800 clamp(2.5rem, 7vw, 4.5rem) 'Pretendard Variable'; line-height: 1.2; letter-spacing: -0.04em; margin-bottom: 2rem; color: var(--m-navy); }
+    h1 .blue { color: var(--m-blue); }
+    .hero-desc { font-size: 1.25rem; color: var(--m-muted); max-width: 800px; margin: 0 auto 3rem; font-weight: 500; }
+    .btn { display: inline-flex; align-items: center; gap: 0.6rem; padding: 1.1rem 2.2rem; border-radius: 12px; font-weight: 700; transition: 0.3s; font-size: 1rem; }
+    .btn-solid { background: var(--m-blue); color: white; box-shadow: 0 8px 25px rgba(0, 102, 255, 0.25); }
+    .btn-outline { border: 1.5px solid var(--m-border); background: white; margin-left: 1rem; color: var(--m-navy); }
 
-    h1 { font: 800 clamp(2.6rem,7vw,5.5rem) 'Plus Jakarta Sans', sans-serif; letter-spacing: -0.04em; line-height: 1.05; margin-bottom: 1.5rem; }
-    h1 .blue { color: var(--blue); }
-    h1 .green { color: var(--green); }
-    h1 .muted { color: var(--muted); }
-
-    .hero-desc { font: 500 1.05rem 'Pretendard Variable', Pretendard, sans-serif; color: var(--muted); max-width: 650px; line-height: 1.85; margin-bottom: 2.5rem; }
-    .hero-actions { display: flex; gap: .75rem; flex-wrap: wrap; }
-
-    .btn { display: inline-flex; align-items: center; gap: .5rem; padding: .85rem 1.75rem; border-radius: 10px; font: 700 .875rem 'JetBrains Mono', monospace; transition: .2s; }
-    .btn-solid { background: var(--blue); color: white; box-shadow: 0 4px 16px rgba(37,99,235,0.25); }
-    .btn-outline { border: 1.5px solid var(--border); color: var(--text); background: white; }
-
-    .hero-stats { display: flex; flex-wrap: wrap; gap: clamp(1.5rem,4vw,3.5rem); margin-top: clamp(3rem,6vw,5rem); padding-top: clamp(2rem,4vw,3rem); border-top: 1px solid var(--border); }
-    .stat-val { font: 800 2rem 'Plus Jakarta Sans', sans-serif; color: var(--text); letter-spacing: -0.04em; }
-    .stat-val em { font-style: normal; color: var(--blue); }
-    .stat-lbl { font: 400 .78rem 'JetBrains Mono', monospace; color: var(--muted); margin-top: .1rem; }
+    .hero-stats { display: flex; justify-content: center; gap: clamp(2rem, 8vw, 6rem); margin-top: 5rem; padding-top: 4rem; border-top: 1px solid var(--m-border); }
+    .stat-item { text-align: center; }
+    .stat-val { font: 800 3rem 'Inter'; color: var(--m-navy); letter-spacing: -0.05em; }
+    .stat-val em { font-style: normal; color: var(--m-blue); }
+    .stat-lbl { font-size: 0.9rem; color: var(--m-muted); font-weight: 600; margin-top: 0.5rem; }
 
     /* ── TICKER ── */
-    .ticker { background: var(--text); overflow: hidden; padding: .6rem 0; }
-    .ticker-track { display: flex; gap: 3rem; white-space: nowrap; animation: roll 55s linear infinite; }
+    .ticker { background: #F1F3F5; overflow: hidden; padding: 1rem 0; border-top: 1px solid var(--m-border); border-bottom: 1px solid var(--m-border); }
+    .ticker-track { display: flex; gap: 4rem; white-space: nowrap; animation: roll 60s linear infinite; }
     @keyframes roll { from{transform:translateX(0)} to{transform:translateX(-50%)} }
-    .tick-item { display: inline-flex; align-items: center; gap: .6rem; font: 400 .75rem 'JetBrains Mono', monospace; color: rgba(255,255,255,.6); }
-    .tick-badge { font: 700 .62rem 'JetBrains Mono', monospace; padding: 1px 6px; border-radius: 3px; }
-    .tb-kr { background: var(--blue); color: white; }
-    .tb-jp { background: #dc2626; color: white; }
+    .tick-item { display: inline-flex; align-items: center; gap: .8rem; font-size: 0.85rem; font-weight: 600; color: #495057; }
+    .tick-badge { font: 700 .65rem 'Inter'; padding: 3px 8px; border-radius: 4px; color: white; }
+    .tb-kr { background: var(--m-blue); }
+    .tb-jp { background: #E63946; }
 
-    /* ── SECTION SHELL ── */
-    .section { padding: clamp(4rem,10vw,7rem) var(--pad); }
-    .section-alt { background: white; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
-    .eyebrow { font: 600 .7rem 'JetBrains Mono', monospace; letter-spacing: .08em; text-transform: uppercase; color: var(--blue); margin-bottom: .8rem; display: block; }
-    .sec-title { font: 800 clamp(1.8rem,4vw,2.8rem) 'Plus Jakarta Sans', sans-serif; letter-spacing: -0.03em; line-height: 1.15; margin-bottom: .8rem; }
-    .sec-sub { font: 500 1rem 'Pretendard Variable', Pretendard, sans-serif; color: var(--muted); max-width: 560px; line-height: 1.85; }
+    /* ── SECTION DEFAULTS ── */
+    .section { padding: 120px 0; }
+    .section-alt { background: var(--m-bg); }
+    .eyebrow { color: var(--m-blue); font-weight: 800; font-size: 0.85rem; margin-bottom: 1.2rem; display: block; text-transform: uppercase; letter-spacing: 0.15em; }
+    .sec-title { font: 800 clamp(2rem, 5vw, 3rem) 'Pretendard Variable'; color: var(--m-navy); margin-bottom: 1.5rem; letter-spacing: -0.03em; }
+    .sec-sub { font-size: 1.1rem; color: var(--m-muted); max-width: 700px; margin-bottom: 4rem; }
 
     /* ── ROLES ── */
-    .roles-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-top: 3rem; }
-    .role-card { background: white; border: 1.5px solid var(--border); border-radius: var(--r); padding: clamp(1.75rem,4vw,2.5rem); position: relative; overflow: hidden; }
-    .role-card.ko { border-top: 4px solid var(--blue); }
-    .role-card.da { border-top: 4px solid var(--amber); }
-    .role-watermark { position: absolute; bottom: -1rem; right: 1rem; font: 800 6rem 'Plus Jakarta Sans', sans-serif; opacity: .04; letter-spacing: -.1em; pointer-events: none; }
-    .role-badge { display: inline-block; font: 600 .68rem 'JetBrains Mono', monospace; letter-spacing: .06em; text-transform: uppercase; padding: .28rem .75rem; border-radius: 6px; margin-bottom: 1.2rem; }
-    .ko .role-badge { background: var(--blue-lt); color: var(--blue); }
-    .da .role-badge { background: var(--amber-lt); color: var(--amber); }
-    .role-title { font: 800 1.6rem 'Plus Jakarta Sans', sans-serif; letter-spacing: -.03em; margin-bottom: .2rem; }
-    .role-sub-en { font: 400 .75rem 'JetBrains Mono', monospace; color: var(--muted); margin-bottom: 1rem; }
-    .role-desc { font: 500 .9rem 'Pretendard Variable', Pretendard, sans-serif; color: var(--muted); line-height: 1.85; margin-bottom: 1.5rem; }
-    .role-tags { display: flex; flex-wrap: wrap; gap: .4rem; margin-bottom: 1.5rem; }
-    .tag { font: 600 .67rem 'JetBrains Mono', monospace; letter-spacing: .03em; padding: .25rem .65rem; border-radius: 6px; }
-    .ko .tag { background: var(--blue-lt); color: var(--blue); }
-    .da .tag { background: var(--amber-lt); color: var(--amber); }
-    .role-kpis { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--border); border-radius: 10px; overflow: hidden; border: 1px solid var(--border); }
-    .kpi { background: var(--bg); padding: .9rem 1rem; }
-    .kpi-val { font: 800 1.2rem 'Plus Jakarta Sans', sans-serif; }
-    .ko .kpi-val { color: var(--blue); }
-    .da .kpi-val { color: var(--amber); }
-    .kpi-key { font: 400 .7rem 'JetBrains Mono', monospace; color: var(--muted); margin-top: .1rem; }
+    .roles-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; }
+    .role-card { 
+      background: var(--white); border-radius: var(--r); padding: 3.5rem; 
+      box-shadow: var(--shadow); border: 1px solid rgba(0,0,0,0.02);
+      transition: 0.4s cubic-bezier(0.165, 0.84, 0.44, 1); position: relative;
+    }
+    .role-card:hover { transform: translateY(-10px); }
+    .role-card.ko { border-top: 6px solid var(--m-blue); }
+    .role-card.da { border-top: 6px solid #FFB800; }
+    .role-watermark { position: absolute; top: 2rem; right: 2rem; font: 800 4rem 'Inter'; opacity: .03; pointer-events: none; }
+    .role-badge { display: inline-block; font: 700 .75rem 'Inter'; padding: .4rem 1rem; border-radius: 4px; margin-bottom: 1.5rem; background: #F1F3F5; color: #495057; }
+    .role-title { font: 800 2.2rem 'Pretendard Variable'; margin-bottom: .5rem; color: var(--m-navy); }
+    .role-sub-en { font: 600 .85rem 'Inter'; color: var(--m-blue); margin-bottom: 1.5rem; }
+    .role-desc { font-size: 1rem; color: var(--m-muted); margin-bottom: 2.5rem; }
+    .role-tags { display: flex; flex-wrap: wrap; gap: .6rem; margin-bottom: 2.5rem; }
+    .tag { font: 600 .75rem 'Inter'; padding: .4rem .8rem; border-radius: 6px; background: #F8F9FA; border: 1px solid var(--m-border); color: #666; }
+    .role-kpis { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+    .kpi { border-left: 3px solid var(--m-border); padding-left: 1.2rem; }
+    .ko .kpi { border-color: var(--m-blue); }
+    .da .kpi { border-color: #FFB800; }
+    .kpi-val { font: 800 1.5rem 'Inter'; color: var(--m-navy); }
+    .kpi-key { font-size: 0.8rem; color: var(--m-muted); margin-top: 0.2rem; font-weight: 600; }
+
+    /* ── GUIDES ── */
+    .guide-page { padding: 120px 0; border-top: 1px solid var(--m-border); }
+    .guide-header { display: flex; align-items: flex-start; gap: 2rem; margin-bottom: 4rem; }
+    .guide-icon-box { width: 80px; height: 80px; border-radius: 20px; background: var(--white); display: flex; align-items: center; justify-content: center; font-size: 2.5rem; box-shadow: var(--shadow); flex-shrink: 0; }
+    .guide-title { font: 800 2.8rem 'Pretendard Variable'; color: var(--m-navy); letter-spacing: -0.04em; }
+    .guide-tagline { font-size: 1.2rem; font-weight: 600; color: var(--m-blue); margin-top: 0.5rem; }
+    .guide-oneliner { background: #F0F5FF; padding: 2.5rem; border-radius: var(--r); margin-bottom: 4rem; border-left: 8px solid var(--m-blue); }
+    .guide-oneliner .ql { font: 800 1.2rem 'Inter'; color: var(--m-blue); margin-bottom: 0.5rem; display: block; }
+    .guide-oneliner p { font-size: 1.15rem; font-weight: 600; color: var(--m-navy); }
+    .guide-body { display: grid; grid-template-columns: 1fr 1fr; gap: 2.5rem; margin-bottom: 3rem; }
+    .g-card { background: var(--white); padding: 3rem; border-radius: var(--r); box-shadow: var(--shadow); border: 1px solid rgba(0,0,0,0.02); }
+    .g-card-title { font: 800 1.3rem 'Pretendard Variable'; color: var(--m-navy); margin-bottom: 2rem; display: flex; align-items: center; gap: 0.8rem; }
+    .g-card-title::before { content: ''; width: 6px; height: 24px; background: var(--m-blue); border-radius: 10px; }
+    .da-bg .g-card-title::before { background: #FFB800; }
+    .g-list { list-style: none; }
+    .g-list li { font-size: 1rem; color: #333; margin-bottom: 1.2rem; display: flex; gap: 1rem; align-items: flex-start; }
+    .g-list li::before { content: '✔'; color: var(--m-blue); font-weight: 900; margin-top: 2px; }
+    .da-bg .g-list li::before { color: #FFB800; }
+    .g-analogy { background: var(--m-navy); color: white; padding: 3.5rem; border-radius: var(--r); margin-bottom: 4rem; display: flex; gap: 3rem; align-items: center; }
+    .analogy-emoji { font-size: 4rem; }
+    .analogy-text strong { display: block; font-size: 1.4rem; color: var(--m-cyan); margin-bottom: 0.8rem; }
+    .career-steps { display: grid; gap: 0.8rem; }
+    .cs-item { display: flex; align-items: center; gap: 1.5rem; padding: 1.2rem 1.5rem; border-radius: 12px; background: #F8F9FA; border: 1px solid var(--m-border); transition: 0.2s; }
+    .cs-item.active { background: var(--white); border-color: var(--m-blue); box-shadow: 0 4px 15px rgba(0, 102, 255, 0.1); }
+    .da-bg .cs-item.active { border-color: #FFB800; box-shadow: 0 4px 15px rgba(255, 184, 0, 0.1); }
+    .cs-level { font: 800 0.8rem 'Inter'; color: var(--m-blue); width: 30px; }
+    .da-bg .cs-level { color: #FFB800; }
+    .cs-title { font-weight: 700; font-size: 1rem; color: var(--m-navy); }
+    .guide-faq { display: grid; gap: 1rem; }
+    .faq-item { background: var(--white); padding: 2rem; border-radius: 12px; border: 1px solid var(--m-border); }
+    .faq-q { font: 800 1.1rem 'Pretendard Variable'; color: var(--m-navy); margin-bottom: 0.8rem; }
+    .faq-a { font-size: 1rem; color: var(--m-muted); padding-left: 0; }
 
     /* ── PIPELINE ── */
-    .pipe-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 1rem; margin-top: 3rem; }
-    .pipe-card { background: white; border: 1.5px solid var(--border); border-radius: var(--r); padding: 2rem 1.75rem; transition: box-shadow .2s; }
-    .pipe-card:hover { box-shadow: 0 8px 32px rgba(0,0,0,0.06); }
-    .pipe-svg-num { width: 36px; height: 36px; margin-bottom: 1.25rem; display: block; }
-    .pipe-icon { font-size: 1.5rem; margin-bottom: .75rem; display: block; }
-    .pipe-title { font: 700 1.1rem 'Plus Jakarta Sans', sans-serif; margin-bottom: .25rem; color: var(--text); }
-    .pipe-en { font: 600 .7rem 'JetBrains Mono', monospace; color: var(--muted); text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 1.25rem; display: block; }
-    .pipe-list { list-style: none; display: grid; gap: .75rem; }
-    .pipe-list li { font: 500 .85rem 'Pretendard Variable', Pretendard, sans-serif; color: var(--muted); display: flex; gap: .6rem; line-height: 1.6; }
-    .p1 .pipe-list li::before { content: '·'; color: var(--blue); font-weight: 900; }
-    .p2 .pipe-list li::before { content: '·'; color: #16a34a; font-weight: 900; }
-    .p3 .pipe-list li::before { content: '·'; color: var(--green); font-weight: 900; }
+    .pipe-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
+    .pipe-card { 
+      background: var(--white); border-radius: var(--r); padding: 3rem; 
+      border: 1px solid var(--m-border); transition: 0.3s;
+    }
+    .pipe-card:hover { border-color: var(--m-blue); box-shadow: var(--shadow); }
+    .pipe-title { font: 800 1.5rem 'Pretendard Variable'; color: var(--m-navy); margin-bottom: 0.5rem; }
+    .pipe-en { font: 700 0.75rem 'Inter'; color: var(--m-blue); text-transform: uppercase; margin-bottom: 2rem; display: block; letter-spacing: 0.1em; }
+    .pipe-list li { list-style: none; font-size: 0.95rem; color: #555; margin-bottom: 1rem; padding-left: 1.5rem; position: relative; line-height: 1.6; }
+    .pipe-list li::before { content: '•'; position: absolute; left: 0; color: var(--m-blue); font-size: 1.5rem; line-height: 1; top: -2px; }
 
-    /* ── SOLUTIONS (BOOSTED) ── */
-    .sol-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-top: 3rem; }
-    .sol-card { border-radius: var(--r); padding: clamp(2rem, 5vw, 3rem); position: relative; overflow: hidden; }
-    .sol-card.flow { background: linear-gradient(135deg, var(--blue-lt) 0%, #dbeafe 100%); border: 1.5px solid rgba(37,99,235,.15); }
-    .sol-card.anchor { background: linear-gradient(135deg, var(--amber-lt) 0%, #fde68a30 100%); border: 1.5px solid rgba(217,119,6,.15); }
-    .sol-label { font: 600 .68rem 'JetBrains Mono', monospace; letter-spacing: .06em; text-transform: uppercase; margin-bottom: 1.2rem; display: block; }
-    .flow .sol-label { color: var(--blue); }
-    .anchor .sol-label { color: var(--amber); }
-    .sol-icon { font-size: 2.2rem; margin-bottom: 1rem; display: block; }
-    .sol-title { font: 800 1.7rem 'Plus Jakarta Sans', sans-serif; letter-spacing: -.03em; line-height: 1.25; margin-bottom: .6rem; }
-    .sol-sub { font: 600 .72rem 'JetBrains Mono', monospace; color: var(--muted); margin-bottom: 1.5rem; text-transform: uppercase; letter-spacing: .04em; }
-    .sol-list { list-style: none; display: grid; gap: 1.4rem; }
-    .sol-list li { font: 500 .95rem 'Pretendard Variable', Pretendard, sans-serif; color: #374151; display: flex; gap: .9rem; line-height: 1.75; align-items: flex-start; }
-    .sol-list li strong { display: block; font: 700 .95rem 'Pretendard Variable', Pretendard, sans-serif; color: #111827; margin-bottom: .3rem; }
-    .flow .sol-list li::before { content: '⚡'; font-size: 0.85rem; margin-top: 0.15rem; flex-shrink: 0; }
-    .anchor .sol-list li::before { content: '🔒'; font-size: 0.85rem; margin-top: 0.15rem; flex-shrink: 0; }
+    /* ── SOLUTIONS ── */
+    .sol-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2.5rem; }
+    .sol-card { border-radius: 24px; padding: 4.5rem 4rem; color: white; overflow: hidden; position: relative; }
+    .sol-card.flow { background: #0066FF; }
+    .sol-card.anchor { background: #1A1E27; }
+    .sol-label { font: 700 0.8rem 'Inter'; color: rgba(255,255,255,0.7); text-transform: uppercase; margin-bottom: 1.5rem; display: block; }
+    .sol-title { font: 800 2.5rem 'Pretendard Variable'; margin-bottom: 1rem; line-height: 1.2; }
+    .sol-sub { font-size: 1.1rem; opacity: 0.8; margin-bottom: 4rem; font-weight: 600; }
+    .sol-list li { list-style: none; margin-bottom: 2.5rem; }
+    .sol-list li strong { display: block; font-size: 1.3rem; margin-bottom: 0.8rem; color: #00C2FF; }
+    .sol-list li p { font-size: 1rem; opacity: 0.9; line-height: 1.7; }
 
     /* ── PILLARS ── */
-    .pillars-grid { display: grid; grid-template-columns: repeat(2,1fr); gap: 1.25rem; margin-top: 3rem; }
-    .pillar { background: white; border: 1.5px solid var(--border); border-radius: var(--r); padding: 2rem 1.75rem; display: flex; flex-direction: column; }
-    .pillar-num { font: 600 .65rem 'JetBrains Mono', monospace; color: var(--muted); letter-spacing: .07em; margin-bottom: .75rem; display: block; }
-    .pillar-icon { font-size: 1.6rem; margin-bottom: .6rem; display: block; line-height: 1; }
-    .pillar-title { font: 700 1.05rem 'Pretendard Variable', Pretendard, sans-serif; margin-bottom: .6rem; color: var(--text); line-height: 1.5; }
-    .pillar-desc { font: 500 .875rem 'Pretendard Variable', Pretendard, sans-serif; color: var(--muted); line-height: 1.85; }
-    .pillar-divider { height: 1px; background: var(--border); margin: 1.1rem 0; }
-    .pillar-points { list-style: none; display: grid; gap: .5rem; }
-    .pillar-points li { font: 500 .82rem 'Pretendard Variable', Pretendard, sans-serif; color: #4b5563; display: flex; gap: .55rem; line-height: 1.65; align-items: flex-start; }
-    .pillar-points li::before { content: '—'; color: var(--blue); flex-shrink: 0; font: 700 .78rem 'JetBrains Mono', monospace; margin-top: .1rem; }
-    .pillar-stat-box { margin-top: auto; padding-top: 1.1rem; }
-    .pillar-stat-inner { display: flex; align-items: flex-start; gap: .75rem; padding: .75rem 1rem; border-radius: 10px; background: var(--blue-lt); border: 1px solid rgba(37,99,235,.13); }
-    .pillar-stat-num { font: 800 1.15rem 'Plus Jakarta Sans', sans-serif; color: var(--blue); letter-spacing: -.03em; flex-shrink: 0; line-height: 1.2; padding-top: .05rem; }
-    .pillar-stat-label { font: 400 .7rem 'JetBrains Mono', monospace; color: var(--muted); line-height: 1.55; }
+    .pillars-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2.5rem; }
+    .pillar { background: var(--white); border: 1px solid var(--m-border); border-radius: var(--r); padding: 3.5rem; display: flex; flex-direction: column; transition: 0.3s; }
+    .pillar:hover { box-shadow: var(--shadow); border-color: var(--m-blue); }
+    .pillar-num { font: 800 0.8rem 'Inter'; color: var(--m-blue); margin-bottom: 1.2rem; }
+    .pillar-title { font: 800 1.6rem 'Pretendard Variable'; color: var(--m-navy); margin-bottom: 1.5rem; }
+    .pillar-desc { font-size: 1rem; color: var(--m-muted); margin-bottom: 2.5rem; }
+    .pillar-points { list-style: none; margin-bottom: 3rem; }
+    .pillar-points li { font-size: 0.95rem; color: #333; margin-bottom: 1rem; display: flex; gap: 0.8rem; }
+    .pillar-points li::before { content: '→'; color: var(--m-blue); font-weight: 800; }
+    .pillar-stat-box { margin-top: auto; display: flex; align-items: center; gap: 1.5rem; padding-top: 2rem; border-top: 1px solid var(--m-border); }
+    .pillar-stat-num { font: 800 2.5rem 'Inter'; color: var(--m-blue); letter-spacing: -0.05em; }
+    .pillar-stat-label { font-size: 0.85rem; color: var(--m-muted); font-weight: 600; line-height: 1.4; }
 
     /* ── STANDARDS ── */
-    .std-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 1rem; margin-top: 3rem; }
-    .std-card { background: white; border: 1.5px solid var(--border); border-radius: var(--r); padding: 1.4rem 1.2rem; }
-    .std-abbr { font: 700 1.2rem 'Plus Jakarta Sans', sans-serif; color: var(--text); margin-bottom: .2rem; }
-    .std-iso { font: 400 .65rem 'JetBrains Mono', monospace; color: var(--blue); margin-bottom: .6rem; display: block; }
-    .std-desc { font: 500 .78rem 'Pretendard Variable', Pretendard, sans-serif; color: var(--muted); line-height: 1.6; }
+    .std-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.2rem; }
+    .std-card { background: var(--white); border: 1px solid var(--m-border); padding: 2rem; border-radius: 12px; transition: 0.3s; }
+    .std-card:hover { transform: translateY(-5px); border-color: var(--m-blue); }
+    .std-abbr { font: 800 1.4rem 'Inter'; color: var(--m-navy); }
+    .std-iso { font: 700 0.7rem 'Inter'; color: var(--m-blue); display: block; margin: 0.4rem 0 1rem; }
+    .std-desc { font-size: 0.85rem; color: var(--m-muted); line-height: 1.6; }
 
     /* ── CTA ── */
-    #cta { padding: clamp(5rem,12vw,9rem) var(--pad); text-align: center; }
-    .cta-badge { display: inline-block; font: 600 .68rem 'JetBrains Mono', monospace; letter-spacing: .06em; text-transform: uppercase; background: var(--green-lt); color: var(--green); border: 1px solid rgba(5,150,105,.2); padding: .3rem .8rem; border-radius: 99px; margin-bottom: 1.5rem; }
-    .cta-title { font: 800 clamp(2rem,5vw,3.6rem) 'Plus Jakarta Sans', sans-serif; letter-spacing: -.04em; line-height: 1.1; margin-bottom: 1rem; }
-    .cta-desc { font: 500 1rem 'Pretendard Variable', Pretendard, sans-serif; color: var(--muted); margin-bottom: 2.5rem; }
+    #cta { padding: 140px 0; background: linear-gradient(135deg, #0066FF 0%, #0044BB 100%); color: white; text-align: center; }
+    .cta-badge { display: inline-block; padding: 0.5rem 1.5rem; border-radius: 99px; background: rgba(255,255,255,0.15); font: 700 0.8rem 'Inter'; margin-bottom: 2rem; }
+    .cta-title { font: 800 4rem 'Pretendard Variable'; margin-bottom: 2rem; letter-spacing: -0.04em; }
+    .cta-desc { font-size: 1.3rem; opacity: 0.9; margin-bottom: 4rem; }
+    .cta-btn { background: var(--white); color: var(--m-blue); padding: 1.4rem 3.5rem; font-size: 1.1rem; border-radius: 14px; font-weight: 800; border: none; cursor: pointer; }
 
     /* ── FOOTER ── */
-    footer { border-top: 1px solid var(--border); padding: 2rem var(--pad); display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem; }
-    .ft-logo { font: 800 1rem 'Plus Jakarta Sans', sans-serif; letter-spacing: .04em; color: var(--muted); }
-    .ft-copy { font: 400 .72rem 'JetBrains Mono', monospace; color: #9ca3af; }
+    footer { padding: 80px 0; background: #F8F9FA; border-top: 1px solid var(--m-border); }
+    .ft-logo { font: 800 1.5rem 'Inter'; color: var(--m-navy); margin-bottom: 1rem; display: block; }
+    .ft-copy { font-size: 0.9rem; color: #888; font-weight: 500; }
 
-    /* ── GUIDE COMMON ── */
-    .guide-page { padding: clamp(4rem,10vw,7rem) var(--pad); }
-    .guide-page.ko-bg { background: linear-gradient(160deg, #f0f5ff 0%, #ffffff 60%); border-top: 1px solid var(--border); }
-    .guide-page.da-bg { background: linear-gradient(160deg, #fffbf0 0%, #ffffff 60%); border-top: 1px solid var(--border); }
-    .guide-header { display: flex; align-items: flex-start; gap: 1.5rem; margin-bottom: 2.5rem; flex-wrap: wrap; }
-    .guide-icon-box { flex-shrink: 0; width: 72px; height: 72px; border-radius: 20px; display: flex; align-items: center; justify-content: center; font-size: 2.2rem; }
-    .ko-bg .guide-icon-box { background: var(--blue-lt); }
-    .da-bg .guide-icon-box { background: var(--amber-lt); }
-    .guide-title { font: 800 clamp(1.8rem,4vw,2.6rem) 'Plus Jakarta Sans', sans-serif; letter-spacing: -0.03em; line-height: 1.1; margin-bottom: .3rem; }
-    .guide-tagline { font: 500 1rem 'Pretendard Variable', Pretendard, sans-serif; color: var(--muted); }
-    .guide-oneliner { background: white; border-radius: var(--r); border: 1.5px solid var(--border); padding: 1.5rem 2rem; margin-bottom: 2.5rem; display: flex; align-items: flex-start; gap: 1rem; }
-    .guide-oneliner .ql { font: 800 1.1rem 'Plus Jakarta Sans', sans-serif; color: var(--blue); flex-shrink: 0; line-height: 1.6; }
-    .da-bg .guide-oneliner .ql { color: var(--amber); }
-    .guide-oneliner p { font: 500 1rem 'Pretendard Variable', Pretendard, sans-serif; color: var(--text); line-height: 1.8; }
-    .guide-body { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 1.5rem; }
-    .g-card { background: white; border: 1.5px solid var(--border); border-radius: var(--r); padding: 1.5rem 1.4rem; }
-    .g-card-title { display: flex; align-items: center; gap: .5rem; font: 700 .85rem 'Pretendard Variable', Pretendard, sans-serif; color: var(--text); margin-bottom: 1rem; padding-bottom: .7rem; border-bottom: 1px solid var(--border); }
-    .g-card-title .dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
-    .ko-bg .dot { background: var(--blue); }
-    .da-bg .dot { background: var(--amber); }
-    .g-list { list-style: none; display: grid; gap: .6rem; }
-    .g-list li { font: 500 .88rem 'Pretendard Variable', Pretendard, sans-serif; color: #374151; display: flex; gap: .6rem; line-height: 1.6; align-items: flex-start; }
-    .g-list li::before { content: '✓'; font-weight: 900; flex-shrink: 0; margin-top:.05rem; }
-    .ko-bg .g-list li::before { color: var(--blue); }
-    .da-bg .g-list li::before { color: var(--amber); }
-    .g-analogy { background: white; border: 1.5px solid var(--border); border-radius: var(--r); padding: 1.8rem 1.6rem; margin-bottom: 1.5rem; display: grid; grid-template-columns: auto 1fr; gap: 1.2rem; align-items: center; }
-    .analogy-emoji { font-size: 3rem; line-height: 1; }
-    .analogy-text { font: 500 .95rem 'Pretendard Variable', Pretendard, sans-serif; color: #374151; line-height: 1.8; }
-    .analogy-text strong { display: block; font: 700 1rem 'Pretendard Variable', Pretendard, sans-serif; color: var(--text); margin-bottom: .3rem; }
-    .career-steps { display: flex; flex-direction: column; gap: .4rem; }
-    .cs-item { display: flex; align-items: center; gap: .8rem; padding: .65rem 1rem; border-radius: 10px; background: var(--bg); }
-    .cs-item.active { background: var(--blue-lt); }
-    .da-bg .cs-item.active { background: var(--amber-lt); }
-    .cs-level { font: 700 .65rem 'JetBrains Mono', monospace; color: var(--muted); min-width: 28px; }
-    .cs-title { font: 500 .85rem 'Pretendard Variable', Pretendard, sans-serif; color: #374151; flex: 1; }
-    .cs-item.active .cs-title { font-weight: 700; color: var(--blue); }
-    .da-bg .cs-item.active .cs-title { color: var(--amber); }
-    .guide-faq { display: grid; gap: .75rem; margin-bottom: 1.5rem; }
-    .faq-item { background: white; border: 1.5px solid var(--border); border-radius: var(--r); padding: 1.2rem 1.4rem; }
-    .faq-q { font: 700 .9rem 'Pretendard Variable', Pretendard, sans-serif; color: var(--text); margin-bottom: .4rem; display: flex; gap: .5rem; }
-    .faq-q::before { content: 'Q.'; color: var(--blue); font-family: 'JetBrains Mono', monospace; flex-shrink: 0; }
-    .da-bg .faq-q::before { color: var(--amber); }
-    .faq-a { font: 500 .88rem 'Pretendard Variable', Pretendard, sans-serif; color: var(--muted); line-height: 1.75; padding-left: 1.6rem; }
-
-    /* ── RESPONSIVE: TABLET & BELOW ── */
-    @media (max-width: 900px) {
-      :root { --pad: clamp(1rem, 4vw, 2rem); }
-      .pipe-grid { grid-template-columns: 1fr; }
-    }
-
-    /* ── RESPONSIVE: MOBILE (≤768px) ── */
-    @media (max-width: 768px) {
-      :root { --pad: 1.25rem; --r: 14px; }
-
-      /* NAV: 링크 영역을 가로 스크롤 가능한 상태로 노출 */
-      nav { height: 56px; padding-left: max(1.25rem, env(safe-area-inset-left)); padding-right: max(1.25rem, env(safe-area-inset-right)); }
-      .nav-inner { gap: 0.5rem; }
-      .logo { font-size: 0.95rem; letter-spacing: 0.03em; flex-shrink: 0; }
-      .nav-links {
-        display: flex; margin-left: auto; gap: 0;
-        overflow-x: auto; -webkit-overflow-scrolling: touch; scrollbar-width: none;
-        max-width: 55%;
-      }
-      .nav-links::-webkit-scrollbar { display: none; }
-      .nav-links a { padding: 0.3rem 0.55rem; font-size: 0.72rem; white-space: nowrap; }
-      .nav-cta { padding: 0.45rem 0.85rem; font-size: 0.72rem; margin-left: 0.4rem; flex-shrink: 0; }
-
-      /* HERO */
-      #hero { padding-top: clamp(2.5rem, 8vw, 4rem); padding-bottom: clamp(2rem, 6vw, 3.5rem); }
-      h1 { font-size: clamp(2rem, 9vw, 2.8rem); line-height: 1.2; letter-spacing: -0.025em; margin-bottom: 1.2rem; }
-      .hero-pill { font-size: 0.62rem; padding: 0.3rem 0.75rem; margin-bottom: 1.4rem; }
-      .hero-desc { font-size: 0.95rem; line-height: 1.8; margin-bottom: 2rem; }
-      .hero-actions { gap: 0.6rem; }
-      .btn { padding: 0.75rem 1.3rem; font-size: 0.8rem; }
-
-      /* HERO STATS — 3개가 모바일에서도 읽기 좋게 */
-      .hero-stats {
-        display: grid; grid-template-columns: repeat(3, 1fr);
-        gap: 1rem; margin-top: 2.5rem; padding-top: 2rem;
-      }
-      .stat-val { font-size: 1.5rem; }
-      .stat-lbl { font-size: 0.65rem; line-height: 1.5; }
-      .stat-lbl br { display: none; }
-
-      /* SECTION */
-      .section { padding-top: clamp(2.8rem, 8vw, 4.5rem); padding-bottom: clamp(2.8rem, 8vw, 4.5rem); }
-      .sec-title { font-size: clamp(1.55rem, 5.5vw, 2rem); line-height: 1.25; letter-spacing: -0.02em; }
-      .sec-sub { font-size: 0.92rem; line-height: 1.8; }
-      .eyebrow { font-size: 0.62rem; }
-
-      /* GRID → 1열 */
-      .roles-grid, .sol-grid, .pillars-grid, .pipe-grid, .guide-body {
-        grid-template-columns: 1fr; gap: 1rem; margin-top: 2rem;
-      }
-      .std-grid { grid-template-columns: 1fr 1fr; gap: 0.7rem; margin-top: 2rem; }
-
-      /* ROLE CARD */
-      .role-card { padding: 1.5rem 1.3rem; }
-      .role-title { font-size: 1.35rem; }
-      .role-desc { font-size: 0.88rem; }
-      .role-watermark { font-size: 4.5rem; bottom: -0.4rem; right: 0.6rem; }
-      .role-kpis { grid-template-columns: 1fr 1fr; }
-      .kpi { padding: 0.8rem 0.9rem; }
-      .kpi-val { font-size: 1.05rem; }
-
-      /* PIPE CARD */
-      .pipe-card { padding: 1.6rem 1.3rem; }
-
-      /* SOLUTIONS */
-      .sol-card { padding: 1.75rem 1.4rem; }
-      .sol-title { font-size: 1.4rem; line-height: 1.3; }
-      .sol-title br { display: none; }
-      .sol-list li { font-size: 0.9rem; line-height: 1.75; }
-      .sol-list li strong { font-size: 0.9rem; }
-
-      /* PILLARS */
-      .pillar { padding: 1.5rem 1.3rem; }
-      .pillar-icon { font-size: 1.35rem; margin-bottom: .5rem; }
-      .pillar-title { font-size: .97rem; }
-      .pillar-desc { font-size: .84rem; line-height: 1.8; }
-      .pillar-points li { font-size: .8rem; line-height: 1.6; }
-      .pillar-stat-num { font-size: 1rem; }
-      .pillar-stat-label { font-size: .65rem; }
-
-      /* STANDARDS — 2열 유지 */
-      .std-card { padding: 1.1rem 0.95rem; }
-      .std-abbr { font-size: 1.05rem; }
-      .std-desc { font-size: 0.72rem; line-height: 1.55; }
-
-      /* GUIDE */
-      .guide-page { padding-top: clamp(2.8rem, 8vw, 4.5rem); padding-bottom: clamp(2.8rem, 8vw, 4.5rem); }
-      .guide-header { gap: 1rem; margin-bottom: 1.8rem; align-items: center; }
-      .guide-icon-box { width: 56px; height: 56px; font-size: 1.7rem; border-radius: 14px; }
-      .guide-title { font-size: clamp(1.4rem, 5.5vw, 1.9rem); line-height: 1.2; }
-      .guide-tagline { font-size: 0.85rem; line-height: 1.6; }
-      .guide-oneliner {
-        flex-direction: column; align-items: flex-start;
-        gap: 0.5rem; padding: 1.25rem 1.3rem; margin-bottom: 1.8rem;
-      }
-      .guide-oneliner p { font-size: 0.92rem; line-height: 1.75; }
-      .guide-oneliner .ql { font-size: 0.95rem; }
-      .g-card { padding: 1.3rem 1.2rem; }
-      .g-list li { font-size: 0.85rem; line-height: 1.7; }
-      .g-analogy {
-        grid-template-columns: 1fr; gap: 0.8rem; text-align: center;
-        padding: 1.5rem 1.3rem; margin-bottom: 1.5rem;
-      }
-      .analogy-emoji { font-size: 2.4rem; }
-      .analogy-text { font-size: 0.9rem; line-height: 1.75; }
-      .analogy-text strong { font-size: 0.95rem; margin-bottom: 0.4rem; }
-      .career-steps { gap: 0.35rem; }
-      .cs-item { padding: 0.6rem 0.85rem; gap: 0.6rem; }
-      .cs-title { font-size: 0.8rem; line-height: 1.5; }
-      .faq-item { padding: 1.05rem 1.2rem; }
-      .faq-q { font-size: 0.88rem; }
-      .faq-a { font-size: 0.85rem; line-height: 1.7; padding-left: 1.4rem; }
-
-      /* CTA */
-      #cta { padding-top: clamp(3rem, 10vw, 5rem); padding-bottom: clamp(3rem, 10vw, 5rem); }
-      .cta-title { font-size: clamp(1.75rem, 6vw, 2.4rem); line-height: 1.2; }
-      .cta-desc { font-size: 0.92rem; }
-
-      /* FOOTER */
-      footer {
-        padding-left: max(1.25rem, env(safe-area-inset-left));
-        padding-right: max(1.25rem, env(safe-area-inset-right));
-        padding-top: 1.5rem; padding-bottom: calc(1.5rem + env(safe-area-inset-bottom));
-        flex-direction: column; text-align: center; gap: 0.5rem;
-      }
-      .ft-copy { font-size: 0.68rem; line-height: 1.7; }
-
-      /* TICKER */
-      .ticker-track { animation-duration: 40s; }
-      .tick-item { font-size: 0.7rem; }
-    }
-
-    /* ── RESPONSIVE: SMALL PHONES (≤430px — iPhone 17 air/Pro) ── */
-    @media (max-width: 430px) {
-      :root { --pad: 1.1rem; }
-      h1 { font-size: clamp(1.85rem, 8.5vw, 2.35rem); }
-      .hero-stats { gap: 0.6rem; }
-      .stat-val { font-size: 1.3rem; }
-      .stat-lbl { font-size: 0.6rem; }
-      .sec-title { font-size: clamp(1.4rem, 6vw, 1.75rem); }
-      .nav-links { max-width: 48%; }
-      .nav-links a { padding: 0.3rem 0.45rem; font-size: 0.68rem; }
-      .nav-cta { padding: 0.4rem 0.7rem; font-size: 0.68rem; }
-      .logo { font-size: 0.88rem; }
-      .role-title { font-size: 1.2rem; }
-      .sol-title { font-size: 1.25rem; }
-      .guide-title { font-size: clamp(1.25rem, 6vw, 1.65rem); }
-      .std-grid { gap: 0.55rem; }
-      .std-card { padding: 0.9rem 0.8rem; }
-      .std-desc { font-size: 0.7rem; }
-    }
-
-    /* 매우 좁은 기기(≤360px) */
-    @media (max-width: 360px) {
-      :root { --pad: 0.95rem; }
-      .hero-stats { grid-template-columns: 1fr 1fr; }
-      .nav-links { display: none; }
+    @media (max-width: 1024px) {
+      .roles-grid, .guide-body, .pipe-grid, .sol-grid, .pillars-grid { grid-template-columns: 1fr; }
+      .std-grid { grid-template-columns: 1fr 1fr; }
     }
   </style>
 </head>
@@ -415,29 +218,29 @@
   <div class="nav-inner">
     <a class="logo" href="#">PANIC<em>STORMS</em></a>
     <div class="nav-links">
-      <a href="#roles">역할</a>
-      <a href="#guide-ko">KO 안내</a>
-      <a href="#guide-da">DA 안내</a>
-      <a href="#pipeline">파이프라인</a>
+      <a href="#roles">역할 정의</a>
+      <a href="#guide-ko">KO 가이드</a>
+      <a href="#guide-da">DA 가이드</a>
+      <a href="#pipeline">아키텍처</a>
       <a href="#solutions">솔루션</a>
     </div>
-    <a class="nav-cta" href="#cta">실사 요청 →</a>
+    <a class="nav-cta" href="#cta">실사 요청</a>
   </div>
 </nav>
 
 <section id="hero">
-  <div class="hero-wrap">
+  <div class="wrap">
     <div class="hero-pill"><span></span>Knowledge Intelligence Platform</div>
     <h1>흘러가는 지식을 자산으로.<br><span class="blue">사라지는 기록을 영속으로.</span></h1>
     <p class="hero-desc">협업 데이터의 실시간 흐름과 디지털 기록의 영구 보존을 하나의 인텔리전스 레이어로 연결합니다. Knowledge Officer와 Digital Archivist, 두 전문성의 융합을 제안합니다.</p>
     <div class="hero-actions">
       <a href="#pipeline" class="btn btn-solid">아키텍처 보기 →</a>
-      <a href="#roles" class="btn btn-outline">KO + DA 역할</a>
+      <a href="#roles" class="btn btn-outline">KO + DA 역할 상담</a>
     </div>
     <div class="hero-stats">
-      <div><div class="stat-val">30<em>%</em></div><div class="stat-lbl">정보 탐색에<br>낭비되는 근무시간</div></div>
-      <div><div class="stat-val">47<em>%</em></div><div class="stat-lbl">필요 정보 탐색에<br>어려움을 겪는 직원</div></div>
-      <div><div class="stat-val">25<em>%</em></div><div class="stat-lbl">KM 최적화 시<br>생산성 향상 기대치</div></div>
+      <div class="stat-item"><div class="stat-val">30<em>%</em></div><div class="stat-lbl">정보 탐색에<br>낭비되는 근무시간</div></div>
+      <div class="stat-item"><div class="stat-val">47<em>%</em></div><div class="stat-lbl">필요 정보 탐색에<br>어려움을 겪는 직원</div></div>
+      <div class="stat-item"><div class="stat-val">25<em>%</em></div><div class="stat-lbl">KM 최적화 시<br>생산성 향상 기대치</div></div>
     </div>
   </div>
 </section>
@@ -454,53 +257,49 @@
     <div class="roles-grid">
       <div class="role-card ko">
         <div class="role-watermark">KO</div>
-        <div class="role-badge">Knowledge Officer</div>
+        <div class="role-badge">Core Leadership</div>
         <div class="role-title">지식 전략가</div>
-        <div class="role-sub-en">Knowledge Flow Architect · CKO Track</div>
+        <div class="role-sub-en">Knowledge Officer · CKO Track</div>
         <p class="role-desc">조직의 암묵지를 명시화하고 AI가 정확한 맥락을 학습하도록 지식 인프라를 설계합니다. 부서 간 사일로를 해소하고 협업 데이터에서 상업적 가치를 발굴하는 전략가입니다.</p>
         <div class="role-tags"><span class="tag">Knowledge Strategy</span><span class="tag">Ontology Design</span><span class="tag">GraphRAG</span><span class="tag">AI Governance</span><span class="tag">Taxonomy</span><span class="tag">ISO 30401</span></div>
         <div class="role-kpis">
           <div class="kpi"><div class="kpi-val">CKO</div><div class="kpi-key">최고 직위</div></div>
-          <div class="kpi"><div class="kpi-val">CKM</div><div class="kpi-key">국제 자격증</div></div>
-          <div class="kpi"><div class="kpi-val">$66K~</div><div class="kpi-key">연봉 시작 범위</div></div>
-          <div class="kpi"><div class="kpi-val">+25%</div><div class="kpi-key">생산성 향상 기대</div></div>
+          <div class="kpi"><div class="kpi-val">+25%</div><div class="kpi-key">생산성 향상</div></div>
         </div>
       </div>
       <div class="role-card da">
         <div class="role-watermark">DA</div>
-        <div class="role-badge">Digital Archivist</div>
+        <div class="role-badge">Data Trust</div>
         <div class="role-title">기록 기술 전문가</div>
-        <div class="role-sub-en">Data Integrity Custodian · ACA Track</div>
+        <div class="role-sub-en">Digital Archivist · ACA Track</div>
         <p class="role-desc">OAIS 국제 표준에 따른 장기 보존 체계를 구축하고, M&A·위기 상황에서도 데이터 주권을 기술적으로 증명합니다. AI 학습 데이터 정제·포렌식 검증까지 역할이 확장됩니다.</p>
         <div class="role-tags"><span class="tag">OAIS Standard</span><span class="tag">Metadata Schema</span><span class="tag">Digital Preservation</span><span class="tag">WORM Storage</span><span class="tag">Dublin Core</span><span class="tag">Data Lineage</span></div>
         <div class="role-kpis">
-          <div class="kpi"><div class="kpi-val">ACA</div><div class="kpi-key">국제 공인 자격</div></div>
-          <div class="kpi"><div class="kpi-val">100yr</div><div class="kpi-key">디지털 보존 목표</div></div>
-          <div class="kpi"><div class="kpi-val">MLIS</div><div class="kpi-key">정보과학 석사</div></div>
-          <div class="kpi"><div class="kpi-val">AI+</div><div class="kpi-key">학습데이터 큐레이션</div></div>
+          <div class="kpi"><div class="kpi-val">100yr</div><div class="kpi-key">보존 목표</div></div>
+          <div class="kpi"><div class="kpi-val">ACA</div><div class="kpi-key">국제 자격</div></div>
         </div>
       </div>
     </div>
   </div>
 </section>
 
-<section id="guide-ko" class="guide-page ko-bg">
+<section id="guide-ko" class="guide-page">
   <div class="wrap">
     <span class="eyebrow">Professional Domain Guide</span>
     <div class="guide-header">
       <div class="guide-icon-box">🧠</div>
-      <div class="guide-headline">
+      <div>
         <div class="guide-title">Knowledge Officer란 무엇인가요?</div>
         <div class="guide-tagline">KO — 조직의 지식을 설계하고 흐르게 만드는 지식 건축가</div>
       </div>
     </div>
     <div class="guide-oneliner">
-      <div class="ql">한마디로?</div>
+      <span class="ql">Definition</span>
       <p>회사 안에 흩어진 <strong>지식·노하우·경험을 모아서 누구든 쉽게 쓸 수 있게 만드는 사람</strong>입니다. 도서관 사서처럼 정리만 하는 것이 아니라, "어떤 지식을 어디에 둬야 가장 큰 가치를 낼 수 있을까?"를 설계합니다.</p>
     </div>
     <div class="guide-body">
       <div class="g-card">
-        <div class="g-card-title"><span class="dot"></span>왜 이 역할이 필요한가요?</div>
+        <div class="g-card-title">왜 이 역할이 필요한가요?</div>
         <ul class="g-list">
           <li>직원 47%가 필요한 정보를 찾는 데 어려움을 겪습니다</li>
           <li>같은 실수를 반복하거나, 이미 해결된 문제를 처음부터 다시 풉니다</li>
@@ -510,7 +309,7 @@
         </ul>
       </div>
       <div class="g-card">
-        <div class="g-card-title"><span class="dot"></span>KO의 핵심 업무 5가지</div>
+        <div class="g-card-title">KO의 핵심 업무 5가지</div>
         <ul class="g-list">
           <li><strong>지식 지도 만들기</strong> — 우리 회사에 어떤 지식이 있는지 목록화합니다</li>
           <li><strong>공유 문화 만들기</strong> — 팀원들이 자연스럽게 노하우를 나누도록 유도합니다</li>
@@ -522,11 +321,14 @@
     </div>
     <div class="g-analogy">
       <div class="analogy-emoji">🍳</div>
-      <div class="analogy-text"><strong>셰프와 레시피 북에 비유하면</strong>요리를 잘하는 셰프(직원)는 있는데, 레시피가 셰프 머릿속에만 있으면 그 셰프가 자리를 비웠을 때 주방이 멈춥니다. KO는 모든 셰프의 노하우를 레시피 북으로 만들고, 누구나 맛있는 요리를 낼 수 있도록 만드는 사람입니다. AI는 이 레시피 북을 읽고 도와주는 보조 셰프예요.</div>
+      <div class="analogy-text">
+        <strong>셰프와 레시피 북에 비유하면</strong>
+        요리를 잘하는 셰프(직원)는 있는데, 레시피가 셰프 머릿속에만 있으면 그 셰프가 자리를 비웠을 때 주방이 멈춥니다. KO는 모든 셰프의 노하우를 레시피 북으로 만들고, 누구나 맛있는 요리를 낼 수 있도록 만드는 사람입니다. AI는 이 레시피 북을 읽고 도와주는 보조 셰프예요.
+      </div>
     </div>
     <div class="guide-body">
       <div class="g-card">
-        <div class="g-card-title"><span class="dot"></span>KO 커리어 성장 경로</div>
+        <div class="g-card-title">KO 커리어 성장 경로</div>
         <div class="career-steps">
           <div class="cs-item"><span class="cs-level">L1</span><span class="cs-title">지식관리 담당자 (Knowledge Coordinator)</span></div>
           <div class="cs-item"><span class="cs-level">L2</span><span class="cs-title">지식관리 매니저 (Knowledge Manager)</span></div>
@@ -536,7 +338,7 @@
         </div>
       </div>
       <div class="g-card">
-        <div class="g-card-title"><span class="dot"></span>KO와 함께 일하게 될 도구들</div>
+        <div class="g-card-title">함께 사용하게 될 도구들</div>
         <ul class="g-list">
           <li><strong>Google Workspace</strong> — Docs, Drive, Meet 기록을 지식으로 변환</li>
           <li><strong>NotebookLM</strong> — 사내 문서를 학습한 AI 질의응답 시스템</li>
@@ -545,30 +347,26 @@
         </ul>
       </div>
     </div>
-    <div class="guide-faq">
-      <div class="faq-item"><div class="faq-q">KO는 IT 부서 소속인가요?</div><div class="faq-a">반드시 그렇지는 않습니다. 기술보다 '사람과 지식의 흐름'에 집중하기 때문에 전략기획, HR 등 다양한 부서에 소속될 수 있습니다.</div></div>
-      <div class="faq-item"><div class="faq-q">지식 관리와 문서 관리는 같은 건가요?</div><div class="faq-a">다릅니다. 문서는 단순 보관이지만, 지식 관리는 그 안의 내용이 '왜 중요하며 어떻게 활용할지'까지 연결하는 지능형 시스템입니다.</div></div>
-    </div>
   </div>
 </section>
 
-<section id="guide-da" class="guide-page da-bg">
+<section id="guide-da" class="guide-page section-alt da-bg">
   <div class="wrap">
     <span class="eyebrow">Professional Domain Guide</span>
     <div class="guide-header">
       <div class="guide-icon-box">🗄️</div>
-      <div class="guide-headline">
+      <div>
         <div class="guide-title">Digital Archivist란 무엇인가요?</div>
         <div class="guide-tagline">DA — 디지털 기록을 영원히 살아있게 지키는 기록 기술 전문가</div>
       </div>
     </div>
-    <div class="guide-oneliner">
-      <div class="ql">한마디로?</div>
+    <div class="guide-oneliner" style="border-color: #FFB800; background: #FFFBEB;">
+      <span class="ql" style="color: #D97706;">Definition</span>
       <p>회사의 중요한 디지털 기록이 <strong>10년 후에도, 50년 후에도 안전하게 열람·증명될 수 있도록 보존 체계를 설계하는 사람</strong>입니다. 박물관 큐레이터처럼 디지털 자산의 무결성을 지킵니다.</p>
     </div>
     <div class="guide-body">
       <div class="g-card">
-        <div class="g-card-title"><span class="dot"></span>왜 이 역할이 필요한가요?</div>
+        <div class="g-card-title">왜 이 역할이 필요한가요?</div>
         <ul class="g-list">
           <li>클라우드 서비스가 종료되어도 파일이 소멸되지 않아야 합니다</li>
           <li>소송·감사 시 특정 시점의 기록을 법적으로 증명해야 합니다</li>
@@ -577,7 +375,7 @@
         </ul>
       </div>
       <div class="g-card">
-        <div class="g-card-title"><span class="dot"></span>DA의 핵심 업무 5가지</div>
+        <div class="g-card-title">DA의 핵심 업무 5가지</div>
         <ul class="g-list">
           <li><strong>기록 수집·선별</strong> — 보존 가치가 있는 디지털 파일을 안전하게 인입합니다</li>
           <li><strong>메타데이터 기술</strong> — 파일의 출처, 작성자, 맥락 정보를 표준화합니다</li>
@@ -589,7 +387,31 @@
     </div>
     <div class="g-analogy">
       <div class="analogy-emoji">🏛️</div>
-      <div class="analogy-text"><strong>국립박물관 큐레이터에 비유하면</strong>유물을 그냥 쌓아두면 손상되듯, 디지털 파일도 관리 없이는 소멸합니다. DA는 디지털 세계의 큐레이터로, 파일의 손상·변조를 막고 100년 뒤에도 원본 그대로 꺼낼 수 있게 지킵니다.</div>
+      <div class="analogy-text">
+        <strong>국립박물관 큐레이터에 비유하면</strong>
+        유물을 그냥 쌓아두면 손상되듯, 디지털 파일도 관리 없이는 소멸합니다. DA는 디지털 세계의 큐레이터로, 파일의 손상·변조를 막고 100년 뒤에도 원본 그대로 꺼낼 수 있게 지킵니다.
+      </div>
+    </div>
+    <div class="guide-body">
+      <div class="g-card">
+        <div class="g-card-title">DA 커리어 성장 경로</div>
+        <div class="career-steps">
+          <div class="cs-item"><span class="cs-level">L1</span><span class="cs-title">디지털 아카이브 담당 (Archive Technician)</span></div>
+          <div class="cs-item"><span class="cs-level">L2</span><span class="cs-title">기록물 관리 전문요원 (Records Manager)</span></div>
+          <div class="cs-item active"><span class="cs-level">L3</span><span class="cs-title">✦ Digital Archivist (DA) — 핵심 전문가</span></div>
+          <div class="cs-item"><span class="cs-level">L4</span><span class="cs-title">정보 거버넌스 디렉터 (Director of Information)</span></div>
+          <div class="cs-item"><span class="cs-level">C</span><span class="cs-title">최고 디지털 책임자 (Chief Digital Officer)</span></div>
+        </div>
+      </div>
+      <div class="g-card">
+        <div class="g-card-title">함께 사용하게 될 도구들</div>
+        <ul class="g-list">
+          <li><strong>Preservica / Archivematica</strong> — OAIS 표준 기반 디지털 보존 시스템</li>
+          <li><strong>AWS S3 Object Lock / WORM</strong> — 위변조 방지 기술이 적용된 저장소</li>
+          <li><strong>Dublin Core / Metadata Tools</strong> — 자산의 맥락을 정의하는 기술 표준</li>
+          <li><strong>PDF/A & JSON-LD</strong> — 장기 보존 및 AI 학습용 데이터 정규화 포맷</li>
+        </ul>
+      </div>
     </div>
   </div>
 </section>
@@ -598,11 +420,8 @@
   <div class="wrap">
     <span class="eyebrow">02 — Intelligence Pipeline</span>
     <h2 class="sec-title">3단계 지식 엔지니어링</h2>
-    <p class="sec-sub">데이터가 단순 기록을 넘어 조직의 영구적인 지능 자산으로 진화하는 핵심 공정입니다.</p>
     <div class="pipe-grid">
-      <div class="pipe-card p1">
-        <svg class="pipe-svg-num" viewBox="0 0 36 36"><circle cx="18" cy="18" r="17" fill="#EFF4FF" stroke="#2563EB" stroke-width="1.5"/><text x="50%" y="55%" dominant-baseline="middle" text-anchor="middle" font-family="Space Mono" font-weight="700" font-size="14" fill="#2563EB">01</text></svg>
-        <span class="pipe-icon">⬡</span>
+      <div class="pipe-card">
         <div class="pipe-title">Dynamic Ingestion</div>
         <span class="pipe-en">데이터 인입 · KO 주도</span>
         <ul class="pipe-list">
@@ -612,9 +431,7 @@
           <li>암묵지의 정형화를 통한 전사 지식 맵 실시간 업데이트</li>
         </ul>
       </div>
-      <div class="pipe-card p2">
-        <svg class="pipe-svg-num" viewBox="0 0 36 36"><circle cx="18" cy="18" r="17" fill="#F0FDF4" stroke="#16A34A" stroke-width="1.5"/><text x="50%" y="55%" dominant-baseline="middle" text-anchor="middle" font-family="Space Mono" font-weight="700" font-size="14" fill="#16A34A">02</text></svg>
-        <span class="pipe-icon">◈</span>
+      <div class="pipe-card">
         <div class="pipe-title">Semantic Reasoning</div>
         <span class="pipe-en">의미 분석 · KO+DA 협업</span>
         <ul class="pipe-list">
@@ -624,9 +441,7 @@
           <li>도메인별 특화 분석 레이어 생성으로 지식의 재사용성 극대화</li>
         </ul>
       </div>
-      <div class="pipe-card p3">
-        <svg class="pipe-svg-num" viewBox="0 0 36 36"><circle cx="18" cy="18" r="17" fill="#ECFDF5" stroke="#059669" stroke-width="1.5"/><text x="50%" y="55%" dominant-baseline="middle" text-anchor="middle" font-family="Space Mono" font-weight="700" font-size="14" fill="#059669">03</text></svg>
-        <span class="pipe-icon">◉</span>
+      <div class="pipe-card">
         <div class="pipe-title">Permanent Fixation</div>
         <span class="pipe-en">영구 보존 · DA 주도</span>
         <ul class="pipe-list">
@@ -647,26 +462,22 @@
     <div class="sol-grid">
       <div class="sol-card flow">
         <span class="sol-label">Solution 01 — Flow Engine</span>
-        <span class="sol-icon">⚡</span>
         <div class="sol-title">Google Workspace<br>지능형 지식 DB</div>
         <div class="sol-sub">실시간 협업 인텔리전스 레이어</div>
         <ul class="sol-list">
-          <li><strong>실시간 협업 컨텍스트 자산화:</strong> Docs, Sheets 내의 수정 이력과 코멘트를 분석하여 팀의 의사결정 프로세스 자체를 DB화합니다.</li>
-          <li><strong>NotebookLM 기반 AI 전문가:</strong> 조직의 Drive 전체를 학습하여 신규 입사자 교육부터 프로젝트 히스토리 파악까지 전문가 수준으로 지원합니다.</li>
-          <li><strong>시맨틱 하이퍼 검색 엔진:</strong> 단순 키워드 매칭을 넘어 '의도와 맥락'을 이해하는 벡터 검색으로 수만 개의 문서 중 핵심을 초 단위로 찾아냅니다.</li>
-          <li><strong>자동 지식 정제 루틴:</strong> 유입 데이터의 중복을 제거하고 온톨로지에 따라 지식의 위계와 관계를 자동 정립하여 최상의 품질을 유지합니다.</li>
+          <li><strong>실시간 협업 컨텍스트 자산화:</strong> <p>Docs, Sheets 내의 수정 이력과 코멘트를 분석하여 팀의 의사결정 프로세스 자체를 DB화합니다.</p></li>
+          <li><strong>NotebookLM 기반 AI 전문가:</strong> <p>조직의 Drive 전체를 학습하여 신규 입사자 교육부터 프로젝트 히스토리 파악까지 전문가 수준으로 지원합니다.</p></li>
+          <li><strong>시맨틱 하이퍼 검색 엔진:</strong> <p>단순 키워드 매칭을 넘어 '의도와 맥락'을 이해하는 벡터 검색으로 수만 개의 문서 중 핵심을 초 단위로 찾아냅니다.</p></li>
         </ul>
       </div>
       <div class="sol-card anchor">
         <span class="sol-label">Solution 02 — Stock Anchor</span>
-        <span class="sol-icon">🔒</span>
         <div class="sol-title">Archive & Rescue<br>영구 보존 시스템</div>
         <div class="sol-sub">위기 대응 & 장기 자산 보전</div>
         <ul class="sol-list">
-          <li><strong>비즈니스 리스크 방어 아카이빙:</strong> M&A나 법적 소송 시 과거의 의사결정 증거를 즉각 추출하여 기술적인 Due Diligence 근거를 제시합니다.</li>
-          <li><strong>플랫폼 독립적 영속성 확보:</strong> 클라우드 서비스 종료에 영향받지 않도록 모든 기록을 PDF/A, JSON-LD 등 표준 포맷으로 변환하여 데이터 주권을 완전 소유합니다.</li>
-          <li><strong>10대 핵심 경영 기록 관리:</strong> 창업주의 철학, R&D 기록 등 기업의 정체성을 담은 핵심 카테고리를 선정하여 디지털 헤리티지로 자산화합니다.</li>
-          <li><strong>데이터 무결성 및 타임스탬프 증명:</strong> WORM 스토리지를 활용해 기록이 생성 시점부터 현재까지 단 1비트도 변조되지 않았음을 수학적으로 증명합니다.</li>
+          <li><strong>비즈니스 리스크 방어 아카이빙:</strong> <p>M&A나 법적 소송 시 과거의 의사결정 증거를 즉각 추출하여 기술적인 Due Diligence 근거를 제시합니다.</p></li>
+          <li><strong>플랫폼 독립적 영속성 확보:</strong> <p>클라우드 서비스 종료에 영향받지 않도록 모든 기록을 PDF/A, JSON-LD 등 표준 포맷으로 변환하여 데이터 주권을 완전 소유합니다.</p></li>
+          <li><strong>데이터 무결성 증명:</strong> <p>WORM 스토리지를 활용해 기록이 생성 시점부터 현재까지 단 1비트도 변조되지 않았음을 수학적으로 증명합니다.</p></li>
         </ul>
       </div>
     </div>
@@ -678,87 +489,66 @@
     <span class="eyebrow">04 — Strategic Pillars</span>
     <h2 class="sec-title">융합 리더십의 핵심 활동</h2>
     <div class="pillars-grid">
-
       <div class="pillar">
         <span class="pillar-num">PILLAR 01</span>
-        <span class="pillar-icon">🤖</span>
         <div class="pillar-title">AI 지식 거버넌스 & 큐레이션</div>
-        <p class="pillar-desc">RAG(Retrieval-Augmented Generation) 기반으로 검증된 도메인 지식만 AI 참조 소스로 활용하여 할루시네이션을 원천 차단합니다. 도메인 전문가의 Human-in-the-Loop 검토 체계와 Responsible AI 가드레일로 고위험 출력을 이중 검증하고, 지식 품질 KPI를 지속 관리합니다.</p>
-        <div class="pillar-divider"></div>
+        <p class="pillar-desc">RAG 기반으로 검증된 도메인 지식만 AI 참조 소스로 활용하여 할루시네이션을 원천 차단합니다. 도메인 전문가의 Human-in-the-Loop 검토 체계와 Responsible AI 가드레일을 내재화합니다.</p>
         <ul class="pillar-points">
-          <li>승인된 지식 베이스만 AI 참조 소스로 한정 — RAG 아키텍처 구현</li>
-          <li>도메인 전문가 Human-in-the-Loop 검토로 고위험 출력 이중 검증</li>
-          <li>편향 감지·설명가능성·할루시네이션 제어 가드레일 내재화</li>
-          <li>지식 품질 KPI 수치 추적 및 정기 AI 거버넌스 보고 체계 수립</li>
+          <li>승인된 지식 베이스만 AI 참조 소스로 한정</li>
+          <li>도메인 전문가 Human-in-the-Loop 검토 체계</li>
+          <li>편향 감지 및 할루시네이션 제어 가드레일</li>
+          <li>지식 품질 KPI 수치 추적 및 정기 보고</li>
         </ul>
         <div class="pillar-stat-box">
-          <div class="pillar-stat-inner">
-            <span class="pillar-stat-num">77%</span>
-            <span class="pillar-stat-label">글로벌 기업 중 AI 거버넌스 프로그램을 Top 5 전략 우선순위로 선정한 비율</span>
-          </div>
+          <span class="pillar-stat-num">77%</span>
+          <span class="pillar-stat-label">AI 거버넌스를 전략 우선순위로<br>선정한 글로벌 기업 비율</span>
         </div>
       </div>
-
       <div class="pillar">
         <span class="pillar-num">PILLAR 02</span>
-        <span class="pillar-icon">🔗</span>
         <div class="pillar-title">부서 간 지식 사일로 해소</div>
-        <p class="pillar-desc">ERP·CRM·Drive 등 분산된 데이터 소스를 단일 지식 포털로 통합하고, 크로스펑셔널 협업을 위한 구조적 기회를 정례화합니다. 지식 공유 기여자에 대한 인센티브·인정 체계로 자발적 공유 문화를 형성하고, 전사 표준 온톨로지로 부서 간 용어 불일치를 완전 해소합니다.</p>
-        <div class="pillar-divider"></div>
+        <p class="pillar-desc">ERP·CRM·Drive 등 분산된 데이터 소스를 단일 지식 포털로 통합하고, 크로스펑셔널 협업을 위한 구조적 기회를 정례화하여 전사 공유 문화를 형성합니다.</p>
         <ul class="pillar-points">
-          <li>ERP·CRM·Drive 등 분산 데이터 소스를 단일 지식 포털로 통합</li>
-          <li>크로스펑셔널 협업 세션 구조화 및 정례 운영 체계 설계</li>
-          <li>지식 기여자 인센티브·인정 체계로 자발적 공유 문화 형성</li>
-          <li>전사 표준 온톨로지로 부서 간 용어·개념 불일치 완전 해소</li>
+          <li>분산 데이터 소스 단일 지식 포털 통합</li>
+          <li>크로스펑셔널 협업 세션 정례 운영</li>
+          <li>지식 기여자 인센티브 및 인정 체계</li>
+          <li>전사 표준 온톨로지로 용어 불일치 해송</li>
         </ul>
         <div class="pillar-stat-box">
-          <div class="pillar-stat-inner">
-            <span class="pillar-stat-num">97%</span>
-            <span class="pillar-stat-label">사일로 보유 기업 중 조직 성과에 부정적 영향이 있다고 인지한 비율 (2024 Data Management Study)</span>
-          </div>
+          <span class="pillar-stat-num">97%</span>
+          <span class="pillar-stat-label">사일로가 조직 성과에 부정적<br>영향을 준다고 인지한 비율</span>
         </div>
       </div>
-
       <div class="pillar">
         <span class="pillar-num">PILLAR 03</span>
-        <span class="pillar-icon">🏆</span>
         <div class="pillar-title">디지털 헤리티지 & 상업적 자산화</div>
-        <p class="pillar-desc">창업 철학·R&D 히스토리·핵심 의사결정 기록을 체계적으로 디지털화하여 AI 학습 데이터의 기반이자 브랜드 스토리텔링의 원천으로 활용합니다. 라이선싱·파트너십 등 헤리티지 자산의 직접 수익화 경로를 설계하고, 인터랙티브 타임라인으로 이해관계자 참여를 극대화합니다.</p>
-        <div class="pillar-divider"></div>
+        <p class="pillar-desc">창업 철학·R&D 히스토리를 체계적으로 디지털화하여 브랜드 스토리텔링의 원천으로 활용합니다. 헤리티지 자산의 직접 수익화 경로를 설계합니다.</p>
         <ul class="pillar-points">
-          <li>창업 철학·R&D 기록 디지털화 → AI 학습 데이터셋 기반 구축</li>
-          <li>인터랙티브 타임라인·콘텐츠 재목적화로 브랜드 진정성 강화</li>
-          <li>헤리티지 자산 라이선싱·파트너십 직접 수익화 경로 설계</li>
-          <li>브랜드 헤리티지 활성화로 제품·서비스 가격 프리미엄 15~25% 달성</li>
+          <li>R&D 기록 디지털화 → AI 학습 데이터셋</li>
+          <li>인터랙티브 타임라인 브랜드 콘텐츠화</li>
+          <li>헤리티지 자산 라이선싱 수익 경로 설계</li>
+          <li>브랜드 헤리티지 활성화로 가격 프리미엄 달성</li>
         </ul>
         <div class="pillar-stat-box">
-          <div class="pillar-stat-inner">
-            <span class="pillar-stat-num">$2.2B</span>
-            <span class="pillar-stat-label">기업 헤리티지 데이터 관리 시장 2030년 전망 규모 — CAGR 19.9% 고성장 중</span>
-          </div>
+          <span class="pillar-stat-num">$2.2B</span>
+          <span class="pillar-stat-label">기업 헤리티지 데이터 관리 시장<br>2030년 전망 규모</span>
         </div>
       </div>
-
       <div class="pillar">
         <span class="pillar-num">PILLAR 04</span>
-        <span class="pillar-icon">🛡️</span>
         <div class="pillar-title">무결성 데이터 주권 거버넌스</div>
-        <p class="pillar-desc">WORM 스토리지 Compliance Mode로 관리자 권한을 포함한 누구도 보존 기간 내 데이터를 삭제·변조할 수 없는 환경을 구현합니다. 크로스보더 클라우드 저장 시 발생하는 데이터 주권 리스크를 사전 차단하고, S3 Object Lock 기반의 완전한 감사 추적 체계를 확보합니다.</p>
-        <div class="pillar-divider"></div>
+        <p class="pillar-desc">WORM 스토리지 Compliance Mode로 보존 기간 내 누구도 데이터를 삭제·변조할 수 없는 환경을 구현하여 기업 데이터 주권을 확보합니다.</p>
         <ul class="pillar-points">
-          <li>WORM Compliance Mode — 보존 기간 내 관리자 포함 삭제·변조 불가</li>
-          <li>Governance Mode — 승인된 사용자에게만 제한적 설정 변경 허용</li>
-          <li>크로스보더 클라우드 저장 시 데이터 주권 리스크 사전 식별·차단</li>
-          <li>S3 Object Lock 기반 감사 추적·접근 가시성 완전 확보</li>
+          <li>WORM Compliance Mode 데이터 보호</li>
+          <li>Governance Mode 기반 승인 접근 제어</li>
+          <li>클라우드 저장 시 데이터 주권 리스크 차단</li>
+          <li>S3 Object Lock 기반 감사 추적 확보</li>
         </ul>
         <div class="pillar-stat-box">
-          <div class="pillar-stat-inner">
-            <span class="pillar-stat-num">93%</span>
-            <span class="pillar-stat-label">데이터 주권·운영 통제를 위해 하이브리드 클라우드를 도입 또는 전환 중인 기업 비율 (IDC Q3 2025)</span>
-          </div>
+          <span class="pillar-stat-num">93%</span>
+          <span class="pillar-stat-label">통제를 위해 하이브리드 클라우드를<br>도입/전환 중인 기업 비율</span>
         </div>
       </div>
-
     </div>
   </div>
 </section>
@@ -766,38 +556,40 @@
 <section id="standards" class="section section-alt">
   <div class="wrap">
     <span class="eyebrow">05 — Standards & Certifications</span>
-    <h2 class="sec-title">글로벌 표준 & 인증 체계</h2>
+    <h2 class="sec-title">글로벌 표준 및 인증</h2>
     <div class="std-grid">
-      <div class="std-card"><div class="std-abbr">OAIS</div><span class="std-iso">ISO 14721</span><p class="std-desc">디지털 장기 보존의 글로벌 기준 — 개방형 아카이브 정보 시스템</p></div>
-      <div class="std-card"><div class="std-abbr">ISO 30401</div><span class="std-iso">KM Standard</span><p class="std-desc">지식 관리 시스템 국제 표준 — KM 전략 수립의 기반 프레임워크</p></div>
-      <div class="std-card"><div class="std-abbr">WORM</div><span class="std-iso">Storage Arch.</span><p class="std-desc">Write Once Read Many — 데이터 불변성 보장 스토리지 아키텍처</p></div>
-      <div class="std-card"><div class="std-abbr">PDF/A</div><span class="std-iso">ISO 19005</span><p class="std-desc">장기 보존 PDF 포맷 — 시스템 독립적 문서 표준</p></div>
-      <div class="std-card"><div class="std-abbr">Dublin Core</div><span class="std-iso">Metadata Std.</span><p class="std-desc">글로벌 메타데이터 기술 표준 — 디지털 자원 상호운용성</p></div>
-      <div class="std-card"><div class="std-abbr">JSON-LD</div><span class="std-iso">Linked Data</span><p class="std-desc">AI 시대 시맨틱 웹 핵심 포맷 — 기계가독형 지식 표현</p></div>
-      <div class="std-card"><div class="std-abbr">CKM</div><span class="std-iso">KM Institute</span><p class="std-desc">Certified Knowledge Manager — KO 전문성 국제 자격</p></div>
-      <div class="std-card"><div class="std-abbr">ACA</div><span class="std-iso">Acad. of Cert. Archivists</span><p class="std-desc">디지털 아키비스트 국제 공인 자격 — DA 전문성 인증</p></div>
+      <div class="std-card"><div class="std-abbr">OAIS</div><span class="std-iso">ISO 14721</span><p class="std-desc">디지털 장기 보존 표준</p></div>
+      <div class="std-card"><div class="std-abbr">ISO 30401</div><span class="std-iso">KM Standard</span><p class="std-desc">지식 관리 시스템 표준</p></div>
+      <div class="std-card"><div class="std-abbr">WORM</div><span class="std-iso">Storage</span><p class="std-desc">불변성 스토리지 아키텍처</p></div>
+      <div class="std-card"><div class="std-abbr">PDF/A</div><span class="std-iso">ISO 19005</span><p class="std-desc">장기 보존용 문서 포맷</p></div>
+      <div class="std-card"><div class="std-abbr">Dublin Core</div><span class="std-iso">Metadata</span><p class="std-desc">디지털 자원 기술 표준</p></div>
+      <div class="std-card"><div class="std-abbr">JSON-LD</div><span class="std-iso">Linked Data</span><p class="std-desc">시맨틱 웹 핵심 포맷</p></div>
+      <div class="std-card"><div class="std-abbr">CKM</div><span class="std-iso">Certified KM</span><p class="std-desc">지식 전략가 국제 자격</p></div>
+      <div class="std-card"><div class="std-abbr">ACA</div><span class="std-iso">Archivists</span><p class="std-desc">디지털 아키비스트 인증</p></div>
     </div>
   </div>
 </section>
 
 <section id="cta">
-  <div class="cta-wrap">
-    <div class="cta-badge">Ready to Start?</div>
-    <h2 class="cta-title">지식 자산화의 첫 번째 단계</h2>
-    <p class="cta-desc">지금 전략 실사를 요청하고, 조직의 지식이 어떻게 자산이 되는지 확인하세요.</p>
-    <div class="cta-btns"><a href="mailto:kyle@panicstorms.com" class="btn btn-solid">전략 실사 요청 →</a></div>
+  <div class="wrap">
+    <div class="cta-badge">Consulting</div>
+    <h2 class="cta-title">Build Your Legacy</h2>
+    <p class="cta-desc">조직의 지식이 어떻게 자산이 되는지, 지금 전략 실사를 통해 확인하세요.</p>
+    <button class="cta-btn" onclick="location.href='mailto:kyle@panicstorms.com'">무료 전략 실사 요청하기</button>
   </div>
 </section>
 
 <footer>
-  <div class="ft-logo">PANICSTORMS</div>
-  <div class="ft-copy">© 2026 Panicstorms Co., Ltd. — Knowledge Officer × Digital Archivist</div>
+  <div class="wrap">
+    <span class="ft-logo">PANICSTORMS</span>
+    <p class="ft-copy">© 2026 Panicstorms Co., Ltd. — Knowledge Officer × Digital Archivist</p>
+  </div>
 </footer>
 
 <script>
 const TICKS = [
   { tag:'KR', text:'2026 AI 패러다임 전환: 자율형 에이전틱 AI로의 진화 본격화' },
-  { tag:'JP', text:'組織記憶の永続化、生成AI導入企業でデジタルアーカイブ需要가 급증' },
+  { tag:'JP', text:'組織記憶の永続化、生成AI導入企業でデジタルアーカイブ juvenile 수요가 급증' },
   { tag:'KR', text:'기업 M&A 실사 필수 항목으로 부상한 지식 자산 계보 — 사례 확산' },
   { tag:'JP', text:'Google Workspace × NotebookLM 통합으로 지능형 DB 활용 가속' },
   { tag:'KR', text:'McKinsey: KM 최적화로 생산성 20~25% 향상 가능' },
