@@ -162,10 +162,11 @@
     .sol-icon { font-size: 2.2rem; margin-bottom: 1rem; display: block; }
     .sol-title { font: 800 1.7rem 'Syne'; letter-spacing: -.03em; line-height: 1.25; margin-bottom: .6rem; }
     .sol-sub { font: 700 .75rem 'Space Mono'; color: var(--muted); margin-bottom: 1.5rem; text-transform: uppercase; }
-    .sol-list { list-style: none; display: grid; gap: 1rem; }
-    .sol-list li { font: 500 .92rem 'Noto Sans KR'; color: #374151; display: flex; gap: .8rem; line-height: 1.65; }
-    .flow .sol-list li::before { content: '⚡'; font-size: 0.8rem; margin-top: 0.2rem; flex-shrink: 0; }
-    .anchor .sol-list li::before { content: '🔒'; font-size: 0.8rem; margin-top: 0.2rem; flex-shrink: 0; }
+    .sol-list { list-style: none; display: grid; gap: 1.4rem; }
+    .sol-list li { font: 500 .95rem 'Noto Sans KR'; color: #374151; display: flex; gap: .9rem; line-height: 1.75; align-items: flex-start; }
+    .sol-list li strong { display: block; font: 700 .95rem 'Noto Sans KR'; color: #111827; margin-bottom: .3rem; }
+    .flow .sol-list li::before { content: '⚡'; font-size: 0.85rem; margin-top: 0.15rem; flex-shrink: 0; }
+    .anchor .sol-list li::before { content: '🔒'; font-size: 0.85rem; margin-top: 0.15rem; flex-shrink: 0; }
 
     /* ── PILLARS ── */
     .pillars-grid { display: grid; grid-template-columns: repeat(2,1fr); gap: 1rem; margin-top: 3rem; }
@@ -304,7 +305,8 @@
       .sol-card { padding: 1.75rem 1.4rem; }
       .sol-title { font-size: 1.4rem; line-height: 1.3; }
       .sol-title br { display: none; }
-      .sol-list li { font-size: 0.88rem; line-height: 1.75; }
+      .sol-list li { font-size: 0.9rem; line-height: 1.75; }
+      .sol-list li strong { font-size: 0.9rem; }
 
       /* PILLARS */
       .pillar { padding: 1.4rem 1.2rem; }
