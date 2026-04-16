@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0"/>
+  <title>Panicstorms — Knowledge Intelligence</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&family=Syne:wght@700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet"/>
+  <style>
+    /* ── RESET & TOKENS ── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg:       #F7F8FC;
+      --surface:  #FFFFFF;
+      --border:   #E8EAF2;
+      --text:     #0E1117;
+      --muted:    #6B7280;
+      --blue:     #2563EB;
+      --blue-lt:  #EFF4FF;
+      --amber:    #D97706;
+      --amber-lt: #FFFBEB;
+      --green:    #059669;
+      --green-lt: #ECFDF5;
+      --w: 1120px;
+      --r: 20px;
+      --pad: clamp(1.25rem, 5vw, 3rem);
+    }
+
+    html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+    body { 
+      font-family: 'Noto Sans KR', sans-serif; 
+      background: var(--bg); color: var(--text); 
+      line-height: 1.8; overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+      font-weight: 500; word-break: keep-all; overflow-wrap: break-word;
+    }
+
+    .wrap { max-width: var(--w); margin: 0 auto; padding: 0 var(--pad); }
+    a { color: inherit; text-decoration: none; }
+
+    /* ── NAV ── */
+    nav {
+      position: sticky; top: 0; z-index: 100;
+      background: rgba(247,248,252,0.95); backdrop-filter: blur(15px);
+      border-bottom: 1px solid var(--border);
+      height: 64px; display: flex; align-items: center;
+    }
+    .nav-inner { width: 100%; display: flex; align-items: center; justify-content: space-between; }
+    .logo { font: 800 1.2rem 'Syne'; letter-spacing: 0.02em; }
+    .logo em { font-style: normal; color: var(--blue); }
+    .nav-links { display: flex; gap: 0.5rem; }
+    .nav-links a { font: 500 0.8rem 'Space Mono'; color: var(--muted); padding: 0.5rem 0.75rem; border-radius: 8px; }
+
+    /* ── HERO ── */
+    #hero { padding: clamp(5rem, 15vw, 10rem) 0; position: relative; }
+    h1 { font: 800 clamp(2.4rem, 8vw, 5rem) 'Syne'; letter-spacing: -0.04em; line-height: 1.1; margin-bottom: 1.5rem; }
+    .hero-desc { font-size: clamp(1rem, 2.5vw, 1.2rem); color: var(--muted); max-width: 750px; margin-bottom: 3rem; }
+    .hero-pill { display: inline-flex; align-items: center; gap: 0.5rem; font: 700 0.7rem 'Space Mono'; letter-spacing: 0.1em; text-transform: uppercase; color: var(--blue); background: var(--blue-lt); border: 1px solid rgba(37,99,235,0.2); padding: 0.35rem 0.9rem; border-radius: 99px; margin-bottom: 2rem; }
+    .hero-pill span { width: 6px; height: 6px; border-radius: 50%; background: var(--blue); animation: pulse 2s infinite; }
+    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.3} }
+
+    /* ── SECTION SHELL ── */
+    .section { padding: clamp(4rem, 10vw, 8rem) 0; }
+    .section-alt { background: white; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+    .eyebrow { font: 700 0.8rem 'Space Mono'; letter-spacing: 0.15em; text-transform: uppercase; color: var(--blue); margin-bottom: 1rem; display: block; }
+    .sec-title { font: 800 clamp(1.8rem, 5vw, 2.8rem) 'Syne'; letter-spacing: -0.02em; line-height: 1.2; margin-bottom: 1rem; }
+    .sec-sub { font: 500 1rem 'Noto Sans KR'; color: var(--muted); max-width: 600px; margin-bottom: 3rem; }
+
+    /* ── GRID SYSTEM ── */
+    .grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem; }
+    .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.25rem; }
+
+    /* ── CARD STYLES ── */
+    .g-card { background: white; border: 1px solid var(--border); border-radius: var(--r); padding: 1.75rem; margin-bottom: 1.5rem; position: relative; }
+    .g-card-title { display: flex; align-items: center; gap: 0.5rem; font: 700 1rem 'Noto Sans KR'; color: var(--text); margin-bottom: 1.2rem; padding-bottom: 0.8rem; border-bottom: 1px solid var(--border); }
+    .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--blue); }
+
+    /* ── LIST STYLES ── */
+    .g-list { list-style: none; display: grid; gap: 0.8rem; }
+    .g-list li { display: flex; gap: 0.6rem; font-size: 0.95rem; color: #374151; line-height: 1.6; }
+    .g-list li::before { content: '✓'; font-weight: 900; color: var(--blue); flex-shrink: 0; }
+    .da-bg .g-list li::before { color: var(--amber); }
+
+    /* ── ADAPTIVE SOLUTION CARD ── */
+    .adaptive-card {
+      background: white; border: 1px solid var(--border); border-radius: var(--r); padding: clamp(1.5rem, 4vw, 3rem);
+      display: grid; grid-template-columns: 1fr 1.5fr; gap: 2rem; align-items: start; margin-bottom: 2rem;
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 960px) {
+      .grid-2, .grid-3 { grid-template-columns: 1fr; }
+      .adaptive-card { grid-template-columns: 1fr; padding: 1.5rem; }
+      .nav-links { display: none; }
+    }
+
+    /* ── TICKER ── */
+    .ticker { background: var(--text); padding: 0.8rem 0; overflow: hidden; }
+    .ticker-track { display: flex; gap: 4rem; animation: roll 55s linear infinite; white-space: nowrap; }
+    @keyframes roll { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+  </style>
+</head>
+<body>
+
+<nav>
+  <div class="wrap">
+    <div class="nav-inner">
+      <a class="logo" href="#">PANIC<em>STORMS</em></a>
+      <div class="nav-links">
+        <a href="#roles">역할</a>
+        <a href="#guide-ko">KO 가이드</a>
+        <a href="#guide-da">DA 가이드</a>
+        <a href="#pipeline">파이프라인</a>
+        <a href="#solutions">솔루션</a>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<section id="hero">
+  <div class="wrap">
+    <div class="hero-pill"><span></span>Knowledge Intelligence Platform</div>
+    <h1>흘러가는 지식을 자산으로.<br><span style="color:var(--blue)">사라지는 기록을 영속으로.</span></h1>
+    <p class="hero-desc">협업 데이터의 실시간 흐름과 디지털 기록의 영구 보존을 하나의 인텔리전스 레이어로 연결합니다. Knowledge Officer와 Digital Archivist, 두 전문성의 융합을 제안합니다.</p>
+    <a href="mailto:contact@panicstorms.com" style="display:inline-block; background:var(--blue); color:white; padding:1rem 2rem; border-radius:10px; font-weight:700;">전략 실사 요청 →</a>
+  </div>
+</section>
+
+<div class="ticker">
+  <div class="ticker-track" id="ticker-track"></div>
+</div>
+
+<section id="roles" class="section section-alt">
+  <div class="wrap">
+    <span class="eyebrow">01 — Dual Core Governance</span>
+    <h2 class="sec-title">두 역할, 하나의 인텔리전스</h2>
+    <div class="grid-2">
+      <div class="g-card" style="border-top: 5px solid var(--blue);">
+        <div style="font:700 .7rem 'Space Mono'; color:var(--blue); margin-bottom:1rem; text-transform:uppercase;">Knowledge Officer</div>
+        <h3 style="font:800 1.6rem 'Syne'; margin-bottom:1rem;">지식 전략가</h3>
+        <p style="font-size:.95rem; color:var(--muted); margin-bottom:1.5rem; line-height:1.7;">조직의 암묵지를 명시화하고 AI가 정확한 맥락을 학습하도록 지식 인프라를 설계합니다. 부서 간 사일로를 해소하고 협업 데이터에서 가치를 발굴합니다.</p>
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:1px; background:var(--border); border-radius:10px; overflow:hidden;">
+          <div style="background:var(--bg); padding:1rem;"><div style="font:800 1.2rem 'Syne'; color:var(--blue);">CKO</div><div style="font-size:.7rem; color:var(--muted);">최고 직위</div></div>
+          <div style="background:var(--bg); padding:1rem;"><div style="font:800 1.2rem 'Syne'; color:var(--blue);">+25%</div><div style="font-size:.7rem; color:var(--muted);">생산성 향상</div></div>
+        </div>
+      </div>
+      <div class="g-card" style="border-top: 5px solid var(--amber);">
+        <div style="font:700 .7rem 'Space Mono'; color:var(--amber); margin-bottom:1rem; text-transform:uppercase;">Digital Archivist</div>
+        <h3 style="font:800 1.6rem 'Syne'; margin-bottom:1rem;">기록 기술 전문가</h3>
+        <p style="font-size:.95rem; color:var(--muted); margin-bottom:1.5rem; line-height:1.7;">OAIS 국제 표준에 따른 장기 보존 체계를 구축하고 데이터 주권을 증명합니다. AI 학습 데이터 정제부터 포렌식 검증까지 역할이 확장됩니다.</p>
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:1px; background:var(--border); border-radius:10px; overflow:hidden;">
+          <div style="background:var(--bg); padding:1rem;"><div style="font:800 1.2rem 'Syne'; color:var(--amber);">ACA</div><div style="font-size:.7rem; color:var(--muted);">국제 공인 자격</div></div>
+          <div style="background:var(--bg); padding:1rem;"><div style="font:800 1.2rem 'Syne'; color:var(--amber);">100yr</div><div style="font-size:.7rem; color:var(--muted);">보존 목표</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="guide-ko" class="guide-page ko-bg">
+  <div class="wrap">
+    <span class="eyebrow">Professional Domain Guide</span>
+    <div class="guide-header">
+      <div class="guide-icon-box">🧠</div>
+      <div>
+        <h2 class="guide-title">Knowledge Officer란 무엇인가요?</h2>
+        <p class="guide-tagline">KO — 조직의 지식을 설계하고 흐르게 만드는 지식 건축가</p>
+      </div>
+    </div>
+    <div class="g-card" style="padding: 1.5rem 2rem;">
+      <p style="font-size: 1.1rem; line-height: 1.8;">흩어진 <strong>지식·노하우·경험을 모아서 누구든 쉽게 쓸 수 있게 만드는 사람</strong>입니다. 단순히 정리하는 사서가 아니라, 지식의 가치가 비즈니스 성과로 이어지도록 시스템을 설계합니다.</p>
+    </div>
+    <div class="grid-2">
+      <div class="g-card">
+        <div class="g-card-title"><span class="dot"></span>왜 이 역할이 필요한가요?</div>
+        <ul class="g-list">
+          <li>직원 47%가 필요한 정보를 찾는 데 어려움을 겪습니다</li>
+          <li>퇴사자가 떠날 때 그 사람의 소중한 실무 노하우도 함께 사라집니다</li>
+          <li>부서마다 서로 다른 용어를 써서 협업 효율이 저하됩니다</li>
+          <li>AI를 도입해도 원천 지식 체계가 없으면 엉뚱한 답변을 내놓습니다</li>
+        </ul>
+      </div>
+      <div class="g-card">
+        <div class="g-card-title"><span class="dot"></span>KO의 핵심 업무 5가지</div>
+        <ul class="g-list">
+          <li><strong>지식 지도 구축:</strong> 조직 내 핵심 지식 자산을 목록화하고 구조화합니다</li>
+          <li><strong>공유 문화 설계:</strong> 팀원들이 자발적으로 노하우를 나누는 환경을 만듭니다</li>
+          <li><strong>검색 아키텍처:</strong> 정보 탐색 비용을 최소화하는 시스템을 설계합니다</li>
+          <li><strong>AI 지식 정제:</strong> AI가 정확한 답변을 하도록 학습 데이터를 정돈합니다</li>
+          <li><strong>성과 측정:</strong> 지식 활용이 실제 생산성 향상으로 이어지는지 보고합니다</li>
+        </ul>
+      </div>
+    </div>
+    <div class="g-card" style="background: white; display: flex; gap: 1.5rem; align-items: center; flex-wrap: wrap;">
+      <div style="font-size: 3rem;">🍳</div>
+      <div style="flex: 1; min-width: 250px;">
+        <strong>셰프와 레시피 북에 비유하면:</strong>
+        요리를 잘하는 셰프(직원)는 있는데 레시피가 머릿속에만 있으면 주방이 멈춥니다. KO는 모든 노하우를 레시피 북으로 만들어 누구나 맛있는 요리를 낼 수 있게 만드는 사람입니다.
+      </div>
+    </div>
+    <div class="grid-2">
+      <div class="g-card">
+        <div class="g-card-title"><span class="dot"></span>KO 커리어 성장 경로</div>
+        <div style="display:grid; gap:0.5rem;">
+          <div style="padding:0.75rem; background:var(--bg); border-radius:8px; font-size:0.9rem;">L1. 지식관리 담당자 (Coordinator)</div>
+          <div style="padding:0.75rem; background:var(--bg); border-radius:8px; font-size:0.9rem;">L2. 지식관리 매니저 (Manager)</div>
+          <div style="padding:0.75rem; background:var(--blue-lt); border-radius:8px; font-size:0.9rem; font-weight:700; color:var(--blue);">L3. Knowledge Officer (KO) — 핵심 전문가</div>
+          <div style="padding:0.75rem; background:var(--bg); border-radius:8px; font-size:0.9rem;">C. 최고지식책임자 (Chief Knowledge Officer)</div>
+        </div>
+      </div>
+      <div class="g-card">
+        <div class="g-card-title"><span class="dot"></span>자주 묻는 질문 (FAQ)</div>
+        <div style="display:grid; gap:1rem; font-size:0.9rem;">
+          <div><strong>Q. IT 부서 소속인가요?</strong><br>A. 반드시 그렇지는 않습니다. 기술보다 '사람과 지식의 흐름'에 집중하므로 전략, HR 등 다양한 부서에 소속될 수 있습니다.</div>
+          <div><strong>Q. 문서 관리와 다른가요?</strong><br>A. 문서는 단순 보관이지만, 지식 관리는 그 안의 내용이 '어떻게 쓰일지' 맥락을 연결하는 것입니다.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="guide-da" class="guide-page da-bg">
+  <div class="wrap">
+    <span class="eyebrow">Professional Domain Guide</span>
+    <div class="guide-header">
+      <div class="guide-icon-box">🗄️</div>
+      <div>
+        <h2 class="guide-title">Digital Archivist란 무엇인가요?</h2>
+        <p class="guide-tagline">DA — 디지털 기록을 영원히 살아있게 지키는 기록 기술 전문가</p>
+      </div>
+    </div>
+    <div class="g-card" style="padding: 1.5rem 2rem;">
+      <p style="font-size: 1.1rem; line-height: 1.8;">회사의 중요한 디지털 기록이 <strong>10년 후에도, 50년 후에도 안전하게 열람·증명될 수 있도록 보존 체계를 설계하는 사람</strong>입니다. 박물관 큐레이터처럼 디지털 자산의 무결성을 지킵니다.</p>
+    </div>
+    <div class="grid-2">
+      <div class="g-card">
+        <div class="g-card-title" style="border-color:var(--amber);"><span class="dot" style="background:var(--amber);"></span>왜 이 역할이 필요한가요?</div>
+        <ul class="g-list">
+          <li>클라우드 서비스가 종료되어도 파일이 소멸되지 않아야 합니다</li>
+          <li>소송·감사 시 특정 시점의 기록을 법적으로 증명해야 합니다</li>
+          <li>낡은 파일 포맷을 미래의 프로그램으로도 열 수 있어야 합니다</li>
+          <li>중요한 의사결정 배경이 퇴사자와 함께 사라지는 것을 방지합니다</li>
+        </ul>
+      </div>
+      <div class="g-card">
+        <div class="g-card-title" style="border-color:var(--amber);"><span class="dot" style="background:var(--amber);"></span>DA의 핵심 업무 5가지</div>
+        <ul class="g-list">
+          <li><strong>기록 수집·선별:</strong> 보존 가치가 있는 디지털 파일을 안전하게 인입합니다</li>
+          <li><strong>메타데이터 기술:</strong> 파일의 출처, 작성자, 맥락 정보를 표준화합니다</li>
+          <li><strong>보존 포맷 변환:</strong> 미래에도 열람 가능한 표준 포맷(PDF/A 등)으로 관리합니다</li>
+          <li><strong>무결성 검증:</strong> 기록이 단 한 글자도 변조되지 않았음을 수학적으로 증명합니다</li>
+          <li><strong>권한 관리:</strong> 보안을 유지하며 필요한 기록을 즉시 찾도록 돕습니다</li>
+        </ul>
+      </div>
+    </div>
+    <div class="g-card" style="background: white; display: flex; gap: 1.5rem; align-items: center; flex-wrap: wrap;">
+      <div style="font-size: 3rem;">🏛️</div>
+      <div style="flex: 1; min-width: 250px;">
+        <strong>국립박물관 큐레이터에 비유하면:</strong>
+        유물을 그냥 쌓아두면 손상되듯 디지털 파일도 관리 없이는 소멸합니다. DA는 디지털 세계의 큐레이터로 파일을 손상·변조로부터 지키고 100년 뒤에도 꺼낼 수 있게 합니다.
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="pipeline" class="section">
+  <div class="wrap">
+    <span class="eyebrow">02 — Intelligence Pipeline</span>
+    <h2 class="sec-title">3단계 지식 엔지니어링</h2>
+    <p class="sec-sub">데이터가 단순 기록을 넘어 조직의 영구적인 지능 자산으로 진화하는 핵심 공정입니다.</p>
+    <div class="grid-3">
+      <div class="g-card" style="border-top:4px solid var(--blue); height:auto;">
+        <svg style="width:36px; height:36px; margin-bottom:1rem;"><circle cx="18" cy="18" r="17" fill="#EFF4FF" stroke="#2563EB" stroke-width="1.5"/><text x="50%" y="55%" dominant-baseline="middle" text-anchor="middle" font-family="Space Mono" font-weight="700" font-size="14" fill="#2563EB">01</text></svg>
+        <h3 style="font:800 1.1rem 'Syne'; margin-bottom:0.5rem;">Dynamic Ingestion</h3>
+        <span style="font:700 .7rem 'Space Mono'; color:var(--blue); display:block; margin-bottom:1.2rem;">데이터 인입 · KO 주도</span>
+        <ul class="g-list" style="font-size:0.85rem;">
+          <li>Google Workspace 실시간 편집 이력 스트리밍 인입</li>
+          <li>채팅·댓글 속 의사결정 맥락(Context) 자동 포착</li>
+          <li>KO 설계 온톨로지 기반 데이터 유입 즉시 자동 분류</li>
+          <li>암묵지의 정형화를 통한 전사 지식 맵 실시간 업데이트</li>
+        </ul>
+      </div>
+      <div class="g-card" style="border-top:4px solid var(--green); height:auto;">
+        <svg style="width:36px; height:36px; margin-bottom:1rem;"><circle cx="18" cy="18" r="17" fill="#F0FDF4" stroke="#16A34A" stroke-width="1.5"/><text x="50%" y="55%" dominant-baseline="middle" text-anchor="middle" font-family="Space Mono" font-weight="700" font-size="14" fill="#16A34A">02</text></svg>
+        <h3 style="font:800 1.1rem 'Syne'; margin-bottom:0.5rem;">Semantic Reasoning</h3>
+        <span style="font:700 .7rem 'Space Mono'; color:var(--green); display:block; margin-bottom:1.2rem;">의미 분석 · KO+DA 협업</span>
+        <ul class="g-list" style="font-size:0.85rem;">
+          <li>GraphRAG 기반 엔티티 관계망 구축으로 고도화된 추론 구현</li>
+          <li>NotebookLM 맞춤 학습을 통한 전문가 수준의 AI 비서 운영</li>
+          <li>Dublin Core 표준 기반 AI·인간 동시 이해 메타데이터 부여</li>
+          <li>도메인별 분석 레이어 생성으로 지식의 재사용성 극대화</li>
+        </ul>
+      </div>
+      <div class="g-card" style="border-top:4px solid var(--green); height:auto;">
+        <svg style="width:36px; height:36px; margin-bottom:1rem;"><circle cx="18" cy="18" r="17" fill="#ECFDF5" stroke="#059669" stroke-width="1.5"/><text x="50%" y="55%" dominant-baseline="middle" text-anchor="middle" font-family="Space Mono" font-weight="700" font-size="14" fill="#059669">03</text></svg>
+        <h3 style="font:800 1.1rem 'Syne'; margin-bottom:0.5rem;">Permanent Fixation</h3>
+        <span style="font:700 .7rem 'Space Mono'; color:var(--green); display:block; margin-bottom:1.2rem;">영구 보존 · DA 주도</span>
+        <ul class="g-list" style="font-size:0.85rem;">
+          <li>OAIS 국제 표준(ISO 14721) 기반 보존 패키지(AIP) 변환</li>
+          <li>WORM 스토리지를 활용한 기록의 위변조 방지 및 무결성 증명</li>
+          <li>JSON-LD 및 PDF/A 정규화로 시스템 독립성 확보</li>
+          <li>100년 기업을 위한 영구 디지털 헤리티지 자산화</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="solutions" class="section section-alt">
+  <div class="wrap">
+    <span class="eyebrow">03 — Solution Ecosystem</span>
+    <h2 class="sec-title">두 가지 핵심 솔루션</h2>
+    <div class="flex-column">
+      <div class="adaptive-card" style="border-left:8px solid var(--blue);">
+        <div>
+          <span style="font:700 .7rem 'Space Mono'; color:var(--muted);">SOLUTION 01</span>
+          <h3 style="font:800 1.8rem 'Syne'; margin:0.5rem 0;">Flow Engine</h3>
+          <p style="color:var(--blue); font-weight:700; font-size:0.9rem;">Google Workspace 지능형 지식 DB</p>
+        </div>
+        <ul style="list-style:none; display:grid; gap:1.2rem; font-size:0.95rem;">
+          <li><strong>• 실시간 컨텍스트 자산화:</strong> Docs, Sheets 내의 수정 이력과 코멘트를 분석하여 의사결정 프로세스 자체를 DB화합니다.</li>
+          <li><strong>• NotebookLM 기반 AI 전문가:</strong> 조직의 Drive 전체를 학습하여 입사자 교육부터 프로젝트 파악까지 AI가 즉각 지원합니다.</li>
+          <li><strong>• 시맨틱 하이퍼 검색:</strong> 단순 키워드를 넘어 '의도와 맥락'을 이해하는 벡터 검색으로 핵심 정보를 초 단위로 찾습니다.</li>
+          <li><strong>• 자동 지식 정제:</strong> 유입 데이터의 중복을 제거하고 지식 위계를 자동 정립하여 고품질 지능을 유지합니다.</li>
+        </ul>
+      </div>
+      <div class="adaptive-card" style="border-left:8px solid var(--amber);">
+        <div>
+          <span style="font:700 .7rem 'Space Mono'; color:var(--muted);">SOLUTION 02</span>
+          <h3 style="font:800 1.8rem 'Syne'; margin:0.5rem 0;">Stock Anchor</h3>
+          <p style="color:var(--amber); font-weight:700; font-size:0.9rem;">Archive & Rescue 영구 보존 시스템</p>
+        </div>
+        <ul style="list-style:none; display:grid; gap:1.2rem; font-size:0.95rem;">
+          <li><strong>• 비즈니스 리스크 방어:</strong> M&A나 법적 소송 시 과거 의사결정 증거를 즉각 추출하여 기술적인 실사 근거를 제시합니다.</li>
+          <li><strong>• 플랫폼 독립적 영속성:</strong> 클라우드 중단에 대비해 PDF/A, JSON-LD 포맷으로 변환하여 데이터 주권을 완전 보호합니다.</li>
+          <li><strong>• 10대 핵심 경영 기록 관리:</strong> 창업 철학, 핵심 R&D 기록 등 기업 정체성을 담은 자산을 디지털 헤리티지화합니다.</li>
+          <li><strong>• 데이터 무결성 증명:</strong> WORM 스토리지 기술로 기록이 생성 시점부터 변조되지 않았음을 수학적으로 증명합니다.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="standards" class="section">
+  <div class="wrap">
+    <span class="eyebrow">04 — Compliance & Standards</span>
+    <h2 class="sec-title">글로벌 표준 준수</h2>
+    <div class="grid-4" style="display:grid; grid-template-columns:repeat(auto-fit, minmax(200px, 1fr)); gap:1rem;">
+      <div class="g-card"><div style="font:800 1.2rem 'Syne';">OAIS</div><div style="font-size:.7rem; color:var(--blue); font-weight:700;">ISO 14721</div><p style="font-size:.8rem; color:var(--muted); margin-top:.5rem;">디지털 장기 보존의 글로벌 표준</p></div>
+      <div class="g-card"><div style="font:800 1.2rem 'Syne';">ISO 30401</div><div style="font-size:.7rem; color:var(--blue); font-weight:700;">KM Standard</div><p style="font-size:.8rem; color:var(--muted); margin-top:.5rem;">지식 관리 시스템 국제 표준 규격</p></div>
+      <div class="g-card"><div style="font:800 1.2rem 'Syne';">PDF/A</div><div style="font-size:.7rem; color:var(--blue); font-weight:700;">ISO 19005</div><p style="font-size:.8rem; color:var(--muted); margin-top:.5rem;">장기 보존용 시스템 독립 문서 표준</p></div>
+      <div class="g-card"><div style="font:800 1.2rem 'Syne';">CKM</div><div style="font-size:.7rem; color:var(--blue); font-weight:700;">Certified Manager</div><p style="font-size:.8rem; color:var(--muted); margin-top:.5rem;">국제 공인 지식 관리 전문가 자격</p></div>
+    </div>
+  </div>
+</section>
+
+<footer style="padding: 4rem 0; border-top: 1px solid var(--border); text-align: center; background:white;">
+  <div class="wrap">
+    <div class="logo">PANIC<em>STORMS</em></div>
+    <p style="font-size:.8rem; color:var(--muted); margin-top:1rem;">© 2026 Panicstorms Co., Ltd. — Knowledge Officer × Digital Archivist</p>
+  </div>
+</footer>
+
+<script>
+const TICKS = [
+  { tag:'KR', text:'2026 AI 패러다임 전환: 자율형 에이전틱 AI 본격화' },
+  { tag:'JP', text:'組織記憶の永続化、生成AI導入企業でデジタルアーカイブ수요 급증' },
+  { tag:'KR', text:'기업 M&A 실사 필수 항목으로 부상한 지식 자산 계보' },
+  { tag:'JP', text:'Google Workspace × NotebookLM 통합 활용 가속' },
+];
+(function(){
+  const t = document.getElementById('ticker-track');
+  t.innerHTML = [...TICKS,...TICKS].map(n=>`
+    <div style="display: flex; align-items: center; gap: 0.8rem; font-size: 0.85rem; color: #fff;">
+      <span style="background: var(--blue); padding: 2px 6px; border-radius: 4px; font-weight: 700; font-size: 0.7rem;">${n.tag}</span>
+      ${n.text}
+    </div>
+  `).join('');
+})();
+</script>
+</body>
+</html>
