@@ -12,35 +12,67 @@
     :root{
       --blue:#0066FF;--blue-dk:#0044CC;--violet:#7C3AED;--cyan:#00C2FF;
       --navy:#0F172A;--text:#1E293B;--muted:#64748B;--bg:#F8FAFC;
-      --border:#E2E8F0;--white:#FFFFFF;--gold:#F59E0B;--green:#10B981;--red:#EF4444;
+      --border:#E2E8F0;--white:#FFFFFF;--gold:#F59E0B;--green:#10B981;
       --w:1200px;--r:16px;
       --shadow:0 4px 24px rgba(0,0,0,.06);--shadow-lg:0 16px 48px rgba(0,0,0,.10);
       --pad:clamp(1.25rem,5vw,3rem);
+      /* iPhone safe area */
+      --sat:env(safe-area-inset-top);
+      --sab:env(safe-area-inset-bottom);
+      --sal:env(safe-area-inset-left);
+      --sar:env(safe-area-inset-right);
     }
     html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
-    body{font-family:'Pretendard Variable',-apple-system,sans-serif;background:var(--white);color:var(--text);line-height:1.75;word-break:keep-all}
-    .wrap{max-width:var(--w);margin:0 auto;padding:0 var(--pad)}
+    body{
+      font-family:'Pretendard Variable',-apple-system,sans-serif;
+      background:var(--white);color:var(--text);line-height:1.75;word-break:keep-all;
+      /* prevent horizontal overflow on mobile */
+      overflow-x:hidden;
+    }
+    /* Safe-area-aware horizontal padding */
+    .wrap{
+      max-width:var(--w);margin:0 auto;
+      padding-left:max(var(--pad), env(safe-area-inset-left));
+      padding-right:max(var(--pad), env(safe-area-inset-right));
+    }
     a{color:inherit;text-decoration:none;transition:.2s}
 
     /* GRADIENT TEXT */
     .g-text{background:linear-gradient(135deg,#0066FF,#7C3AED);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
 
     /* SCROLL FADE */
-    .fade-up{opacity:0;transform:translateY(28px);transition:opacity .65s ease,transform .65s ease}
-    .fade-up.visible{opacity:1;transform:translateY(0)}
+    .fade-up{opacity:0;transform:translateY(24px);transition:opacity .6s ease,transform .6s ease}
+    .fade-up.visible{opacity:1;transform:none}
     .d1{transition-delay:.1s}.d2{transition-delay:.2s}.d3{transition-delay:.3s}.d4{transition-delay:.4s}
 
-    /* NAV */
-    nav{position:sticky;top:0;z-index:1000;background:rgba(255,255,255,.88);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid var(--border);height:72px;display:flex;align-items:center}
-    .nav-inner{max-width:var(--w);margin:0 auto;width:100%;display:flex;align-items:center;padding:0 var(--pad)}
+    /* ── NAV ── */
+    /* Account for Dynamic Island / notch with safe-area-inset-top */
+    nav{
+      position:sticky;top:0;z-index:1000;
+      background:rgba(255,255,255,.92);
+      backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
+      border-bottom:1px solid var(--border);
+      /* Height = base + safe area top */
+      height:calc(72px + env(safe-area-inset-top));
+      /* Push content below safe area */
+      padding-top:env(safe-area-inset-top);
+      display:flex;align-items:flex-end;
+    }
+    .nav-inner{
+      max-width:var(--w);margin:0 auto;width:100%;
+      display:flex;align-items:center;
+      padding:0 max(var(--pad), env(safe-area-inset-left));
+      padding-right:max(var(--pad), env(safe-area-inset-right));
+      height:72px;
+    }
     .logo{font:800 1.45rem 'Inter';letter-spacing:-.04em;color:var(--navy);z-index:1001}
     .logo em{font-style:normal;color:var(--blue)}
     .nav-links{display:flex;gap:2rem;margin-left:auto;align-items:center}
     .nav-links a{font-size:.9rem;font-weight:600;color:#374151}
     .nav-links a:hover{color:var(--blue)}
-    .nav-cta{background:var(--blue);color:white!important;padding:.6rem 1.4rem;border-radius:8px;font-weight:700;font-size:.85rem;margin-left:.5rem;transition:background .2s,transform .2s}
-    .nav-cta:hover{background:var(--blue-dk);transform:translateY(-1px)}
-    .menu-toggle{display:none;width:28px;height:22px;position:relative;background:none;border:none;cursor:pointer;z-index:1001;margin-left:auto}
+    .nav-cta{background:var(--blue);color:white!important;padding:.6rem 1.4rem;border-radius:8px;font-weight:700;font-size:.85rem;margin-left:.5rem}
+    .nav-cta:hover{background:var(--blue-dk)}
+    .menu-toggle{display:none;width:28px;height:22px;position:relative;background:none;border:none;cursor:pointer;z-index:1001;margin-left:auto;flex-shrink:0}
     .menu-toggle span{display:block;width:100%;height:2px;background:var(--navy);position:absolute;transition:.3s}
     .menu-toggle span:nth-child(1){top:0}
     .menu-toggle span:nth-child(2){top:50%;transform:translateY(-50%)}
@@ -49,48 +81,80 @@
     .menu-toggle.active span:nth-child(2){opacity:0}
     .menu-toggle.active span:nth-child(3){transform:rotate(-45deg);bottom:42%}
 
-    /* HERO */
-    #hero{padding:96px 0 72px;background:linear-gradient(150deg,#EDF2FF 0%,#F3EEFF 50%,#FFF 100%);overflow:hidden}
+    /* ── HERO ── */
+    #hero{
+      padding:clamp(48px,10vw,96px) 0 clamp(36px,8vw,72px);
+      background:linear-gradient(150deg,#EDF2FF 0%,#F3EEFF 50%,#FFF 100%);
+      overflow:hidden;
+    }
     .hero-inner{display:grid;grid-template-columns:1fr 1fr;gap:3.5rem;align-items:center}
-    .hero-pill{display:inline-flex;align-items:center;gap:.5rem;padding:.42rem 1.1rem;border-radius:99px;background:white;color:var(--blue);font:700 .77rem 'Inter';margin-bottom:1.6rem;box-shadow:0 2px 12px rgba(0,102,255,.12);border:1px solid rgba(0,102,255,.18)}
+    .hero-pill{
+      display:inline-flex;align-items:center;gap:.5rem;
+      padding:.4rem 1rem;border-radius:99px;
+      background:white;color:var(--blue);font:700 .75rem 'Inter';
+      margin-bottom:clamp(.8rem,3vw,1.6rem);
+      box-shadow:0 2px 12px rgba(0,102,255,.12);border:1px solid rgba(0,102,255,.18);
+    }
     .hero-pill .dot{width:7px;height:7px;border-radius:50%;background:var(--blue);animation:blink 2s infinite}
     @keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
-    h1{font:800 clamp(2rem,5.2vw,3.6rem) 'Pretendard Variable';line-height:1.22;letter-spacing:-.04em;margin-bottom:1.4rem;color:var(--navy)}
-    .hero-desc{font-size:1.02rem;color:var(--muted);margin-bottom:2.2rem;font-weight:500;line-height:1.75}
+
+    h1{
+      font:800 clamp(1.9rem,5.2vw,3.6rem) 'Pretendard Variable';
+      line-height:1.22;letter-spacing:-.04em;
+      margin-bottom:clamp(.9rem,3vw,1.4rem);color:var(--navy);
+    }
+    .hero-desc{
+      font-size:clamp(.9rem,2.5vw,1.02rem);color:var(--muted);
+      margin-bottom:clamp(1.4rem,4vw,2.2rem);font-weight:500;line-height:1.75;
+    }
     .btns{display:flex;flex-wrap:wrap;gap:.6rem}
-    .btn{display:inline-flex;align-items:center;gap:.5rem;padding:.85rem 1.7rem;border-radius:12px;font-weight:700;transition:.3s;font-size:.9rem}
+    .btn{display:inline-flex;align-items:center;gap:.5rem;padding:.82rem 1.6rem;border-radius:12px;font-weight:700;transition:.3s;font-size:.88rem}
     .btn-solid{background:var(--blue);color:white;box-shadow:0 6px 20px rgba(0,102,255,.28)}
     .btn-solid:hover{transform:translateY(-2px);box-shadow:0 10px 30px rgba(0,102,255,.4)}
     .btn-outline{border:1.5px solid var(--border);background:white;color:var(--navy)}
     .btn-outline:hover{border-color:var(--blue);color:var(--blue)}
 
     /* HERO DIAGRAM */
-    .hero-diagram{background:white;border-radius:24px;padding:2.2rem;box-shadow:0 20px 60px rgba(0,0,0,.09);border:1px solid var(--border)}
-    .diagram-label{font:700 .7rem 'Inter';color:var(--muted);text-transform:uppercase;letter-spacing:.12em;margin-bottom:1.4rem;text-align:center}
-    .diagram-nodes{display:flex;align-items:center;margin-bottom:1.6rem}
-    .d-node{flex:1;background:#F8FAFC;border:1px solid var(--border);border-radius:14px;padding:1.1rem .8rem;text-align:center;transition:.3s}
+    .hero-diagram{
+      background:white;border-radius:24px;
+      padding:clamp(1.4rem,4vw,2.2rem);
+      box-shadow:0 20px 60px rgba(0,0,0,.09);border:1px solid var(--border);
+    }
+    .diagram-label{font:700 .68rem 'Inter';color:var(--muted);text-transform:uppercase;letter-spacing:.12em;margin-bottom:1.2rem;text-align:center}
+    .diagram-nodes{display:flex;align-items:center;margin-bottom:1.4rem}
+    .d-node{
+      flex:1;background:#F8FAFC;border:1px solid var(--border);border-radius:12px;
+      padding:clamp(.7rem,2vw,1.1rem) .7rem;text-align:center;transition:.3s;min-width:0;
+    }
     .d-node:hover{border-color:var(--blue);box-shadow:0 4px 16px rgba(0,102,255,.1)}
     .d-node.ko{border-top:3px solid var(--blue)}
     .d-node.da{border-top:3px solid var(--gold)}
-    .d-node .icon{font-size:1.8rem;margin-bottom:.4rem;display:block}
-    .d-node .role{font:800 .92rem 'Inter';color:var(--navy)}
-    .d-node .sub{font-size:.7rem;color:var(--muted);margin-top:.15rem}
-    .d-conn{flex:1;position:relative;height:2px;margin:0 .8rem;overflow:hidden}
+    .d-node .icon{font-size:clamp(1.3rem,4vw,1.8rem);margin-bottom:.3rem;display:block}
+    .d-node .role{font:800 clamp(.78rem,2.5vw,.92rem) 'Inter';color:var(--navy)}
+    .d-node .sub{font-size:clamp(.6rem,1.8vw,.7rem);color:var(--muted);margin-top:.12rem}
+    .d-conn{flex:1;position:relative;height:2px;margin:0 .5rem;overflow:hidden;min-width:20px}
     .d-conn-bg{position:absolute;inset:0;background:linear-gradient(to right,#E2E8F0,var(--blue) 30%,var(--violet) 70%,#E2E8F0)}
     .d-conn-shine{position:absolute;top:0;left:-60%;width:60%;height:100%;background:linear-gradient(to right,transparent,rgba(255,255,255,.9),transparent);animation:flowR 2s linear infinite}
     .d-conn-shine.rev{animation:flowR 2s linear infinite reverse}
     @keyframes flowR{to{left:120%}}
-    .d-ai{flex-shrink:0;width:68px;height:68px;border-radius:50%;background:linear-gradient(135deg,var(--blue),var(--violet));display:flex;flex-direction:column;align-items:center;justify-content:center;color:white;box-shadow:0 8px 24px rgba(0,102,255,.35);animation:pulse 3s ease-in-out infinite}
-    .d-ai .al{font:800 1rem 'Inter';line-height:1}
-    .d-ai .as{font-size:.58rem;opacity:.85;margin-top:2px;letter-spacing:.04em}
+    .d-ai{
+      flex-shrink:0;width:clamp(52px,12vw,68px);height:clamp(52px,12vw,68px);
+      border-radius:50%;background:linear-gradient(135deg,var(--blue),var(--violet));
+      display:flex;flex-direction:column;align-items:center;justify-content:center;
+      color:white;box-shadow:0 8px 24px rgba(0,102,255,.35);animation:pulse 3s ease-in-out infinite;
+    }
+    .d-ai .al{font:800 clamp(.82rem,2.5vw,1rem) 'Inter';line-height:1}
+    .d-ai .as{font-size:clamp(.5rem,1.5vw,.58rem);opacity:.85;margin-top:2px;letter-spacing:.04em}
     @keyframes pulse{0%,100%{box-shadow:0 8px 24px rgba(0,102,255,.35)}50%{box-shadow:0 12px 40px rgba(124,58,237,.5)}}
-    .hero-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:.8rem}
-    .stat-arc{background:var(--bg);border-radius:14px;padding:1.1rem .8rem;text-align:center;border:1px solid var(--border)}
-    .arc-svg{width:76px;height:76px;margin:0 auto .5rem;display:block;overflow:visible}
+
+    /* Arc stat charts */
+    .hero-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(.4rem,1.5vw,.8rem)}
+    .stat-arc{background:var(--bg);border-radius:12px;padding:clamp(.7rem,2.5vw,1.1rem) .6rem;text-align:center;border:1px solid var(--border)}
+    .arc-svg{width:clamp(58px,15vw,76px);height:clamp(58px,15vw,76px);margin:0 auto .4rem;display:block;overflow:visible}
     .arc-track{fill:none;stroke:#E2E8F0;stroke-width:7}
     .arc-fill{fill:none;stroke-width:7;stroke-linecap:round;transition:stroke-dashoffset 1.5s cubic-bezier(.4,0,.2,1)}
-    .arc-txt{font:800 .95rem 'Inter';fill:var(--navy);text-anchor:middle;dominant-baseline:central}
-    .stat-lbl{font-size:.72rem;color:var(--muted);font-weight:600;line-height:1.45}
+    .arc-txt{font:800 clamp(.8rem,2.5vw,.95rem) 'Inter';fill:var(--navy);text-anchor:middle;dominant-baseline:central}
+    .stat-lbl{font-size:clamp(.62rem,1.8vw,.72rem);color:var(--muted);font-weight:600;line-height:1.4}
 
     /* TICKER */
     .ticker{background:#F1F5F9;overflow:hidden;padding:.85rem 0;border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
@@ -101,254 +165,307 @@
     .tb-kr{background:var(--blue)}.tb-jp{background:#E63946}
 
     /* SECTIONS */
-    .section{padding:clamp(4rem,10vw,96px) 0}
+    .section{padding:clamp(3rem,8vw,96px) 0}
     .section-alt{background:var(--bg)}
     .eyebrow{color:var(--blue);font-weight:800;font-size:.78rem;margin-bottom:1rem;display:block;text-transform:uppercase;letter-spacing:.15em}
-    .sec-title{font:800 clamp(1.75rem,4.5vw,2.75rem) 'Pretendard Variable';color:var(--navy);margin-bottom:1.1rem;letter-spacing:-.03em}
-    .sec-sub{font-size:.98rem;color:var(--muted);max-width:620px;margin-bottom:3rem}
+    .sec-title{font:800 clamp(1.6rem,4.5vw,2.75rem) 'Pretendard Variable';color:var(--navy);margin-bottom:1rem;letter-spacing:-.03em}
+    .sec-sub{font-size:clamp(.9rem,2.5vw,.98rem);color:var(--muted);max-width:620px;margin-bottom:2.5rem}
 
     /* ROLES */
-    .roles-grid{display:grid;grid-template-columns:1fr 1fr;gap:2rem}
-    .role-card{background:white;border-radius:20px;padding:clamp(1.5rem,4vw,3rem);box-shadow:var(--shadow);border:1px solid rgba(0,0,0,.04);transition:.4s cubic-bezier(.165,.84,.44,1)}
-    .role-card:hover{transform:translateY(-8px);box-shadow:var(--shadow-lg)}
+    .roles-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem}
+    .role-card{background:white;border-radius:20px;padding:clamp(1.4rem,4vw,3rem);box-shadow:var(--shadow);border:1px solid rgba(0,0,0,.04);transition:.4s cubic-bezier(.165,.84,.44,1)}
+    .role-card:hover{transform:translateY(-6px);box-shadow:var(--shadow-lg)}
     .role-card.ko{border-top:5px solid var(--blue)}
     .role-card.da{border-top:5px solid var(--gold)}
-    .role-badge{display:inline-block;font:700 .7rem 'Inter';padding:.28rem .9rem;border-radius:4px;margin-bottom:1.1rem;background:#F1F5F9;color:#475569}
-    .role-title{font:800 1.9rem 'Pretendard Variable';margin-bottom:.3rem;color:var(--navy)}
-    .role-sub-en{font:600 .8rem 'Inter';color:var(--blue);margin-bottom:1.1rem}
-    .role-desc{font-size:.92rem;color:var(--muted);margin-bottom:1.8rem}
-    .role-tags{display:flex;flex-wrap:wrap;gap:.45rem;margin-bottom:1.8rem}
-    .tag{font:600 .7rem 'Inter';padding:.3rem .72rem;border-radius:6px;background:#F8FAFC;border:1px solid var(--border);color:#374151}
-    .kpi-row{display:grid;grid-template-columns:1fr 1fr;gap:.8rem}
-    .kpi-box{background:#F8FAFC;border-radius:12px;padding:1.1rem;text-align:center}
-    .kpi-val{font:800 1.9rem 'Inter';letter-spacing:-.05em}
+    .role-badge{display:inline-block;font:700 .7rem 'Inter';padding:.28rem .9rem;border-radius:4px;margin-bottom:1rem;background:#F1F5F9;color:#475569}
+    .role-title{font:800 1.8rem 'Pretendard Variable';margin-bottom:.3rem;color:var(--navy)}
+    .role-sub-en{font:600 .8rem 'Inter';color:var(--blue);margin-bottom:1rem}
+    .role-desc{font-size:.9rem;color:var(--muted);margin-bottom:1.6rem}
+    .role-tags{display:flex;flex-wrap:wrap;gap:.4rem;margin-bottom:1.6rem}
+    .tag{font:600 .7rem 'Inter';padding:.28rem .7rem;border-radius:6px;background:#F8FAFC;border:1px solid var(--border);color:#374151}
+    .kpi-row{display:grid;grid-template-columns:1fr 1fr;gap:.7rem}
+    .kpi-box{background:#F8FAFC;border-radius:12px;padding:1rem;text-align:center}
+    .kpi-val{font:800 1.8rem 'Inter';letter-spacing:-.05em}
     .ko .kpi-val{color:var(--blue)}.da .kpi-val{color:var(--gold)}
-    .kpi-key{font-size:.74rem;color:var(--muted);font-weight:600;margin-top:.2rem}
+    .kpi-key{font-size:.72rem;color:var(--muted);font-weight:600;margin-top:.2rem}
 
     /* GUIDE */
-    .guide-page{padding:clamp(3.5rem,9vw,96px) 0;border-top:1px solid var(--border)}
-    .guide-header{display:flex;align-items:flex-start;gap:1.4rem;margin-bottom:2.2rem;flex-wrap:wrap}
-    .guide-icon-box{width:56px;height:56px;border-radius:14px;background:white;display:flex;align-items:center;justify-content:center;font-size:1.7rem;box-shadow:var(--shadow);flex-shrink:0}
-    .guide-title{font:800 clamp(1.5rem,4vw,2.4rem) 'Pretendard Variable';color:var(--navy);letter-spacing:-.04em}
-    .guide-tagline{font-size:.96rem;font-weight:600;color:var(--blue);margin-top:.25rem}
-    .guide-oneliner{background:#EEF4FF;padding:1.6rem;border-radius:var(--r);margin-bottom:2.5rem;border-left:5px solid var(--blue)}
-    .guide-oneliner .ql{font:800 .7rem 'Inter';color:var(--blue);margin-bottom:.3rem;display:block;text-transform:uppercase;letter-spacing:.1em}
-    .guide-oneliner p{font-size:.96rem;font-weight:600;color:var(--navy)}
-    .mini-sec-title{font:800 1.05rem 'Pretendard Variable';color:var(--navy);display:flex;align-items:center;gap:.7rem;margin-bottom:1rem}
+    .guide-page{padding:clamp(3rem,8vw,96px) 0;border-top:1px solid var(--border)}
+    .guide-header{display:flex;align-items:flex-start;gap:1.2rem;margin-bottom:2rem;flex-wrap:wrap}
+    .guide-icon-box{width:52px;height:52px;border-radius:14px;background:white;display:flex;align-items:center;justify-content:center;font-size:1.6rem;box-shadow:var(--shadow);flex-shrink:0}
+    .guide-title{font:800 clamp(1.4rem,4vw,2.4rem) 'Pretendard Variable';color:var(--navy);letter-spacing:-.04em}
+    .guide-tagline{font-size:.94rem;font-weight:600;color:var(--blue);margin-top:.25rem}
+    .guide-oneliner{background:#EEF4FF;padding:1.5rem;border-radius:var(--r);margin-bottom:2rem;border-left:5px solid var(--blue)}
+    .guide-oneliner .ql{font:800 .68rem 'Inter';color:var(--blue);margin-bottom:.3rem;display:block;text-transform:uppercase;letter-spacing:.1em}
+    .guide-oneliner p{font-size:.94rem;font-weight:600;color:var(--navy)}
+    .mini-sec-title{font:800 1rem 'Pretendard Variable';color:var(--navy);display:flex;align-items:center;gap:.7rem;margin-bottom:.9rem}
     .mini-sec-title .bar{width:5px;height:17px;border-radius:10px;display:inline-block;flex-shrink:0;background:var(--blue)}
     .da-bg .mini-sec-title .bar{background:var(--gold)}
 
     /* FEAT GRID */
-    .feat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-bottom:2.5rem}
-    .feat-card{background:white;padding:1.4rem;border-radius:16px;box-shadow:var(--shadow);border:1px solid rgba(0,0,0,.04);transition:.3s}
-    .feat-card:hover{border-color:var(--blue);transform:translateY(-4px)}
+    .feat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:.9rem;margin-bottom:2rem}
+    .feat-card{background:white;padding:1.3rem;border-radius:14px;box-shadow:var(--shadow);border:1px solid rgba(0,0,0,.04);transition:.3s}
+    .feat-card:hover{border-color:var(--blue);transform:translateY(-3px)}
     .da-bg .feat-card:hover{border-color:var(--gold)}
-    .feat-icon{font-size:1.7rem;margin-bottom:.7rem;display:block}
-    .feat-title{font:700 .88rem 'Pretendard Variable';color:var(--navy);margin-bottom:.35rem}
-    .feat-desc{font-size:.8rem;color:var(--muted);line-height:1.55}
+    .feat-icon{font-size:1.6rem;margin-bottom:.6rem;display:block}
+    .feat-title{font:700 .85rem 'Pretendard Variable';color:var(--navy);margin-bottom:.3rem}
+    .feat-desc{font-size:.78rem;color:var(--muted);line-height:1.55}
 
     /* TOOL ECOSYSTEM MAP */
-    .eco-wrap{background:white;border-radius:20px;border:1px solid var(--border);padding:2rem;margin-bottom:2.5rem;overflow-x:auto}
-    .eco-label{font:700 .7rem 'Inter';color:var(--muted);text-transform:uppercase;letter-spacing:.12em;text-align:center;margin-bottom:1.5rem}
-    .eco-flow{display:flex;align-items:flex-start;gap:0;min-width:600px}
+    .eco-wrap{background:white;border-radius:18px;border:1px solid var(--border);padding:1.6rem clamp(1rem,3vw,1.6rem);margin-bottom:2rem;overflow-x:auto;-webkit-overflow-scrolling:touch}
+    .eco-label{font:700 .68rem 'Inter';color:var(--muted);text-transform:uppercase;letter-spacing:.12em;text-align:center;margin-bottom:1.3rem}
+    .eco-flow{display:flex;align-items:flex-start;gap:0;min-width:560px}
     .eco-stage{flex:1;text-align:center}
-    .eco-stage-head{padding:.5rem .8rem;border-radius:10px;margin-bottom:1rem;display:inline-block}
-    .eco-stage-head span{font:800 .72rem 'Inter';text-transform:uppercase;letter-spacing:.08em}
-    .eco-stage-head small{display:block;font-size:.65rem;font-weight:600;margin-top:1px;opacity:.75}
+    .eco-stage-head{padding:.45rem .7rem;border-radius:9px;margin-bottom:.9rem;display:inline-block}
+    .eco-stage-head span{font:800 .7rem 'Inter';text-transform:uppercase;letter-spacing:.06em}
+    .eco-stage-head small{display:block;font-size:.62rem;font-weight:600;margin-top:1px;opacity:.75}
     .es1 .eco-stage-head{background:#EEF4FF;color:var(--blue)}
     .es2 .eco-stage-head{background:#F3EEFF;color:var(--violet)}
     .es3 .eco-stage-head{background:#ECFDF5;color:var(--green)}
     .es4 .eco-stage-head{background:#FFFBEB;color:var(--gold)}
-    .eco-tools{display:flex;flex-direction:column;gap:.45rem;align-items:center}
-    .eco-tool{font:600 .72rem 'Inter';padding:.3rem .75rem;border-radius:20px;white-space:nowrap;border:1px solid}
+    .eco-tools{display:flex;flex-direction:column;gap:.4rem;align-items:center}
+    .eco-tool{font:600 .7rem 'Inter';padding:.28rem .7rem;border-radius:20px;white-space:nowrap;border:1px solid}
     .es1 .eco-tool{background:#EEF4FF;border-color:#BFDBFE;color:var(--blue)}
     .es2 .eco-tool{background:#F3EEFF;border-color:#DDD6FE;color:var(--violet)}
     .es3 .eco-tool{background:#ECFDF5;border-color:#A7F3D0;color:#065F46}
     .es4 .eco-tool{background:#FFFBEB;border-color:#FDE68A;color:#92400E}
-    .eco-arr{display:flex;align-items:flex-start;padding-top:2.2rem;color:#CBD5E1;font-size:1.2rem;flex-shrink:0;padding-left:.3rem;padding-right:.3rem}
+    .eco-arr{display:flex;align-items:flex-start;padding-top:2rem;color:#CBD5E1;font-size:1.1rem;flex-shrink:0;padding-left:.2rem;padding-right:.2rem}
 
-    /* GUIDE 2-COL */
-    .g-analogy{background:var(--navy);color:white;padding:2.2rem;border-radius:20px;margin-bottom:2.5rem;display:flex;gap:2rem;align-items:center;flex-wrap:wrap}
-    .analogy-emoji{font-size:2.8rem;flex-shrink:0}
-    .analogy-text strong{display:block;font-size:1.15rem;color:var(--cyan);margin-bottom:.45rem}
-    .analogy-text p{font-size:.92rem;opacity:.9;line-height:1.7}
-    .guide-2col{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;margin-bottom:2.5rem}
-    .g-card{background:white;padding:1.8rem;border-radius:var(--r);box-shadow:var(--shadow);border:1px solid rgba(0,0,0,.04)}
-    .g-card-title{font:800 1rem 'Pretendard Variable';color:var(--navy);margin-bottom:1.2rem;display:flex;align-items:center;gap:.7rem}
-    .g-card-title::before{content:'';width:5px;height:17px;background:var(--blue);border-radius:10px;flex-shrink:0}
+    /* ANALOGY + GUIDE 2COL */
+    .g-analogy{background:var(--navy);color:white;padding:2rem;border-radius:18px;margin-bottom:2rem;display:flex;gap:1.5rem;align-items:center;flex-wrap:wrap}
+    .analogy-emoji{font-size:2.5rem;flex-shrink:0}
+    .analogy-text strong{display:block;font-size:1.1rem;color:var(--cyan);margin-bottom:.4rem}
+    .analogy-text p{font-size:.9rem;opacity:.9;line-height:1.7}
+    .guide-2col{display:grid;grid-template-columns:1fr 1fr;gap:1.4rem;margin-bottom:2rem}
+    .g-card{background:white;padding:1.6rem;border-radius:var(--r);box-shadow:var(--shadow);border:1px solid rgba(0,0,0,.04)}
+    .g-card-title{font:800 .98rem 'Pretendard Variable';color:var(--navy);margin-bottom:1.1rem;display:flex;align-items:center;gap:.6rem}
+    .g-card-title::before{content:'';width:5px;height:16px;background:var(--blue);border-radius:10px;flex-shrink:0}
     .da-bg .g-card-title::before{background:var(--gold)}
-    .career-steps{display:grid;gap:.45rem}
-    .cs-item{display:flex;align-items:center;gap:1.1rem;padding:.8rem 1.1rem;border-radius:12px;background:#F8FAFC;border:1px solid var(--border);transition:.2s}
-    .cs-item.active{background:white;border-color:var(--blue);box-shadow:0 4px 15px rgba(0,102,255,.1)}
-    .da-bg .cs-item.active{border-color:var(--gold);box-shadow:0 4px 15px rgba(245,158,11,.12)}
-    .cs-level{font:800 .7rem 'Inter';color:var(--blue);width:26px}
+    .career-steps{display:grid;gap:.4rem}
+    .cs-item{display:flex;align-items:center;gap:1rem;padding:.75rem 1rem;border-radius:11px;background:#F8FAFC;border:1px solid var(--border);transition:.2s}
+    .cs-item.active{background:white;border-color:var(--blue);box-shadow:0 4px 14px rgba(0,102,255,.1)}
+    .da-bg .cs-item.active{border-color:var(--gold);box-shadow:0 4px 14px rgba(245,158,11,.12)}
+    .cs-level{font:800 .68rem 'Inter';color:var(--blue);width:24px}
     .da-bg .cs-level{color:var(--gold)}
-    .cs-title{font-weight:700;font-size:.83rem;color:var(--navy)}
+    .cs-title{font-weight:700;font-size:.81rem;color:var(--navy)}
 
     /* TOOLS GRID */
-    .tools-grid{display:grid;grid-template-columns:1fr 1fr;gap:.8rem}
-    .tool-card{background:#F8FAFC;padding:1rem 1.1rem;border-radius:12px;border:1px solid var(--border);display:flex;align-items:center;gap:.9rem;transition:.2s}
+    .tools-grid{display:grid;grid-template-columns:1fr 1fr;gap:.7rem}
+    .tool-card{background:#F8FAFC;padding:.9rem 1rem;border-radius:11px;border:1px solid var(--border);display:flex;align-items:center;gap:.8rem;transition:.2s}
     .tool-card:hover{border-color:var(--blue);background:white}
-    .tool-icon{font-size:1.4rem;flex-shrink:0}
-    .tool-name{font:700 .82rem 'Pretendard Variable';color:var(--navy)}
-    .tool-desc{font-size:.73rem;color:var(--muted);margin-top:.1rem}
-    .tool-badge{font:700 .58rem 'Inter';padding:1px 6px;border-radius:3px;background:var(--blue);color:white;margin-left:.4rem;vertical-align:middle}
+    .tool-icon{font-size:1.3rem;flex-shrink:0}
+    .tool-name{font:700 .8rem 'Pretendard Variable';color:var(--navy)}
+    .tool-desc{font-size:.7rem;color:var(--muted);margin-top:.08rem}
+    .tool-badge{font:700 .55rem 'Inter';padding:1px 5px;border-radius:3px;background:var(--blue);color:white;margin-left:.3rem;vertical-align:middle}
     .tool-badge.new{background:var(--green)}
 
     /* PIPELINE */
     .pipe-visual{display:flex;align-items:stretch;margin-top:2rem}
-    .pipe-step{flex:1;background:white;border:1px solid var(--border);border-radius:20px;padding:2rem 1.5rem;transition:.3s}
-    .pipe-step:hover{border-color:var(--blue);box-shadow:var(--shadow);transform:translateY(-5px)}
-    .pipe-conn{display:flex;align-items:center;justify-content:center;padding:0 .6rem;flex-shrink:0}
-    .pipe-arrow{width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,var(--blue),var(--violet));display:flex;align-items:center;justify-content:center;color:white;font-size:.8rem;flex-shrink:0}
-    .pipe-num{font:800 2.4rem 'Inter';letter-spacing:-.06em;margin-bottom:.4rem}
+    .pipe-step{flex:1;background:white;border:1px solid var(--border);border-radius:18px;padding:1.8rem 1.4rem;transition:.3s}
+    .pipe-step:hover{border-color:var(--blue);box-shadow:var(--shadow);transform:translateY(-4px)}
+    .pipe-conn{display:flex;align-items:center;justify-content:center;padding:0 .5rem;flex-shrink:0}
+    .pipe-arrow{width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,var(--blue),var(--violet));display:flex;align-items:center;justify-content:center;color:white;font-size:.78rem}
+    .pipe-num{font:800 2.2rem 'Inter';letter-spacing:-.06em;margin-bottom:.35rem}
     .p1{color:var(--blue)}.p2{color:var(--violet)}.p3{color:var(--green)}
-    .pipe-icon-lg{font-size:1.9rem;margin-bottom:.8rem;display:block}
-    .pipe-title{font:800 1.05rem 'Pretendard Variable';color:var(--navy);margin-bottom:.25rem}
-    .pipe-lead{font:700 .68rem 'Inter';color:var(--muted);text-transform:uppercase;letter-spacing:.1em;margin-bottom:1.1rem}
-    .pipe-chips{display:flex;flex-wrap:wrap;gap:.38rem}
-    .chip{font:600 .7rem 'Inter';padding:.28rem .65rem;border-radius:6px;background:#F1F5F9;color:#374151;border:1px solid var(--border)}
+    .pipe-icon-lg{font-size:1.8rem;margin-bottom:.7rem;display:block}
+    .pipe-title{font:800 1rem 'Pretendard Variable';color:var(--navy);margin-bottom:.2rem}
+    .pipe-lead{font:700 .65rem 'Inter';color:var(--muted);text-transform:uppercase;letter-spacing:.1em;margin-bottom:1rem}
+    .pipe-chips{display:flex;flex-wrap:wrap;gap:.35rem}
+    .chip{font:600 .68rem 'Inter';padding:.25rem .6rem;border-radius:6px;background:#F1F5F9;color:#374151;border:1px solid var(--border)}
 
-    /* BEFORE / AFTER */
-    .ba-section{margin-bottom:3.5rem}
-    .ba-grid{display:grid;grid-template-columns:1fr auto 1fr;gap:1.5rem;align-items:center;margin-top:2rem}
-    .ba-card{border-radius:20px;padding:2rem;border:1px solid var(--border)}
+    /* BEFORE/AFTER */
+    .ba-section{margin-bottom:3rem}
+    .ba-grid{display:grid;grid-template-columns:1fr auto 1fr;gap:1.5rem;align-items:center;margin-top:1.8rem}
+    .ba-card{border-radius:18px;padding:1.8rem;border:1px solid var(--border)}
     .ba-card.before{background:#FFF5F5;border-color:#FECACA}
     .ba-card.after{background:#F0FDF4;border-color:#BBF7D0}
-    .ba-head{display:flex;align-items:center;gap:.7rem;margin-bottom:1.5rem}
-    .ba-badge{font:800 .7rem 'Inter';padding:.28rem .9rem;border-radius:20px;text-transform:uppercase;letter-spacing:.08em}
+    .ba-head{display:flex;align-items:center;gap:.7rem;margin-bottom:1.3rem}
+    .ba-badge{font:800 .68rem 'Inter';padding:.25rem .85rem;border-radius:20px;text-transform:uppercase;letter-spacing:.08em}
     .before .ba-badge{background:#FEE2E2;color:#DC2626}
     .after .ba-badge{background:#DCFCE7;color:#16A34A}
-    .ba-title{font:800 1rem 'Pretendard Variable';color:var(--navy)}
-    .ba-metrics{display:grid;gap:.8rem}
-    .ba-metric{display:flex;align-items:center;gap:.8rem;padding:.8rem 1rem;background:white;border-radius:10px;border:1px solid var(--border)}
-    .ba-icon{font-size:1.2rem;flex-shrink:0}
-    .ba-label{font-size:.78rem;color:var(--muted);font-weight:600;flex:1}
-    .ba-val{font:800 .95rem 'Inter';color:var(--navy);white-space:nowrap}
+    .ba-title{font:800 .95rem 'Pretendard Variable';color:var(--navy)}
+    .ba-metrics{display:grid;gap:.7rem}
+    .ba-metric{display:flex;align-items:center;gap:.7rem;padding:.75rem .9rem;background:white;border-radius:10px;border:1px solid var(--border)}
+    .ba-icon{font-size:1.1rem;flex-shrink:0}
+    .ba-label{font-size:.76rem;color:var(--muted);font-weight:600;flex:1;min-width:0}
+    .ba-val{font:800 .9rem 'Inter';color:var(--navy);white-space:nowrap}
     .before .ba-val{color:#DC2626}
     .after .ba-val{color:#16A34A}
-    .ba-center{display:flex;flex-direction:column;align-items:center;gap:.6rem;flex-shrink:0}
-    .ba-arrow-circle{width:48px;height:48px;border-radius:50%;background:linear-gradient(135deg,var(--blue),var(--violet));display:flex;align-items:center;justify-content:center;color:white;font-size:1.2rem;box-shadow:0 4px 16px rgba(0,102,255,.3)}
-    .ba-center-label{font:700 .65rem 'Inter';color:var(--muted);text-transform:uppercase;letter-spacing:.08em;text-align:center}
+    .ba-center{display:flex;flex-direction:column;align-items:center;gap:.5rem;flex-shrink:0}
+    .ba-arrow-circle{width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,var(--blue),var(--violet));display:flex;align-items:center;justify-content:center;color:white;font-size:1.1rem;box-shadow:0 4px 14px rgba(0,102,255,.3)}
+    .ba-center-label{font:700 .62rem 'Inter';color:var(--muted);text-transform:uppercase;letter-spacing:.06em;text-align:center}
 
     /* SOLUTIONS */
     .sol-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem}
-    .sol-card{border-radius:20px;padding:clamp(1.8rem,5vw,3rem);color:white;position:relative}
+    .sol-card{border-radius:20px;padding:clamp(1.6rem,5vw,3rem);color:white;position:relative}
     .sol-card.flow{background:linear-gradient(135deg,#0055EE,#4F46E5)}
     .sol-card.anchor{background:linear-gradient(135deg,#0F172A,#1E293B)}
-    .sol-label{font:700 .7rem 'Inter';color:rgba(255,255,255,.6);text-transform:uppercase;letter-spacing:.1em;margin-bottom:.9rem;display:block}
-    .sol-title{font:800 clamp(1.5rem,3.5vw,2rem) 'Pretendard Variable';margin-bottom:.7rem;line-height:1.22}
-    .sol-sub{font-size:.95rem;opacity:.8;margin-bottom:2rem;font-weight:600}
-    .sol-items{display:grid;gap:1rem}
-    .sol-item{background:rgba(255,255,255,.1);border-radius:12px;padding:1.1rem 1.3rem;border:1px solid rgba(255,255,255,.1)}
-    .sol-item strong{display:block;font-size:.9rem;margin-bottom:.25rem;color:#93C5FD}
+    .sol-label{font:700 .68rem 'Inter';color:rgba(255,255,255,.6);text-transform:uppercase;letter-spacing:.1em;margin-bottom:.9rem;display:block}
+    .sol-title{font:800 clamp(1.4rem,3.5vw,2rem) 'Pretendard Variable';margin-bottom:.65rem;line-height:1.22}
+    .sol-sub{font-size:.92rem;opacity:.8;margin-bottom:1.8rem;font-weight:600}
+    .sol-items{display:grid;gap:.9rem}
+    .sol-item{background:rgba(255,255,255,.1);border-radius:12px;padding:1rem 1.2rem;border:1px solid rgba(255,255,255,.1)}
+    .sol-item strong{display:block;font-size:.88rem;margin-bottom:.22rem;color:#93C5FD}
     .sol-card.anchor .sol-item strong{color:var(--cyan)}
-    .sol-item p{font-size:.82rem;opacity:.85;line-height:1.6}
+    .sol-item p{font-size:.8rem;opacity:.85;line-height:1.6}
 
     /* ROADMAP */
     .roadmap{display:grid;grid-template-columns:repeat(4,1fr);gap:0;margin-top:2rem;position:relative}
-    .roadmap::before{content:'';position:absolute;top:36px;left:calc(12.5%);right:calc(12.5%);height:2px;background:linear-gradient(to right,var(--blue),var(--violet),var(--green));z-index:0}
-    .road-step{text-align:center;padding:0 .8rem;position:relative;z-index:1}
-    .road-num{width:48px;height:48px;border-radius:50%;display:flex;align-items:center;justify-content:center;font:800 1rem 'Inter';color:white;margin:0 auto 1.2rem;position:relative;box-shadow:0 4px 16px rgba(0,0,0,.15)}
+    .roadmap::before{content:'';position:absolute;top:36px;left:12.5%;right:12.5%;height:2px;background:linear-gradient(to right,var(--blue),var(--violet),var(--green));z-index:0}
+    .road-step{text-align:center;padding:0 .7rem;position:relative;z-index:1}
+    .road-num{width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;font:800 .95rem 'Inter';color:white;margin:0 auto 1.1rem;box-shadow:0 4px 14px rgba(0,0,0,.14)}
     .rn1{background:var(--blue)}.rn2{background:var(--violet)}.rn3{background:var(--green)}.rn4{background:var(--gold)}
-    .road-duration{font:700 .7rem 'Inter';color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:.4rem}
-    .road-title{font:800 1rem 'Pretendard Variable';color:var(--navy);margin-bottom:.8rem}
-    .road-body{background:white;border-radius:16px;padding:1.2rem;border:1px solid var(--border);text-align:left;box-shadow:var(--shadow)}
-    .road-task{font-size:.78rem;color:var(--muted);margin-bottom:.5rem;display:flex;gap:.5rem;align-items:flex-start;line-height:1.5}
-    .road-task::before{content:'·';font-weight:900;flex-shrink:0;margin-top:.1rem}
+    .road-duration{font:700 .68rem 'Inter';color:var(--muted);text-transform:uppercase;letter-spacing:.07em;margin-bottom:.35rem}
+    .road-title{font:800 .95rem 'Pretendard Variable';color:var(--navy);margin-bottom:.7rem}
+    .road-body{background:white;border-radius:14px;padding:1.1rem;border:1px solid var(--border);text-align:left;box-shadow:var(--shadow)}
+    .road-task{font-size:.76rem;color:var(--muted);margin-bottom:.45rem;display:flex;gap:.45rem;align-items:flex-start;line-height:1.5}
+    .road-task::before{content:'·';font-weight:900;flex-shrink:0}
     .rn1-task::before{color:var(--blue)}.rn2-task::before{color:var(--violet)}.rn3-task::before{color:var(--green)}.rn4-task::before{color:var(--gold)}
 
-    /* INDUSTRY SOLUTIONS */
-    .industry-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;margin-top:2rem}
-    .ind-card{background:white;border-radius:20px;padding:2rem;border:1px solid var(--border);box-shadow:var(--shadow);transition:.3s;position:relative;overflow:hidden}
+    /* INDUSTRY */
+    .industry-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.4rem;margin-top:1.8rem}
+    .ind-card{background:white;border-radius:18px;padding:1.8rem;border:1px solid var(--border);box-shadow:var(--shadow);transition:.3s;position:relative;overflow:hidden}
     .ind-card::before{content:'';position:absolute;top:0;left:0;right:0;height:4px}
     .ind-card:nth-child(1)::before{background:linear-gradient(to right,var(--blue),var(--violet))}
     .ind-card:nth-child(2)::before{background:linear-gradient(to right,var(--green),var(--cyan))}
     .ind-card:nth-child(3)::before{background:linear-gradient(to right,var(--gold),#EF4444)}
     .ind-card:nth-child(4)::before{background:linear-gradient(to right,var(--violet),#EC4899)}
-    .ind-card:hover{transform:translateY(-6px);box-shadow:var(--shadow-lg)}
-    .ind-top{display:flex;align-items:center;gap:1rem;margin-bottom:1.2rem}
-    .ind-icon{font-size:2.2rem}
-    .ind-name{font:800 1.1rem 'Pretendard Variable';color:var(--navy)}
-    .ind-cat{font:600 .72rem 'Inter';color:var(--muted);margin-top:.1rem}
-    .ind-pain{background:#FFF5F5;border-radius:10px;padding:.8rem 1rem;margin-bottom:.8rem;font-size:.8rem;color:#7F1D1D;border-left:3px solid #EF4444;line-height:1.5}
-    .ind-pain strong{display:block;font-size:.7rem;text-transform:uppercase;letter-spacing:.06em;margin-bottom:.2rem;opacity:.7}
-    .ind-benefit{background:#F0FDF4;border-radius:10px;padding:.8rem 1rem;font-size:.8rem;color:#14532D;border-left:3px solid var(--green);line-height:1.5}
-    .ind-benefit strong{display:block;font-size:.7rem;text-transform:uppercase;letter-spacing:.06em;margin-bottom:.2rem;opacity:.7}
-    .ind-kpis{display:flex;gap:.6rem;margin-top:1rem;flex-wrap:wrap}
-    .ind-kpi{font:700 .7rem 'Inter';padding:.25rem .7rem;border-radius:20px;background:var(--bg);border:1px solid var(--border);color:var(--navy)}
+    .ind-card:hover{transform:translateY(-5px);box-shadow:var(--shadow-lg)}
+    .ind-top{display:flex;align-items:center;gap:.9rem;margin-bottom:1.1rem}
+    .ind-icon{font-size:2rem}
+    .ind-name{font:800 1.05rem 'Pretendard Variable';color:var(--navy)}
+    .ind-cat{font:600 .7rem 'Inter';color:var(--muted);margin-top:.1rem}
+    .ind-pain{background:#FFF5F5;border-radius:10px;padding:.75rem .9rem;margin-bottom:.7rem;font-size:.78rem;color:#7F1D1D;border-left:3px solid #EF4444;line-height:1.55}
+    .ind-pain strong{display:block;font-size:.65rem;text-transform:uppercase;letter-spacing:.06em;margin-bottom:.18rem;opacity:.65}
+    .ind-benefit{background:#F0FDF4;border-radius:10px;padding:.75rem .9rem;font-size:.78rem;color:#14532D;border-left:3px solid var(--green);line-height:1.55}
+    .ind-benefit strong{display:block;font-size:.65rem;text-transform:uppercase;letter-spacing:.06em;margin-bottom:.18rem;opacity:.65}
+    .ind-kpis{display:flex;gap:.5rem;margin-top:.9rem;flex-wrap:wrap}
+    .ind-kpi{font:700 .68rem 'Inter';padding:.22rem .65rem;border-radius:20px;background:var(--bg);border:1px solid var(--border);color:var(--navy)}
 
     /* PILLARS */
-    .pillars-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem}
-    .pillar{background:white;border:1px solid var(--border);border-radius:20px;padding:clamp(1.8rem,4vw,2.8rem);display:flex;flex-direction:column;transition:.3s}
+    .pillars-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.4rem}
+    .pillar{background:white;border:1px solid var(--border);border-radius:18px;padding:clamp(1.6rem,4vw,2.8rem);display:flex;flex-direction:column;transition:.3s}
     .pillar:hover{box-shadow:var(--shadow-lg);border-color:var(--blue)}
-    .pillar-num{font:800 .7rem 'Inter';color:var(--blue);margin-bottom:.7rem}
-    .pillar-title{font:800 1.3rem 'Pretendard Variable';color:var(--navy);margin-bottom:.9rem}
-    .pillar-desc{font-size:.88rem;color:var(--muted);margin-bottom:1.3rem}
-    .pillar-points{list-style:none;margin-bottom:1.4rem}
-    .pillar-points li{font-size:.85rem;color:#374151;margin-bottom:.65rem;display:flex;gap:.55rem}
+    .pillar-num{font:800 .68rem 'Inter';color:var(--blue);margin-bottom:.65rem}
+    .pillar-title{font:800 1.2rem 'Pretendard Variable';color:var(--navy);margin-bottom:.85rem}
+    .pillar-desc{font-size:.86rem;color:var(--muted);margin-bottom:1.2rem}
+    .pillar-points{list-style:none;margin-bottom:1.3rem}
+    .pillar-points li{font-size:.83rem;color:#374151;margin-bottom:.6rem;display:flex;gap:.5rem}
     .pillar-points li::before{content:'→';color:var(--blue);font-weight:800;flex-shrink:0}
-    .pillar-ring{margin-top:auto;padding-top:1.3rem;border-top:1px solid var(--border);display:flex;align-items:center;gap:1.3rem}
-    .ring-wrap{position:relative;width:68px;height:68px;flex-shrink:0}
-    .ring-svg{width:68px;height:68px;transform:rotate(-90deg)}
+    .pillar-ring{margin-top:auto;padding-top:1.2rem;border-top:1px solid var(--border);display:flex;align-items:center;gap:1.2rem}
+    .ring-wrap{position:relative;width:64px;height:64px;flex-shrink:0}
+    .ring-svg{width:64px;height:64px;transform:rotate(-90deg)}
     .ring-track{fill:none;stroke:#E2E8F0;stroke-width:6}
     .ring-fill{fill:none;stroke-width:6;stroke-linecap:round;transition:stroke-dashoffset 1.4s cubic-bezier(.4,0,.2,1)}
     .ring-center{position:absolute;inset:0;display:flex;align-items:center;justify-content:center}
-    .ring-center .rv{font:800 .88rem 'Inter';color:var(--navy)}
-    .ring-label{flex:1}
-    .ring-label .rl-num{font:800 1.7rem 'Inter';color:var(--blue);letter-spacing:-.04em}
-    .ring-label .rl-text{font-size:.75rem;color:var(--muted);font-weight:600;line-height:1.45;margin-top:.1rem}
+    .ring-center .rv{font:800 .85rem 'Inter';color:var(--navy)}
+    .ring-label .rl-num{font:800 1.6rem 'Inter';color:var(--blue);letter-spacing:-.04em}
+    .ring-label .rl-text{font-size:.73rem;color:var(--muted);font-weight:600;line-height:1.45;margin-top:.1rem}
 
     /* STANDARDS */
-    .std-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem}
-    .std-card{background:white;border:1px solid var(--border);padding:1.4rem;border-radius:14px;transition:.3s}
-    .std-card:hover{transform:translateY(-4px);border-color:var(--blue);box-shadow:var(--shadow)}
-    .std-icon{font-size:1.7rem;margin-bottom:.7rem;display:block}
-    .std-abbr{font:800 1rem 'Inter';color:var(--navy)}
-    .std-iso{font:700 .62rem 'Inter';color:var(--blue);display:block;margin:.2rem 0 .55rem}
-    .std-desc{font-size:.77rem;color:var(--muted);line-height:1.5}
+    .std-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:.9rem}
+    .std-card{background:white;border:1px solid var(--border);padding:1.3rem;border-radius:14px;transition:.3s}
+    .std-card:hover{transform:translateY(-3px);border-color:var(--blue);box-shadow:var(--shadow)}
+    .std-icon{font-size:1.6rem;margin-bottom:.6rem;display:block}
+    .std-abbr{font:800 .95rem 'Inter';color:var(--navy)}
+    .std-iso{font:700 .6rem 'Inter';color:var(--blue);display:block;margin:.18rem 0 .5rem}
+    .std-desc{font-size:.75rem;color:var(--muted);line-height:1.5}
 
     /* CTA */
-    #cta{padding:clamp(4.5rem,12vw,112px) 0;background:linear-gradient(135deg,#003FCC 0%,#0066FF 45%,#7C3AED 100%);color:white;text-align:center;position:relative;overflow:hidden}
+    #cta{
+      padding:clamp(4rem,12vw,112px) 0 calc(clamp(4rem,12vw,112px) + env(safe-area-inset-bottom));
+      background:linear-gradient(135deg,#003FCC 0%,#0066FF 45%,#7C3AED 100%);
+      color:white;text-align:center;position:relative;overflow:hidden;
+    }
     #cta::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 25% 50%,rgba(255,255,255,.1),transparent 60%)}
-    .cta-badge{display:inline-block;padding:.38rem 1.1rem;border-radius:99px;background:rgba(255,255,255,.15);font:700 .7rem 'Inter';margin-bottom:1.6rem;backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.2)}
-    .cta-title{font:800 clamp(2rem,7vw,3.6rem) 'Pretendard Variable';margin-bottom:1.4rem;letter-spacing:-.04em;position:relative}
-    .cta-desc{font-size:1.05rem;opacity:.9;margin-bottom:2.8rem;position:relative}
-    .cta-btn{background:white;color:var(--blue);padding:1rem 2.6rem;font-size:.98rem;border-radius:14px;font-weight:800;border:none;cursor:pointer;transition:.3s;display:inline-block;position:relative}
+    .cta-badge{display:inline-block;padding:.36rem 1rem;border-radius:99px;background:rgba(255,255,255,.15);font:700 .68rem 'Inter';margin-bottom:1.5rem;backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.2)}
+    .cta-title{font:800 clamp(1.9rem,7vw,3.6rem) 'Pretendard Variable';margin-bottom:1.3rem;letter-spacing:-.04em;position:relative}
+    .cta-desc{font-size:clamp(.95rem,2.5vw,1.05rem);opacity:.9;margin-bottom:2.5rem;position:relative}
+    .cta-btn{background:white;color:var(--blue);padding:.95rem 2.4rem;font-size:.95rem;border-radius:14px;font-weight:800;border:none;cursor:pointer;transition:.3s;display:inline-block;position:relative}
     .cta-btn:hover{transform:translateY(-2px);box-shadow:0 12px 40px rgba(0,0,0,.2)}
 
     /* FOOTER */
-    footer{padding:48px 0;background:var(--bg);border-top:1px solid var(--border)}
-    .ft-logo{font:800 1.2rem 'Inter';color:var(--navy);margin-bottom:.7rem;display:block}
-    .ft-copy{font-size:.8rem;color:#94A3B8;font-weight:500}
+    footer{
+      padding:40px 0 calc(40px + env(safe-area-inset-bottom));
+      background:var(--bg);border-top:1px solid var(--border);
+    }
+    .ft-logo{font:800 1.15rem 'Inter';color:var(--navy);margin-bottom:.6rem;display:block}
+    .ft-copy{font-size:.78rem;color:#94A3B8;font-weight:500}
 
-    /* RESPONSIVE */
+    /* ── TABLET (≤1024px) ── */
     @media(max-width:1024px){
-      nav{height:66px}
+      nav{height:calc(60px + env(safe-area-inset-top))}
+      .nav-inner{height:60px}
       .menu-toggle{display:block}
-      .hero-inner{grid-template-columns:1fr;gap:2.5rem}
+      .nav-links{
+        position:fixed;
+        top:calc(60px + env(safe-area-inset-top));
+        left:0;width:100%;height:0;
+        background:white;overflow:hidden;flex-direction:column;gap:0;
+        transition:.4s cubic-bezier(.4,0,.2,1);
+        box-shadow:0 10px 30px rgba(0,0,0,.08);border-top:1px solid var(--border);
+      }
+      .nav-links.active{height:auto;padding:1.2rem 0}
+      .nav-links a{
+        width:100%;padding:.95rem max(var(--pad),env(safe-area-inset-left));
+        border-bottom:1px solid #F8FAFC;font-size:.98rem;
+      }
+      .nav-cta{
+        margin:1rem max(var(--pad),env(safe-area-inset-left)) .7rem;
+        width:calc(100% - max(var(--pad),env(safe-area-inset-left))*2);
+        text-align:center;
+      }
+      /* hero collapses to 1 col */
+      .hero-inner{grid-template-columns:1fr;gap:2rem}
       .hero-diagram{max-width:480px;margin:0 auto}
-      .nav-links{position:fixed;top:66px;left:0;width:100%;height:0;background:white;overflow:hidden;flex-direction:column;gap:0;transition:.4s cubic-bezier(.4,0,.2,1);box-shadow:0 10px 30px rgba(0,0,0,.08);border-top:1px solid var(--border)}
-      .nav-links.active{height:auto;padding:1.4rem 0}
-      .nav-links a{width:100%;padding:1rem var(--pad);border-bottom:1px solid #F8FAFC;font-size:1rem}
-      .nav-cta{margin:1.1rem var(--pad) .8rem;width:calc(100% - var(--pad)*2);text-align:center}
       .roles-grid,.guide-2col,.sol-grid,.pillars-grid,.industry-grid{grid-template-columns:1fr}
       .feat-grid{grid-template-columns:1fr 1fr}
       .std-grid{grid-template-columns:1fr 1fr}
-      .pipe-visual{flex-direction:column}
-      .pipe-conn{height:36px}
+      .pipe-visual{flex-direction:column;gap:.8rem}
+      .pipe-conn{height:32px}
       .pipe-arrow{transform:rotate(90deg)}
       .tools-grid{grid-template-columns:1fr}
       .roadmap{grid-template-columns:1fr 1fr;gap:1.5rem}
       .roadmap::before{display:none}
-      .ba-grid{grid-template-columns:1fr;gap:1rem}
+      .ba-grid{grid-template-columns:1fr;gap:.9rem}
       .ba-center{flex-direction:row;justify-content:center}
     }
+
+    /* ── MOBILE (≤768px) ── */
+    @media(max-width:768px){
+      #hero{padding:36px 0 28px}
+      .hero-pill{margin-bottom:1rem;font-size:.72rem}
+      h1{margin-bottom:.85rem}
+      .hero-desc{margin-bottom:1.3rem}
+      .hero-diagram{padding:1.2rem 1rem}
+      .diagram-label{font-size:.65rem;margin-bottom:.9rem}
+      .diagram-nodes{margin-bottom:1.1rem}
+      .hero-stats{gap:.45rem}
+      .stat-arc{padding:.65rem .4rem}
+      .arc-txt{font-size:10.5px}
+      /* prevent feat-grid from going 1-col too early */
+      .feat-grid{grid-template-columns:1fr 1fr}
+      .guide-2col{grid-template-columns:1fr}
+      /* roadmap 1-col on phone */
+      .roadmap{grid-template-columns:1fr}
+    }
+
+    /* ── SMALL PHONE (≤480px) ── */
     @media(max-width:480px){
       .btn{width:100%;justify-content:center}
       .feat-grid{grid-template-columns:1fr}
       .std-grid{grid-template-columns:1fr 1fr}
-      .roadmap{grid-template-columns:1fr}
+      .kpi-row{grid-template-columns:1fr 1fr}
+      /* on very small, show 2-col stats still */
+      .hero-stats{grid-template-columns:repeat(3,1fr)}
+    }
+
+    /* ── TINY (≤360px) ── */
+    @media(max-width:360px){
+      h1{font-size:1.7rem}
+      .hero-stats{grid-template-columns:1fr 1fr}
+      .hero-stats .stat-arc:last-child{grid-column:1/-1;max-width:160px;margin:0 auto}
+      .feat-grid{grid-template-columns:1fr}
     }
   </style>
 </head>
@@ -380,8 +497,13 @@
     <div class="hero-inner">
       <div>
         <div class="hero-pill fade-up"><span class="dot"></span>Knowledge Intelligence Platform</div>
-        <h1 class="fade-up d1">흘러가는 지식을<br>자산으로.<br><span class="g-text">사라지는 기록을<br>영속으로.</span></h1>
-        <p class="hero-desc fade-up d2">협업 데이터의 실시간 흐름과 디지털 기록의 영구 보존을 하나의 인텔리전스 레이어로 연결합니다. Knowledge Officer와 Digital Archivist, 두 전문성의 융합을 제안합니다.</p>
+        <h1 class="fade-up d1">
+          흘러가는 지식을<br>자산으로.<br>
+          <span class="g-text">사라지는 기록을<br>영속으로.</span>
+        </h1>
+        <p class="hero-desc fade-up d2">
+          협업 데이터의 실시간 흐름과 디지털 기록의 영구 보존을 하나의 인텔리전스 레이어로 연결합니다. Knowledge Officer와 Digital Archivist, 두 전문성의 융합을 제안합니다.
+        </p>
         <div class="btns fade-up d3">
           <a href="#pipeline" class="btn btn-solid">아키텍처 보기 →</a>
           <a href="#roles" class="btn btn-outline">KO + DA 역할 상담</a>
@@ -395,7 +517,7 @@
             <div class="role">KO</div>
             <div class="sub">Knowledge Officer</div>
           </div>
-          <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:6px;padding:0 .5rem">
+          <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:5px;padding:0 .4rem">
             <div class="d-conn"><div class="d-conn-bg"></div><div class="d-conn-shine"></div></div>
             <div class="d-ai"><div class="al">AI</div><div class="as">ENGINE</div></div>
             <div class="d-conn"><div class="d-conn-bg"></div><div class="d-conn-shine rev"></div></div>
@@ -437,7 +559,6 @@
   </div>
 </section>
 
-<!-- TICKER -->
 <div class="ticker"><div class="ticker-track" id="ticker-track"></div></div>
 
 <!-- ROLES -->
@@ -496,7 +617,6 @@
       <span class="ql">Definition</span>
       <p>회사 안에 흩어진 <strong>지식·노하우·경험을 모아서 누구든 쉽게 쓸 수 있게 만드는 사람</strong>입니다. "어떤 지식을 어디에 둬야 가장 큰 가치를 낼 수 있을까?"를 설계합니다.</p>
     </div>
-
     <p class="mini-sec-title fade-up"><span class="bar"></span>왜 이 역할이 필요한가요?</p>
     <div class="feat-grid fade-up d1">
       <div class="feat-card"><span class="feat-icon">⏱️</span><div class="feat-title">시간 낭비</div><div class="feat-desc">직원 47%가 필요한 정보를 찾는 데 어려움을 겪습니다</div></div>
@@ -506,62 +626,26 @@
       <div class="feat-card"><span class="feat-icon">🤖</span><div class="feat-title">AI 오답</div><div class="feat-desc">지식 체계 없이는 AI가 엉뚱한 답변을 반복합니다</div></div>
       <div class="feat-card"><span class="feat-icon">📊</span><div class="feat-title">KPI 부재</div><div class="feat-desc">지식 자산의 가치를 수치로 측정·보고하지 못합니다</div></div>
     </div>
-
-    <!-- KO TOOL ECOSYSTEM MAP -->
     <p class="mini-sec-title fade-up"><span class="bar"></span>KO 도구 생태계 맵</p>
     <div class="eco-wrap fade-up d1">
       <p class="eco-label">Knowledge Officer Tool Stack — 수집에서 분석까지</p>
       <div class="eco-flow">
-        <div class="eco-stage es1">
-          <div class="eco-stage-head"><span>수집</span><small>Capture</small></div>
-          <div class="eco-tools">
-            <span class="eco-tool">Google Workspace</span>
-            <span class="eco-tool">Slack AI</span>
-            <span class="eco-tool">MS Teams AI</span>
-            <span class="eco-tool">Notion / Confluence</span>
-          </div>
-        </div>
+        <div class="eco-stage es1"><div class="eco-stage-head"><span>수집</span><small>Capture</small></div><div class="eco-tools"><span class="eco-tool">Google Workspace</span><span class="eco-tool">Slack AI</span><span class="eco-tool">MS Teams AI</span><span class="eco-tool">Notion / Confluence</span></div></div>
         <div class="eco-arr">›</div>
-        <div class="eco-stage es2">
-          <div class="eco-stage-head"><span>정제</span><small>Process</small></div>
-          <div class="eco-tools">
-            <span class="eco-tool">LlamaIndex</span>
-            <span class="eco-tool">LangChain</span>
-            <span class="eco-tool">Dublin Core</span>
-            <span class="eco-tool">NotebookLM</span>
-          </div>
-        </div>
+        <div class="eco-stage es2"><div class="eco-stage-head"><span>정제</span><small>Process</small></div><div class="eco-tools"><span class="eco-tool">LlamaIndex</span><span class="eco-tool">LangChain</span><span class="eco-tool">Dublin Core</span><span class="eco-tool">NotebookLM</span></div></div>
         <div class="eco-arr">›</div>
-        <div class="eco-stage es3">
-          <div class="eco-stage-head"><span>분석</span><small>Analyze</small></div>
-          <div class="eco-tools">
-            <span class="eco-tool">Pinecone / Weaviate</span>
-            <span class="eco-tool">GraphRAG</span>
-            <span class="eco-tool">Looker Studio</span>
-            <span class="eco-tool">Vertex AI</span>
-          </div>
-        </div>
+        <div class="eco-stage es3"><div class="eco-stage-head"><span>분석</span><small>Analyze</small></div><div class="eco-tools"><span class="eco-tool">Pinecone / Weaviate</span><span class="eco-tool">GraphRAG</span><span class="eco-tool">Looker Studio</span><span class="eco-tool">Vertex AI</span></div></div>
         <div class="eco-arr">›</div>
-        <div class="eco-stage es4">
-          <div class="eco-stage-head"><span>활용</span><small>Activate</small></div>
-          <div class="eco-tools">
-            <span class="eco-tool">Guru / Tettra</span>
-            <span class="eco-tool">Copilot / Claude</span>
-            <span class="eco-tool">API Gateway</span>
-            <span class="eco-tool">Dashboard</span>
-          </div>
-        </div>
+        <div class="eco-stage es4"><div class="eco-stage-head"><span>활용</span><small>Activate</small></div><div class="eco-tools"><span class="eco-tool">Guru / Tettra</span><span class="eco-tool">Copilot / Claude</span><span class="eco-tool">API Gateway</span><span class="eco-tool">Dashboard</span></div></div>
       </div>
     </div>
-
     <div class="g-analogy fade-up">
       <div class="analogy-emoji">🍳</div>
       <div class="analogy-text">
         <strong>셰프와 레시피 북에 비유하면</strong>
-        <p>요리를 잘하는 셰프(직원)는 있는데, 레시피가 셰프 머릿속에만 있으면 그 셰프가 자리를 비웠을 때 주방이 멈춥니다. KO는 모든 셰프의 노하우를 레시피 북으로 만들고, 누구나 맛있는 요리를 낼 수 있도록 합니다.</p>
+        <p>레시피가 셰프 머릿속에만 있으면 그 셰프가 자리를 비웠을 때 주방이 멈춥니다. KO는 모든 노하우를 레시피 북으로 만들어 누구나 맛있는 요리를 낼 수 있도록 합니다.</p>
       </div>
     </div>
-
     <div class="guide-2col fade-up">
       <div class="g-card">
         <div class="g-card-title">KO 커리어 성장 경로</div>
@@ -576,8 +660,8 @@
       <div class="g-card">
         <div class="g-card-title">주요 도구 상세</div>
         <div class="tools-grid">
-          <div class="tool-card"><span class="tool-icon">🗄️</span><div><div class="tool-name">Pinecone / Weaviate<span class="tool-badge new">2026</span></div><div class="tool-desc">벡터 DB — 시맨틱 검색 엔진 핵심</div></div></div>
-          <div class="tool-card"><span class="tool-icon">⛓️</span><div><div class="tool-name">LlamaIndex<span class="tool-badge new">2026</span></div><div class="tool-desc">RAG 파이프라인 구축 프레임워크</div></div></div>
+          <div class="tool-card"><span class="tool-icon">🗄️</span><div><div class="tool-name">Pinecone / Weaviate<span class="tool-badge new">2026</span></div><div class="tool-desc">벡터 DB — 시맨틱 검색 핵심</div></div></div>
+          <div class="tool-card"><span class="tool-icon">⛓️</span><div><div class="tool-name">LlamaIndex<span class="tool-badge new">2026</span></div><div class="tool-desc">RAG 파이프라인 프레임워크</div></div></div>
           <div class="tool-card"><span class="tool-icon">🤖</span><div><div class="tool-name">NotebookLM</div><div class="tool-desc">사내 문서 학습 AI 질의응답</div></div></div>
           <div class="tool-card"><span class="tool-icon">📊</span><div><div class="tool-name">Looker Studio</div><div class="tool-desc">지식 활용 현황 대시보드</div></div></div>
         </div>
@@ -601,7 +685,6 @@
       <span class="ql" style="color:#D97706">Definition</span>
       <p>회사의 중요한 디지털 기록이 <strong>10년 후에도, 50년 후에도 안전하게 열람·증명될 수 있도록 보존 체계를 설계하는 사람</strong>입니다. 박물관 큐레이터처럼 디지털 자산의 무결성을 지킵니다.</p>
     </div>
-
     <p class="mini-sec-title fade-up"><span class="bar" style="background:var(--gold)"></span>왜 이 역할이 필요한가요?</p>
     <div class="feat-grid fade-up d1">
       <div class="feat-card"><span class="feat-icon">☁️</span><div class="feat-title">클라우드 종료 위험</div><div class="feat-desc">서비스 종료 시에도 파일이 소멸되지 않도록 보호합니다</div></div>
@@ -611,62 +694,26 @@
       <div class="feat-card"><span class="feat-icon">🔒</span><div class="feat-title">무결성 보증</div><div class="feat-desc">기록이 단 1비트도 변조되지 않았음을 수학적으로 증명합니다</div></div>
       <div class="feat-card"><span class="feat-icon">🏛️</span><div class="feat-title">헤리티지 자산화</div><div class="feat-desc">기업 역사와 창업 철학을 디지털 자산으로 영구 보존합니다</div></div>
     </div>
-
-    <!-- DA TOOL ECOSYSTEM MAP -->
     <p class="mini-sec-title fade-up"><span class="bar" style="background:var(--gold)"></span>DA 도구 생태계 맵</p>
     <div class="eco-wrap fade-up d1">
       <p class="eco-label">Digital Archivist Tool Stack — 수집에서 영구 보존까지</p>
       <div class="eco-flow">
-        <div class="eco-stage es1">
-          <div class="eco-stage-head"><span>인입</span><small>Ingest</small></div>
-          <div class="eco-tools">
-            <span class="eco-tool">AWS S3 / GCS</span>
-            <span class="eco-tool">Preservica</span>
-            <span class="eco-tool">Archivematica</span>
-            <span class="eco-tool">DSpace</span>
-          </div>
-        </div>
+        <div class="eco-stage es1"><div class="eco-stage-head"><span>인입</span><small>Ingest</small></div><div class="eco-tools"><span class="eco-tool">AWS S3 / GCS</span><span class="eco-tool">Preservica</span><span class="eco-tool">Archivematica</span><span class="eco-tool">DSpace</span></div></div>
         <div class="eco-arr">›</div>
-        <div class="eco-stage es2">
-          <div class="eco-stage-head"><span>기술</span><small>Describe</small></div>
-          <div class="eco-tools">
-            <span class="eco-tool">Dublin Core</span>
-            <span class="eco-tool">JSON-LD</span>
-            <span class="eco-tool">Metadata Tools</span>
-            <span class="eco-tool">PREMIS</span>
-          </div>
-        </div>
+        <div class="eco-stage es2"><div class="eco-stage-head"><span>기술</span><small>Describe</small></div><div class="eco-tools"><span class="eco-tool">Dublin Core</span><span class="eco-tool">JSON-LD</span><span class="eco-tool">PREMIS</span><span class="eco-tool">Metadata Tools</span></div></div>
         <div class="eco-arr">›</div>
-        <div class="eco-stage es3">
-          <div class="eco-stage-head"><span>검증</span><small>Verify</small></div>
-          <div class="eco-tools">
-            <span class="eco-tool">OpenTimestamps</span>
-            <span class="eco-tool">HashiCorp Vault</span>
-            <span class="eco-tool">SHA-256 Hash</span>
-            <span class="eco-tool">Blockchain TS</span>
-          </div>
-        </div>
+        <div class="eco-stage es3"><div class="eco-stage-head"><span>검증</span><small>Verify</small></div><div class="eco-tools"><span class="eco-tool">OpenTimestamps</span><span class="eco-tool">HashiCorp Vault</span><span class="eco-tool">SHA-256 Hash</span><span class="eco-tool">Blockchain TS</span></div></div>
         <div class="eco-arr">›</div>
-        <div class="eco-stage es4">
-          <div class="eco-stage-head"><span>보존</span><small>Preserve</small></div>
-          <div class="eco-tools">
-            <span class="eco-tool">WORM / S3 Lock</span>
-            <span class="eco-tool">Filecoin / IPFS</span>
-            <span class="eco-tool">Backblaze B2</span>
-            <span class="eco-tool">PDF/A 변환</span>
-          </div>
-        </div>
+        <div class="eco-stage es4"><div class="eco-stage-head"><span>보존</span><small>Preserve</small></div><div class="eco-tools"><span class="eco-tool">WORM / S3 Lock</span><span class="eco-tool">Filecoin / IPFS</span><span class="eco-tool">Backblaze B2</span><span class="eco-tool">PDF/A 변환</span></div></div>
       </div>
     </div>
-
     <div class="g-analogy fade-up">
       <div class="analogy-emoji">🏛️</div>
       <div class="analogy-text">
         <strong>국립박물관 큐레이터에 비유하면</strong>
-        <p>유물을 그냥 쌓아두면 손상되듯, 디지털 파일도 관리 없이는 소멸합니다. DA는 디지털 세계의 큐레이터로, 파일의 손상·변조를 막고 100년 뒤에도 원본 그대로 꺼낼 수 있게 지킵니다.</p>
+        <p>유물을 그냥 쌓아두면 손상되듯, 디지털 파일도 관리 없이는 소멸합니다. DA는 파일의 손상·변조를 막고 100년 뒤에도 원본 그대로 꺼낼 수 있게 지킵니다.</p>
       </div>
     </div>
-
     <div class="guide-2col fade-up">
       <div class="g-card">
         <div class="g-card-title">DA 커리어 성장 경로</div>
@@ -681,10 +728,10 @@
       <div class="g-card">
         <div class="g-card-title">주요 도구 상세</div>
         <div class="tools-grid">
-          <div class="tool-card"><span class="tool-icon">⏱️</span><div><div class="tool-name">OpenTimestamps<span class="tool-badge new">2026</span></div><div class="tool-desc">블록체인 기반 무결성 타임스탬핑</div></div></div>
+          <div class="tool-card"><span class="tool-icon">⏱️</span><div><div class="tool-name">OpenTimestamps<span class="tool-badge new">2026</span></div><div class="tool-desc">블록체인 기반 타임스탬핑</div></div></div>
           <div class="tool-card"><span class="tool-icon">🌐</span><div><div class="tool-name">Filecoin / IPFS<span class="tool-badge new">2026</span></div><div class="tool-desc">탈중앙화 영구 분산 스토리지</div></div></div>
           <div class="tool-card"><span class="tool-icon">🔐</span><div><div class="tool-name">AWS S3 Object Lock</div><div class="tool-desc">WORM 위변조 방지 저장소</div></div></div>
-          <div class="tool-card"><span class="tool-icon">🏺</span><div><div class="tool-name">Preservica / Archivematica</div><div class="tool-desc">OAIS 표준 기반 보존 시스템</div></div></div>
+          <div class="tool-card"><span class="tool-icon">🏺</span><div><div class="tool-name">Preservica / Archivematica</div><div class="tool-desc">OAIS 표준 보존 시스템</div></div></div>
         </div>
       </div>
     </div>
@@ -703,10 +750,7 @@
         <span class="pipe-icon-lg">📥</span>
         <div class="pipe-title">Dynamic Ingestion</div>
         <div class="pipe-lead">데이터 인입 · KO 주도</div>
-        <div class="pipe-chips">
-          <span class="chip">Google Workspace</span><span class="chip">Slack AI</span>
-          <span class="chip">실시간 스트리밍</span><span class="chip">온톨로지 자동 분류</span><span class="chip">암묵지 정형화</span>
-        </div>
+        <div class="pipe-chips"><span class="chip">Google Workspace</span><span class="chip">Slack AI</span><span class="chip">실시간 스트리밍</span><span class="chip">온톨로지 자동 분류</span><span class="chip">암묵지 정형화</span></div>
       </div>
       <div class="pipe-conn"><div class="pipe-arrow">→</div></div>
       <div class="pipe-step">
@@ -714,10 +758,7 @@
         <span class="pipe-icon-lg">🔬</span>
         <div class="pipe-title">Semantic Reasoning</div>
         <div class="pipe-lead">의미 분석 · KO+DA 협업</div>
-        <div class="pipe-chips">
-          <span class="chip">GraphRAG</span><span class="chip">LlamaIndex</span>
-          <span class="chip">Pinecone 벡터 DB</span><span class="chip">Dublin Core 메타데이터</span><span class="chip">엔티티 관계망</span>
-        </div>
+        <div class="pipe-chips"><span class="chip">GraphRAG</span><span class="chip">LlamaIndex</span><span class="chip">Pinecone 벡터 DB</span><span class="chip">Dublin Core</span><span class="chip">엔티티 관계망</span></div>
       </div>
       <div class="pipe-conn"><div class="pipe-arrow">→</div></div>
       <div class="pipe-step">
@@ -725,10 +766,7 @@
         <span class="pipe-icon-lg">🔒</span>
         <div class="pipe-title">Permanent Fixation</div>
         <div class="pipe-lead">영구 보존 · DA 주도</div>
-        <div class="pipe-chips">
-          <span class="chip">OAIS ISO 14721</span><span class="chip">WORM 스토리지</span>
-          <span class="chip">OpenTimestamps</span><span class="chip">Filecoin / IPFS</span><span class="chip">데이터 주권 확립</span>
-        </div>
+        <div class="pipe-chips"><span class="chip">OAIS ISO 14721</span><span class="chip">WORM 스토리지</span><span class="chip">OpenTimestamps</span><span class="chip">Filecoin / IPFS</span><span class="chip">데이터 주권 확립</span></div>
       </div>
     </div>
   </div>
@@ -739,16 +777,11 @@
   <div class="wrap">
     <span class="eyebrow fade-up">03 — Solution Ecosystem</span>
     <h2 class="sec-title fade-up d1">도입 전/후, <span class="g-text">무엇이 달라지나요?</span></h2>
-    <p class="sec-sub fade-up d2">KO+DA 체계 도입 전후의 핵심 지표 변화입니다. 지식이 자산이 되는 순간을 수치로 확인하세요.</p>
-
-    <!-- BEFORE / AFTER -->
+    <p class="sec-sub fade-up d2">KO+DA 체계 도입 전후의 핵심 지표 변화입니다.</p>
     <div class="ba-section fade-up d1">
       <div class="ba-grid">
         <div class="ba-card before">
-          <div class="ba-head">
-            <span class="ba-badge">Before</span>
-            <span class="ba-title">KO·DA 체계 없음</span>
-          </div>
+          <div class="ba-head"><span class="ba-badge">Before</span><span class="ba-title">KO·DA 체계 없음</span></div>
           <div class="ba-metrics">
             <div class="ba-metric"><span class="ba-icon">⏱️</span><span class="ba-label">정보 탐색 시간 / 건</span><span class="ba-val">평균 30분</span></div>
             <div class="ba-metric"><span class="ba-icon">🚪</span><span class="ba-label">퇴사 시 지식 손실률</span><span class="ba-val">약 80%</span></div>
@@ -757,17 +790,12 @@
             <div class="ba-metric"><span class="ba-icon">💰</span><span class="ba-label">지식 자산 재활용률</span><span class="ba-val">약 15%</span></div>
           </div>
         </div>
-
         <div class="ba-center">
           <div class="ba-arrow-circle">→</div>
-          <div class="ba-center-label">KO + DA<br>도입</div>
+          <div class="ba-center-label">KO+DA<br>도입</div>
         </div>
-
         <div class="ba-card after">
-          <div class="ba-head">
-            <span class="ba-badge">After</span>
-            <span class="ba-title">KO·DA 체계 구축 후</span>
-          </div>
+          <div class="ba-head"><span class="ba-badge">After</span><span class="ba-title">KO·DA 체계 구축 후</span></div>
           <div class="ba-metrics">
             <div class="ba-metric"><span class="ba-icon">⚡</span><span class="ba-label">정보 탐색 시간 / 건</span><span class="ba-val">3분 (90% ↓)</span></div>
             <div class="ba-metric"><span class="ba-icon">🔐</span><span class="ba-label">퇴사 시 지식 손실률</span><span class="ba-val">5% (94% ↓)</span></div>
@@ -778,8 +806,6 @@
         </div>
       </div>
     </div>
-
-    <!-- TWO SOLUTION CARDS -->
     <div class="sol-grid fade-up d2">
       <div class="sol-card flow">
         <span class="sol-label">Solution 01 — Flow Engine</span>
@@ -796,7 +822,7 @@
         <div class="sol-title">Archive &amp; Rescue<br>영구 보존 시스템</div>
         <div class="sol-sub">위기 대응 &amp; 장기 자산 보전</div>
         <div class="sol-items">
-          <div class="sol-item"><strong>⚖️ 비즈니스 리스크 방어 아카이빙</strong><p>M&A나 법적 소송 시 과거의 의사결정 증거를 즉각 추출하여 기술적 Due Diligence 근거를 제시합니다.</p></div>
+          <div class="sol-item"><strong>⚖️ 비즈니스 리스크 방어 아카이빙</strong><p>M&A나 법적 소송 시 과거 의사결정 증거를 즉각 추출하여 기술적 Due Diligence 근거를 제시합니다.</p></div>
           <div class="sol-item"><strong>🌐 탈중앙화 영구 보존 (Filecoin/IPFS)</strong><p>클라우드 서비스 종료에 영향받지 않는 탈중앙화 분산 스토리지와 OpenTimestamps 블록체인 타임스탬핑으로 완전한 독립성을 확보합니다.</p></div>
           <div class="sol-item"><strong>🔐 수학적 무결성 증명</strong><p>WORM + SHA-256 해시 체인으로 기록이 생성 시점부터 단 1비트도 변조되지 않았음을 법적으로 증명합니다.</p></div>
         </div>
@@ -805,126 +831,52 @@
   </div>
 </section>
 
-<!-- IMPLEMENTATION ROADMAP -->
+<!-- ROADMAP -->
 <section id="roadmap" class="section">
   <div class="wrap">
     <span class="eyebrow fade-up">04 — Implementation Journey</span>
     <h2 class="sec-title fade-up d1">도입 로드맵, <span class="g-text">4단계로 완성</span></h2>
     <p class="sec-sub fade-up d2">실사 요청부터 운영 안정화까지, 검증된 프로세스로 진행됩니다. 평균 도입 기간 약 14주.</p>
     <div class="roadmap fade-up d1">
-
-      <div class="road-step">
-        <div class="road-num rn1">01</div>
-        <div class="road-duration">Week 1–2</div>
-        <div class="road-title">진단 &amp; 감사</div>
-        <div class="road-body">
-          <div class="road-task rn1-task">현황 지식 자산 인벤토리 작성</div>
-          <div class="road-task rn1-task">정보 흐름 및 병목 지점 분석</div>
-          <div class="road-task rn1-task">보존 위험 기록물 우선순위화</div>
-          <div class="road-task rn1-task">갭 분석 리포트 제출</div>
-        </div>
-      </div>
-
-      <div class="road-step">
-        <div class="road-num rn2">02</div>
-        <div class="road-duration">Week 3–6</div>
-        <div class="road-title">설계 &amp; 전략</div>
-        <div class="road-body">
-          <div class="road-task rn2-task">전사 온톨로지 &amp; 분류 체계 설계</div>
-          <div class="road-task rn2-task">도구 스택 선정 및 아키텍처 수립</div>
-          <div class="road-task rn2-task">보존 정책 &amp; 거버넌스 문서화</div>
-          <div class="road-task rn2-task">KPI 측정 기준 및 목표 설정</div>
-        </div>
-      </div>
-
-      <div class="road-step">
-        <div class="road-num rn3">03</div>
-        <div class="road-duration">Week 7–14</div>
-        <div class="road-title">구축 &amp; 이전</div>
-        <div class="road-body">
-          <div class="road-task rn3-task">지식 베이스 &amp; 벡터 DB 구축</div>
-          <div class="road-task rn3-task">기존 데이터 마이그레이션</div>
-          <div class="road-task rn3-task">보존 아카이브 시스템 구성</div>
-          <div class="road-task rn3-task">담당자 교육 &amp; 파일럿 운영</div>
-        </div>
-      </div>
-
-      <div class="road-step">
-        <div class="road-num rn4">04</div>
-        <div class="road-duration">Week 15~</div>
-        <div class="road-title">운영 &amp; 최적화</div>
-        <div class="road-body">
-          <div class="road-task rn4-task">월간 KPI 모니터링 &amp; 보고</div>
-          <div class="road-task rn4-task">AI 정확도 지속 개선 피드백</div>
-          <div class="road-task rn4-task">거버넌스 정기 감사 수행</div>
-          <div class="road-task rn4-task">분기별 아키텍처 고도화</div>
-        </div>
-      </div>
-
+      <div class="road-step"><div class="road-num rn1">01</div><div class="road-duration">Week 1–2</div><div class="road-title">진단 &amp; 감사</div><div class="road-body"><div class="road-task rn1-task">현황 지식 자산 인벤토리 작성</div><div class="road-task rn1-task">정보 흐름 및 병목 지점 분석</div><div class="road-task rn1-task">보존 위험 기록물 우선순위화</div><div class="road-task rn1-task">갭 분석 리포트 제출</div></div></div>
+      <div class="road-step"><div class="road-num rn2">02</div><div class="road-duration">Week 3–6</div><div class="road-title">설계 &amp; 전략</div><div class="road-body"><div class="road-task rn2-task">전사 온톨로지 &amp; 분류 체계 설계</div><div class="road-task rn2-task">도구 스택 선정 및 아키텍처 수립</div><div class="road-task rn2-task">보존 정책 &amp; 거버넌스 문서화</div><div class="road-task rn2-task">KPI 측정 기준 및 목표 설정</div></div></div>
+      <div class="road-step"><div class="road-num rn3">03</div><div class="road-duration">Week 7–14</div><div class="road-title">구축 &amp; 이전</div><div class="road-body"><div class="road-task rn3-task">지식 베이스 &amp; 벡터 DB 구축</div><div class="road-task rn3-task">기존 데이터 마이그레이션</div><div class="road-task rn3-task">보존 아카이브 시스템 구성</div><div class="road-task rn3-task">담당자 교육 &amp; 파일럿 운영</div></div></div>
+      <div class="road-step"><div class="road-num rn4">04</div><div class="road-duration">Week 15~</div><div class="road-title">운영 &amp; 최적화</div><div class="road-body"><div class="road-task rn4-task">월간 KPI 모니터링 &amp; 보고</div><div class="road-task rn4-task">AI 정확도 지속 개선 피드백</div><div class="road-task rn4-task">거버넌스 정기 감사 수행</div><div class="road-task rn4-task">분기별 아키텍처 고도화</div></div></div>
     </div>
   </div>
 </section>
 
-<!-- INDUSTRY SOLUTIONS -->
+<!-- INDUSTRY -->
 <section id="industry" class="section section-alt">
   <div class="wrap">
     <span class="eyebrow fade-up">05 — Industry Solutions</span>
     <h2 class="sec-title fade-up d1">우리 산업에 <span class="g-text">어떻게 적용되나요?</span></h2>
-    <p class="sec-sub fade-up d2">산업별 pain point에 맞춘 KO+DA 특화 솔루션입니다. 우리 회사의 이야기를 찾아보세요.</p>
+    <p class="sec-sub fade-up d2">산업별 pain point에 맞춘 KO+DA 특화 솔루션입니다.</p>
     <div class="industry-grid">
-
       <div class="ind-card fade-up d1">
-        <div class="ind-top">
-          <span class="ind-icon">⚖️</span>
-          <div>
-            <div class="ind-name">법무 / 컴플라이언스</div>
-            <div class="ind-cat">법률사무소 · 금융 · 규제 산업</div>
-          </div>
-        </div>
+        <div class="ind-top"><span class="ind-icon">⚖️</span><div><div class="ind-name">법무 / 컴플라이언스</div><div class="ind-cat">법률사무소 · 금융 · 규제 산업</div></div></div>
         <div class="ind-pain"><strong>Pain Point</strong>소송·감사 시 수년 전 의사결정 기록을 찾지 못해 법적 리스크가 발생하고, 규정 변경마다 기존 문서 정합성 검증에 수주가 소요됩니다.</div>
         <div class="ind-benefit"><strong>KO·DA Solution</strong>WORM 기반 타임스탬프 아카이빙으로 법적 증거력을 확보하고, 규정 온톨로지 자동 업데이트로 컴플라이언스 검증 시간을 86% 단축합니다.</div>
         <div class="ind-kpis"><span class="ind-kpi">감사 대응 2주→2일</span><span class="ind-kpi">법적 증거력 100%</span><span class="ind-kpi">규정 검증 자동화</span></div>
       </div>
-
       <div class="ind-card fade-up d2">
-        <div class="ind-top">
-          <span class="ind-icon">🏭</span>
-          <div>
-            <div class="ind-name">제조 / R&amp;D</div>
-            <div class="ind-cat">제조업 · 바이오 · 엔지니어링</div>
-          </div>
-        </div>
+        <div class="ind-top"><span class="ind-icon">🏭</span><div><div class="ind-name">제조 / R&amp;D</div><div class="ind-cat">제조업 · 바이오 · 엔지니어링</div></div></div>
         <div class="ind-pain"><strong>Pain Point</strong>숙련 기술자의 노하우가 퇴직과 함께 사라지고, R&D 히스토리가 분산되어 같은 실험을 반복 수행하며 예산을 낭비합니다.</div>
         <div class="ind-benefit"><strong>KO·DA Solution</strong>기술 노하우를 구조화된 지식 DB로 자산화하고, R&D 아카이브를 AI 학습 데이터셋으로 변환하여 신제품 개발 사이클을 단축합니다.</div>
         <div class="ind-kpis"><span class="ind-kpi">기술 이탈 95% 차단</span><span class="ind-kpi">R&D 중복 제거</span><span class="ind-kpi">AI 학습 데이터셋</span></div>
       </div>
-
       <div class="ind-card fade-up d1">
-        <div class="ind-top">
-          <span class="ind-icon">🎬</span>
-          <div>
-            <div class="ind-name">미디어 / 헤리티지</div>
-            <div class="ind-cat">방송 · 출판 · 문화재단 · 브랜드</div>
-          </div>
-        </div>
+        <div class="ind-top"><span class="ind-icon">🎬</span><div><div class="ind-name">미디어 / 헤리티지</div><div class="ind-cat">방송 · 출판 · 문화재단 · 브랜드</div></div></div>
         <div class="ind-pain"><strong>Pain Point</strong>수십 년간 축적된 콘텐츠와 아카이브가 낡은 포맷으로 방치되어 재활용이 불가하고, 브랜드 헤리티지가 스토리텔링 자산으로 활용되지 못합니다.</div>
         <div class="ind-benefit"><strong>KO·DA Solution</strong>레거시 콘텐츠를 PDF/A·IPFS 기반으로 영구 보존하고, 인터랙티브 타임라인과 AI 큐레이션으로 헤리티지 자산을 수익화합니다.</div>
         <div class="ind-kpis"><span class="ind-kpi">레거시 100% 디지털화</span><span class="ind-kpi">헤리티지 라이선싱</span><span class="ind-kpi">AI 큐레이션</span></div>
       </div>
-
       <div class="ind-card fade-up d2">
-        <div class="ind-top">
-          <span class="ind-icon">🤝</span>
-          <div>
-            <div class="ind-name">M&amp;A / 투자 활성 기업</div>
-            <div class="ind-cat">PE · VC · 대기업 인수합병팀</div>
-          </div>
-        </div>
+        <div class="ind-top"><span class="ind-icon">🤝</span><div><div class="ind-name">M&amp;A / 투자 활성 기업</div><div class="ind-cat">PE · VC · 대기업 인수합병팀</div></div></div>
         <div class="ind-pain"><strong>Pain Point</strong>인수 대상 기업의 지식 자산 가치를 정량화하지 못해 Due Diligence가 불완전하고, 합병 후 양사 지식 통합에 수개월이 소요됩니다.</div>
         <div class="ind-benefit"><strong>KO·DA Solution</strong>지식 자산 계보 맵을 통해 DD 기간을 60% 단축하고, 표준화된 온톨로지로 합병 후 지식 통합을 체계적으로 수행합니다.</div>
         <div class="ind-kpis"><span class="ind-kpi">DD 기간 60% 단축</span><span class="ind-kpi">지식 자산 가치 평가</span><span class="ind-kpi">합병 후 통합 자동화</span></div>
       </div>
-
     </div>
   </div>
 </section>
@@ -936,74 +888,38 @@
     <h2 class="sec-title fade-up d1">융합 리더십의 <span class="g-text">핵심 활동</span></h2>
     <div class="pillars-grid">
       <div class="pillar fade-up d1">
-        <span class="pillar-num">PILLAR 01</span>
-        <div class="pillar-title">AI 지식 거버넌스 &amp; 큐레이션</div>
+        <span class="pillar-num">PILLAR 01</span><div class="pillar-title">AI 지식 거버넌스 &amp; 큐레이션</div>
         <p class="pillar-desc">RAG 기반으로 검증된 도메인 지식만 AI 참조 소스로 활용하여 할루시네이션을 원천 차단합니다.</p>
-        <ul class="pillar-points">
-          <li>승인된 지식 베이스만 AI 참조 소스로 한정</li>
-          <li>도메인 전문가 Human-in-the-Loop 검토 체계</li>
-          <li>편향 감지 및 할루시네이션 제어 가드레일</li>
-          <li>지식 품질 KPI 수치 추적 및 정기 보고</li>
-        </ul>
+        <ul class="pillar-points"><li>승인된 지식 베이스만 AI 참조 소스로 한정</li><li>도메인 전문가 Human-in-the-Loop 검토 체계</li><li>편향 감지 및 할루시네이션 제어 가드레일</li><li>지식 품질 KPI 수치 추적 및 정기 보고</li></ul>
         <div class="pillar-ring">
-          <div class="ring-wrap">
-            <svg class="ring-svg" viewBox="0 0 68 68"><circle class="ring-track" cx="34" cy="34" r="27"/><circle class="ring-fill" cx="34" cy="34" r="27" stroke="#0066FF" stroke-dasharray="169.6 169.6" style="stroke-dashoffset:169.6" data-val="77"/></svg>
-            <div class="ring-center"><span class="rv">77%</span></div>
-          </div>
+          <div class="ring-wrap"><svg class="ring-svg" viewBox="0 0 64 64"><circle class="ring-track" cx="32" cy="32" r="25"/><circle class="ring-fill" cx="32" cy="32" r="25" stroke="#0066FF" stroke-dasharray="157.1 157.1" style="stroke-dashoffset:157.1" data-val="77"/></svg><div class="ring-center"><span class="rv">77%</span></div></div>
           <div class="ring-label"><div class="rl-num">77%</div><div class="rl-text">AI 거버넌스를 전략 우선순위로<br>선정한 글로벌 기업 비율</div></div>
         </div>
       </div>
       <div class="pillar fade-up d2">
-        <span class="pillar-num">PILLAR 02</span>
-        <div class="pillar-title">부서 간 지식 사일로 해소</div>
+        <span class="pillar-num">PILLAR 02</span><div class="pillar-title">부서 간 지식 사일로 해소</div>
         <p class="pillar-desc">ERP·CRM·Drive 등 분산 데이터 소스를 단일 지식 포털로 통합하고 크로스펑셔널 협업을 정례화합니다.</p>
-        <ul class="pillar-points">
-          <li>분산 데이터 소스 단일 지식 포털 통합</li>
-          <li>크로스펑셔널 협업 세션 정례 운영</li>
-          <li>지식 기여자 인센티브 및 인정 체계</li>
-          <li>전사 표준 온톨로지로 용어 불일치 해소</li>
-        </ul>
+        <ul class="pillar-points"><li>분산 데이터 소스 단일 지식 포털 통합</li><li>크로스펑셔널 협업 세션 정례 운영</li><li>지식 기여자 인센티브 및 인정 체계</li><li>전사 표준 온톨로지로 용어 불일치 해소</li></ul>
         <div class="pillar-ring">
-          <div class="ring-wrap">
-            <svg class="ring-svg" viewBox="0 0 68 68"><circle class="ring-track" cx="34" cy="34" r="27"/><circle class="ring-fill" cx="34" cy="34" r="27" stroke="#7C3AED" stroke-dasharray="169.6 169.6" style="stroke-dashoffset:169.6" data-val="97"/></svg>
-            <div class="ring-center"><span class="rv">97%</span></div>
-          </div>
+          <div class="ring-wrap"><svg class="ring-svg" viewBox="0 0 64 64"><circle class="ring-track" cx="32" cy="32" r="25"/><circle class="ring-fill" cx="32" cy="32" r="25" stroke="#7C3AED" stroke-dasharray="157.1 157.1" style="stroke-dashoffset:157.1" data-val="97"/></svg><div class="ring-center"><span class="rv">97%</span></div></div>
           <div class="ring-label"><div class="rl-num" style="color:var(--violet)">97%</div><div class="rl-text">사일로가 조직 성과에 부정적<br>영향을 준다고 인지한 비율</div></div>
         </div>
       </div>
       <div class="pillar fade-up d1">
-        <span class="pillar-num">PILLAR 03</span>
-        <div class="pillar-title">디지털 헤리티지 &amp; 상업적 자산화</div>
-        <p class="pillar-desc">창업 철학·R&D 히스토리를 체계적으로 디지털화하여 브랜드 스토리텔링의 원천으로 활용하고 직접 수익화 경로를 설계합니다.</p>
-        <ul class="pillar-points">
-          <li>R&D 기록 디지털화 → AI 학습 데이터셋</li>
-          <li>인터랙티브 타임라인 브랜드 콘텐츠화</li>
-          <li>헤리티지 자산 라이선싱 수익 경로 설계</li>
-          <li>브랜드 헤리티지 활성화로 가격 프리미엄 달성</li>
-        </ul>
+        <span class="pillar-num">PILLAR 03</span><div class="pillar-title">디지털 헤리티지 &amp; 상업적 자산화</div>
+        <p class="pillar-desc">창업 철학·R&D 히스토리를 체계적으로 디지털화하여 브랜드 스토리텔링의 원천으로 활용합니다.</p>
+        <ul class="pillar-points"><li>R&D 기록 디지털화 → AI 학습 데이터셋</li><li>인터랙티브 타임라인 브랜드 콘텐츠화</li><li>헤리티지 자산 라이선싱 수익 경로 설계</li><li>브랜드 헤리티지 활성화로 가격 프리미엄 달성</li></ul>
         <div class="pillar-ring">
-          <div class="ring-wrap">
-            <svg class="ring-svg" viewBox="0 0 68 68"><circle class="ring-track" cx="34" cy="34" r="27"/><circle class="ring-fill" cx="34" cy="34" r="27" stroke="#F59E0B" stroke-dasharray="169.6 169.6" style="stroke-dashoffset:169.6" data-val="80"/></svg>
-            <div class="ring-center"><span class="rv" style="font-size:.65rem">$2.2B</span></div>
-          </div>
+          <div class="ring-wrap"><svg class="ring-svg" viewBox="0 0 64 64"><circle class="ring-track" cx="32" cy="32" r="25"/><circle class="ring-fill" cx="32" cy="32" r="25" stroke="#F59E0B" stroke-dasharray="157.1 157.1" style="stroke-dashoffset:157.1" data-val="80"/></svg><div class="ring-center"><span class="rv" style="font-size:.6rem">$2.2B</span></div></div>
           <div class="ring-label"><div class="rl-num" style="color:var(--gold)">$2.2B</div><div class="rl-text">기업 헤리티지 데이터 관리 시장<br>2030년 전망 규모</div></div>
         </div>
       </div>
       <div class="pillar fade-up d2">
-        <span class="pillar-num">PILLAR 04</span>
-        <div class="pillar-title">무결성 데이터 주권 거버넌스</div>
+        <span class="pillar-num">PILLAR 04</span><div class="pillar-title">무결성 데이터 주권 거버넌스</div>
         <p class="pillar-desc">WORM 스토리지 Compliance Mode로 보존 기간 내 누구도 데이터를 삭제·변조할 수 없는 환경을 구현합니다.</p>
-        <ul class="pillar-points">
-          <li>WORM Compliance Mode 데이터 보호</li>
-          <li>Governance Mode 기반 승인 접근 제어</li>
-          <li>클라우드 저장 시 데이터 주권 리스크 차단</li>
-          <li>S3 Object Lock 기반 감사 추적 확보</li>
-        </ul>
+        <ul class="pillar-points"><li>WORM Compliance Mode 데이터 보호</li><li>Governance Mode 기반 승인 접근 제어</li><li>클라우드 저장 시 데이터 주권 리스크 차단</li><li>S3 Object Lock 기반 감사 추적 확보</li></ul>
         <div class="pillar-ring">
-          <div class="ring-wrap">
-            <svg class="ring-svg" viewBox="0 0 68 68"><circle class="ring-track" cx="34" cy="34" r="27"/><circle class="ring-fill" cx="34" cy="34" r="27" stroke="#10B981" stroke-dasharray="169.6 169.6" style="stroke-dashoffset:169.6" data-val="93"/></svg>
-            <div class="ring-center"><span class="rv">93%</span></div>
-          </div>
+          <div class="ring-wrap"><svg class="ring-svg" viewBox="0 0 64 64"><circle class="ring-track" cx="32" cy="32" r="25"/><circle class="ring-fill" cx="32" cy="32" r="25" stroke="#10B981" stroke-dasharray="157.1 157.1" style="stroke-dashoffset:157.1" data-val="93"/></svg><div class="ring-center"><span class="rv">93%</span></div></div>
           <div class="ring-label"><div class="rl-num" style="color:var(--green)">93%</div><div class="rl-text">통제를 위해 하이브리드 클라우드를<br>도입/전환 중인 기업 비율</div></div>
         </div>
       </div>
@@ -1064,11 +980,21 @@ const TICKS=[
 /* MOBILE MENU */
 const menuToggle=document.getElementById('menuToggle');
 const navLinks=document.getElementById('navLinks');
-menuToggle.addEventListener('click',()=>{menuToggle.classList.toggle('active');navLinks.classList.toggle('active');});
-document.querySelectorAll('.nav-links a').forEach(l=>l.addEventListener('click',()=>{menuToggle.classList.remove('active');navLinks.classList.remove('active');}));
+menuToggle.addEventListener('click',()=>{
+  menuToggle.classList.toggle('active');
+  navLinks.classList.toggle('active');
+  document.body.style.overflow=navLinks.classList.contains('active')?'hidden':'';
+});
+document.querySelectorAll('.nav-links a').forEach(l=>l.addEventListener('click',()=>{
+  menuToggle.classList.remove('active');
+  navLinks.classList.remove('active');
+  document.body.style.overflow='';
+}));
 
 /* SCROLL FADE */
-const ioFade=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible');});},{threshold:0.1,rootMargin:'0px 0px -40px 0px'});
+const ioFade=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible');});
+},{threshold:0.08,rootMargin:'0px 0px -30px 0px'});
 document.querySelectorAll('.fade-up').forEach(el=>ioFade.observe(el));
 
 /* ARC CHARTS — r=30, C≈188.5 */
@@ -1083,11 +1009,11 @@ const ioArc=new IntersectionObserver(entries=>{
     c.dataset.done='1';
     ioArc.unobserve(e.target);
   });
-},{threshold:0.6});
+},{threshold:0.5});
 document.querySelectorAll('.stat-arc').forEach(el=>ioArc.observe(el));
 
-/* PROGRESS RINGS — r=27, C≈169.6 */
-const RING_C=169.6;
+/* PROGRESS RINGS — r=25, C≈157.1 */
+const RING_C=157.1;
 const ioRing=new IntersectionObserver(entries=>{
   entries.forEach(e=>{
     if(!e.isIntersecting)return;
@@ -1100,7 +1026,7 @@ const ioRing=new IntersectionObserver(entries=>{
     c.dataset.done='1';
     ioRing.unobserve(e.target);
   });
-},{threshold:0.4});
+},{threshold:0.35});
 document.querySelectorAll('.pillar').forEach(el=>ioRing.observe(el));
 </script>
 </body>
