@@ -2,7 +2,9 @@
 <html lang="ko">
 <head>
   <meta charset="UTF-8"/>
+  <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
+  <script>if(location.protocol==='http:')location.replace('https:'+location.href.slice(5));</script>
   <meta name="theme-color" content="#ffffff"/>
   <title>Panicstorms — Knowledge Intelligence</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css"/>
@@ -251,8 +253,9 @@
 
     /* TOOLS GRID */
     .tools-grid{display:grid;grid-template-columns:1fr 1fr;gap:.7rem}
-    .tool-card{background:#F8FAFC;padding:.9rem 1rem;border-radius:11px;border:1px solid var(--border);display:flex;align-items:center;gap:.8rem;transition:.2s}
+    .tool-card{background:#F8FAFC;padding:.9rem 1rem;border-radius:11px;border:1px solid var(--border);display:flex;align-items:center;gap:.8rem;transition:.2s;cursor:pointer;text-decoration:none}
     .tool-card:hover{border-color:var(--blue);background:white}
+    .da-bg .tool-card:hover{border-color:var(--gold)}
     .tool-icon{font-size:1.3rem;flex-shrink:0}
     .tool-name{font:700 .8rem 'Pretendard Variable';color:var(--navy)}
     .tool-desc{font-size:.7rem;color:var(--muted);margin-top:.08rem}
@@ -660,10 +663,10 @@
       <div class="g-card">
         <div class="g-card-title">주요 도구 상세</div>
         <div class="tools-grid">
-          <div class="tool-card"><span class="tool-icon">🗄️</span><div><div class="tool-name">Pinecone / Weaviate<span class="tool-badge new">2026</span></div><div class="tool-desc">벡터 DB — 시맨틱 검색 핵심</div></div></div>
-          <div class="tool-card"><span class="tool-icon">⛓️</span><div><div class="tool-name">LlamaIndex<span class="tool-badge new">2026</span></div><div class="tool-desc">RAG 파이프라인 프레임워크</div></div></div>
-          <div class="tool-card"><span class="tool-icon">🤖</span><div><div class="tool-name">NotebookLM</div><div class="tool-desc">사내 문서 학습 AI 질의응답</div></div></div>
-          <div class="tool-card"><span class="tool-icon">📊</span><div><div class="tool-name">Looker Studio</div><div class="tool-desc">지식 활용 현황 대시보드</div></div></div>
+          <a class="tool-card" href="https://docs.pinecone.io/guides/get-started/quickstart" target="_blank" rel="noopener"><span class="tool-icon">🗄️</span><div><div class="tool-name">Pinecone / Weaviate<span class="tool-badge new">2026</span></div><div class="tool-desc">벡터 DB — 시맨틱 검색 핵심</div></div></a>
+          <a class="tool-card" href="https://docs.llamaindex.ai/en/stable/getting_started/starter_example/" target="_blank" rel="noopener"><span class="tool-icon">⛓️</span><div><div class="tool-name">LlamaIndex<span class="tool-badge new">2026</span></div><div class="tool-desc">RAG 파이프라인 프레임워크</div></div></a>
+          <a class="tool-card" href="https://support.google.com/notebooklm/answer/14273541" target="_blank" rel="noopener"><span class="tool-icon">🤖</span><div><div class="tool-name">NotebookLM</div><div class="tool-desc">사내 문서 학습 AI 질의응답</div></div></a>
+          <a class="tool-card" href="https://support.google.com/looker-studio/answer/6370353" target="_blank" rel="noopener"><span class="tool-icon">📊</span><div><div class="tool-name">Looker Studio</div><div class="tool-desc">지식 활용 현황 대시보드</div></div></a>
         </div>
       </div>
     </div>
@@ -728,10 +731,10 @@
       <div class="g-card">
         <div class="g-card-title">주요 도구 상세</div>
         <div class="tools-grid">
-          <div class="tool-card"><span class="tool-icon">⏱️</span><div><div class="tool-name">OpenTimestamps<span class="tool-badge new">2026</span></div><div class="tool-desc">블록체인 기반 타임스탬핑</div></div></div>
-          <div class="tool-card"><span class="tool-icon">🌐</span><div><div class="tool-name">Filecoin / IPFS<span class="tool-badge new">2026</span></div><div class="tool-desc">탈중앙화 영구 분산 스토리지</div></div></div>
-          <div class="tool-card"><span class="tool-icon">🔐</span><div><div class="tool-name">AWS S3 Object Lock</div><div class="tool-desc">WORM 위변조 방지 저장소</div></div></div>
-          <div class="tool-card"><span class="tool-icon">🏺</span><div><div class="tool-name">Preservica / Archivematica</div><div class="tool-desc">OAIS 표준 보존 시스템</div></div></div>
+          <a class="tool-card" href="https://opentimestamps.org/#how-it-works" target="_blank" rel="noopener"><span class="tool-icon">⏱️</span><div><div class="tool-name">OpenTimestamps<span class="tool-badge new">2026</span></div><div class="tool-desc">블록체인 기반 타임스탬핑</div></div></a>
+          <a class="tool-card" href="https://docs.filecoin.io/basics/what-is-filecoin/overview/" target="_blank" rel="noopener"><span class="tool-icon">🌐</span><div><div class="tool-name">Filecoin / IPFS<span class="tool-badge new">2026</span></div><div class="tool-desc">탈중앙화 영구 분산 스토리지</div></div></a>
+          <a class="tool-card" href="https://docs.aws.amazon.com/AmazonS3/latest/userguide/object-lock.html" target="_blank" rel="noopener"><span class="tool-icon">🔐</span><div><div class="tool-name">AWS S3 Object Lock</div><div class="tool-desc">WORM 위변조 방지 저장소</div></div></a>
+          <a class="tool-card" href="https://www.archivematica.org/en/docs/archivematica-1.14/user-manual/getting-started/overview/" target="_blank" rel="noopener"><span class="tool-icon">🏺</span><div><div class="tool-name">Preservica / Archivematica</div><div class="tool-desc">OAIS 표준 보존 시스템</div></div></a>
         </div>
       </div>
     </div>
