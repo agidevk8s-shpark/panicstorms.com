@@ -25,7 +25,7 @@
   <style>
     *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
     :root{
-      --blue:#0066FF;--blue-dk:#0044CC;--violet:#7C3AED;--cyan:#00C2FF;
+      --blue:#3D5CFF;--blue-dk:#314ACC;--violet:#7C3AED;--cyan:#00C2FF;
       --navy:#0F172A;--text:#1E293B;--muted:#64748B;--bg:#F8FAFC;
       --border:#E2E8F0;--white:#FFFFFF;--gold:#F59E0B;--green:#10B981;
       --w:1200px;--r:16px;
@@ -89,7 +89,7 @@
     a{color:inherit;text-decoration:none;transition:.2s}
 
     /* GRADIENT TEXT */
-    .g-text{background:linear-gradient(135deg,#0066FF,#7C3AED);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+    .g-text{background:linear-gradient(135deg,#3D5CFF,#7C3AED);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
 
     /* SCROLL FADE */
     .fade-up{opacity:0;transform:translateY(24px);transition:opacity .6s ease,transform .6s ease}
@@ -190,7 +190,7 @@
       padding:.4rem 1rem;border-radius:99px;
       background:var(--white);color:var(--blue);font:700 .75rem 'Inter';
       margin-bottom:clamp(.8rem,3vw,1.6rem);
-      box-shadow:0 2px 12px rgba(0,102,255,.12);border:1px solid rgba(0,102,255,.18);
+      box-shadow:0 2px 12px rgba(61,92,255,.12);border:1px solid rgba(61,92,255,.18);
     }
     .hero-pill .dot{width:7px;height:7px;border-radius:50%;background:var(--blue);animation:blink 2s infinite}
     @keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
@@ -223,8 +223,8 @@
     .btn:hover span {
       transform: translateX(4px);
     }
-    .btn-solid{background:var(--blue);color:white;box-shadow:0 6px 20px rgba(0,102,255,.28)}
-    .btn-solid:hover{transform:translateY(-2px);box-shadow:0 10px 30px rgba(0,102,255,.4)}
+    .btn-solid{background:var(--blue);color:white;box-shadow:0 6px 20px rgba(61,92,255,.28)}
+    .btn-solid:hover{transform:translateY(-2px);box-shadow:0 10px 30px rgba(61,92,255,.4)}
     .btn-outline{border:1.5px solid var(--border);background:var(--white);color:var(--navy)}
     .btn-outline:hover{border-color:var(--blue);color:var(--blue);transform:translateY(-2px)}
 
@@ -240,7 +240,7 @@
       flex:1;background:var(--bg);border:1px solid var(--border);border-radius:12px;
       padding:clamp(.7rem,2vw,1.1rem) .7rem;text-align:center;transition:.3s;min-width:0;
     }
-    .d-node:hover{border-color:var(--blue);box-shadow:0 4px 16px rgba(0,102,255,.1)}
+    .d-node:hover{border-color:var(--blue);box-shadow:0 4px 16px rgba(61,92,255,.1)}
     .d-node.ko{border-top:3px solid var(--blue)}
     .d-node.da{border-top:3px solid var(--gold)}
     .d-node .icon{font-size:clamp(1.3rem,4vw,1.8rem);margin-bottom:.3rem;display:block}
@@ -255,7 +255,7 @@
       flex-shrink:0;width:clamp(52px,12vw,68px);height:clamp(52px,12vw,68px);
       border-radius:50%;background:linear-gradient(135deg,var(--blue),var(--violet));
       display:flex;flex-direction:column;align-items:center;justify-content:center;
-      color:white;box-shadow:0 8px 24px rgba(0,102,255,.35);
+      color:white;box-shadow:0 8px 24px rgba(61,92,255,.35);
       position:relative;
       animation:pulse 3s ease-in-out infinite;
     }
@@ -276,7 +276,7 @@
     }
     .d-ai .al{font:800 clamp(.82rem,2.5vw,1rem) 'Inter';line-height:1;position:relative;z-index:2}
     .d-ai .as{font-size:clamp(.5rem,1.5vw,.58rem);opacity:.85;margin-top:2px;letter-spacing:.04em;position:relative;z-index:2}
-    @keyframes pulse{0%,100%{box-shadow:0 8px 24px rgba(0,102,255,.35)}50%{box-shadow:0 12px 40px rgba(124,58,237,.5)}}
+    @keyframes pulse{0%,100%{box-shadow:0 8px 24px rgba(61,92,255,.35)}50%{box-shadow:0 12px 40px rgba(124,58,237,.5)}}
 
     /* Arc stat charts */
     .hero-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(.4rem,1.5vw,.8rem)}
@@ -373,7 +373,7 @@
     .da-bg .g-card-title::before{background:var(--gold)}
     .career-steps{display:grid;gap:.4rem}
     .cs-item{display:flex;align-items:center;gap:1rem;padding:.75rem 1rem;border-radius:11px;background:var(--bg);border:1px solid var(--border);transition:.2s}
-    .cs-item.active{background:var(--white);border-color:var(--blue);box-shadow:0 4px 14px rgba(0,102,255,.1)}
+    .cs-item.active{background:var(--white);border-color:var(--blue);box-shadow:0 4px 14px rgba(61,92,255,.1)}
     .da-bg .cs-item.active{border-color:var(--gold);box-shadow:0 4px 14px rgba(245,158,11,.12)}
     .cs-level{font:800 .68rem 'Inter';color:var(--blue);width:24px}
     .da-bg .cs-level{color:var(--gold)}
@@ -423,7 +423,7 @@
     .before .ba-val{color:#DC2626}
     .after .ba-val{color:#16A34A}
     .ba-center{display:flex;flex-direction:column;align-items:center;gap:.5rem;flex-shrink:0}
-    .ba-arrow-circle{width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,var(--blue),var(--violet));display:flex;align-items:center;justify-content:center;color:white;font-size:1.1rem;box-shadow:0 4px 14px rgba(0,102,255,.3)}
+    .ba-arrow-circle{width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,var(--blue),var(--violet));display:flex;align-items:center;justify-content:center;color:white;font-size:1.1rem;box-shadow:0 4px 14px rgba(61,92,255,.3)}
     .ba-center-label{font:700 .62rem 'Inter';color:var(--muted);text-transform:uppercase;letter-spacing:.06em;text-align:center}
 
     /* SOLUTIONS */
@@ -505,7 +505,7 @@
     /* CTA */
     #cta{
       padding:clamp(4rem,12vw,112px) 0 calc(clamp(4rem,12vw,112px) + env(safe-area-inset-bottom));
-      background:linear-gradient(135deg,#003FCC 0%,#0066FF 45%,#7C3AED 100%);
+      background:linear-gradient(135deg,#22338C 0%,#3D5CFF 45%,#7C3AED 100%);
       color:white;text-align:center;position:relative;overflow:hidden;
     }
     #cta::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 25% 50%,rgba(255,255,255,.1),transparent 60%)}
@@ -685,7 +685,7 @@
           <div class="stat-arc">
             <svg class="arc-svg" viewBox="0 0 76 76">
               <circle class="arc-track" cx="38" cy="38" r="30"/>
-              <circle class="arc-fill" cx="38" cy="38" r="30" stroke="#0066FF" stroke-dasharray="188.5 188.5" style="stroke-dashoffset:188.5" data-pct="30" transform="rotate(-90 38 38)"/>
+              <circle class="arc-fill" cx="38" cy="38" r="30" stroke="#3D5CFF" stroke-dasharray="188.5 188.5" style="stroke-dashoffset:188.5" data-pct="30" transform="rotate(-90 38 38)"/>
               <text class="arc-txt" x="38" y="40" font-size="12.5">30%</text>
             </svg>
             <div class="stat-lbl">정보 탐색에<br>낭비되는 근무시간</div>
@@ -1045,7 +1045,7 @@
         <p class="pillar-desc">RAG 기반으로 검증된 도메인 지식만 AI 참조 소스로 활용하여 할루시네이션을 원천 차단합니다.</p>
         <ul class="pillar-points"><li>승인된 지식 베이스만 AI 참조 소스로 한정</li><li>도메인 전문가 Human-in-the-Loop 검토 체계</li><li>편향 감지 및 할루시네이션 제어 가드레일</li><li>지식 품질 KPI 수치 추적 및 정기 보고</li></ul>
         <div class="pillar-ring">
-          <div class="ring-wrap"><svg class="ring-svg" viewBox="0 0 64 64"><circle class="ring-track" cx="32" cy="32" r="25"/><circle class="ring-fill" cx="32" cy="32" r="25" stroke="#0066FF" stroke-dasharray="157.1 157.1" style="stroke-dashoffset:157.1" data-val="77"/></svg><div class="ring-center"><span class="rv">77%</span></div></div>
+          <div class="ring-wrap"><svg class="ring-svg" viewBox="0 0 64 64"><circle class="ring-track" cx="32" cy="32" r="25"/><circle class="ring-fill" cx="32" cy="32" r="25" stroke="#3D5CFF" stroke-dasharray="157.1 157.1" style="stroke-dashoffset:157.1" data-val="77"/></svg><div class="ring-center"><span class="rv">77%</span></div></div>
           <div class="ring-label"><div class="rl-num">77%</div><div class="rl-text">AI 거버넌스를 전략 우선순위로<br>선정한 글로벌 기업 비율</div></div>
         </div>
       </div>
@@ -1118,9 +1118,9 @@
 <script>
 /* TICKER */
 const TICKS=[
-  {tag:'KR',text:'2026 AI 패러다임 전환: 자율형 에이전틱 AI로의 진화 본격화'},
+  {tag:'KR',text:'IAPP 2025: AI 거버넌스 전담 임원(CAIO) 보유 기업 76% — 전년 26%에서 급증'},
   {tag:'JP',text:'組織記憶の永続化、生成AI導入企業でデジタルアーカイブ需要が急増'},
-  {tag:'KR',text:'기업 M&A 실사 필수 항목으로 부상한 지식 자산 계보 — 사례 확산'},
+  {tag:'KR',text:'AI 사용 기업 88% 중 체계적 거버넌스 프레임워크 보유는 단 8% — 여전한 격차'},
   {tag:'JP',text:'Google Workspace × NotebookLM 통합으로 지능형 DB 활용 가속'},
   {tag:'KR',text:'McKinsey: KM 최적화로 생산성 20~25% 향상 가능'},
   {tag:'KR',text:'Gartner: 직원 47%가 업무 정보 탐색에 어려움 — KO 역할 재조명'},
