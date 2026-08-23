@@ -1,0 +1,419 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>지식자산 진단표</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Noto+Sans+KR:wght@400;500;700;900&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --blue:#3D5CFF;--blue-dk:#314ACC;--violet:#7C3AED;--cyan:#00C2FF;
+  --navy:#0F172A;--text:#1E293B;--muted:#64748B;--bg:#F8FAFC;
+  --border:#E2E8F0;--white:#FFFFFF;--gold:#F59E0B;--green:#10B981;--red:#DC2626;
+  --accent-text:#3D5CFF;--gold-text:#B45309;--green-text:#047857;
+  --card:#FFFFFF;--shadow:0 4px 20px rgba(15,23,42,.06);--shadow-lg:0 16px 44px rgba(15,23,42,.10);
+  --w:960px;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --navy:#F1F5F9;--text:#CBD5E1;--muted:#8B98AC;--bg:#0B0F19;--card:#131B2E;--border:#232E45;
+    --accent-text:#7C93FF;--gold-text:#F59E0B;--green-text:#10B981;
+    --shadow:0 4px 20px rgba(0,0,0,.4);--shadow-lg:0 16px 44px rgba(0,0,0,.6);
+  }
+}
+:root[data-theme="dark"]{
+  --navy:#F1F5F9;--text:#CBD5E1;--muted:#8B98AC;--bg:#0B0F19;--card:#131B2E;--border:#232E45;
+  --accent-text:#7C93FF;--gold-text:#F59E0B;--green-text:#10B981;
+  --shadow:0 4px 20px rgba(0,0,0,.4);--shadow-lg:0 16px 44px rgba(0,0,0,.6);
+}
+body{
+  font-family:'Noto Sans KR','Pretendard',-apple-system,sans-serif;
+  background:var(--bg);color:var(--text);line-height:1.65;word-break:keep-all;
+}
+.wrap{max-width:var(--w);margin:0 auto;padding:2.2rem 1.3rem 5rem}
+a{color:inherit}
+
+/* HEADER */
+.hd-top{display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:1rem;margin-bottom:1.6rem}
+.logo{font:800 1.05rem 'Inter';letter-spacing:-.02em;color:var(--navy)}
+.logo em{font-style:normal;color:var(--blue)}
+.reset-btn{font:700 .78rem 'Inter';color:var(--muted);background:var(--card);border:1px solid var(--border);border-radius:8px;padding:.5rem 1rem;cursor:pointer}
+.reset-btn:hover{border-color:var(--red);color:var(--red)}
+.eyebrow{color:var(--blue);font-weight:800;font-size:.74rem;margin-bottom:.5rem;display:block;text-transform:uppercase;letter-spacing:.13em;font-family:'Inter',sans-serif}
+h1{font:900 clamp(1.5rem,4vw,2.1rem) 'Noto Sans KR';color:var(--navy);letter-spacing:-.02em;margin-bottom:.5rem}
+.sub{font-size:.9rem;color:var(--muted);max-width:640px;margin-bottom:1.4rem}
+.client-row{display:flex;gap:.7rem;flex-wrap:wrap;margin-bottom:.4rem}
+.client-input{font:600 .85rem 'Inter';padding:.55rem .9rem;border-radius:8px;border:1px solid var(--border);background:var(--card);color:var(--navy);min-width:200px}
+.client-input::placeholder{color:var(--muted);font-weight:500}
+.ctx-chip{font:700 .74rem 'Inter';background:var(--card);border:1px solid var(--border);padding:.55rem .95rem;border-radius:8px;color:var(--text);display:inline-flex;align-items:center;gap:.4rem}
+
+/* SUMMARY BAR */
+.summary{
+  position:sticky;top:0;z-index:10;background:var(--bg);
+  padding:1rem 0 1.2rem;margin-bottom:1.4rem;border-bottom:1px solid var(--border);
+}
+.summary-inner{display:grid;grid-template-columns:auto 1fr;gap:1.6rem;align-items:center}
+.score-ring-wrap{position:relative;width:96px;height:96px;flex-shrink:0}
+.score-ring{width:96px;height:96px;transform:rotate(-90deg)}
+.ring-track{fill:none;stroke:var(--border);stroke-width:9}
+.ring-fill{fill:none;stroke-width:9;stroke-linecap:round;transition:stroke-dashoffset .5s cubic-bezier(.4,0,.2,1),stroke .3s}
+.score-center{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.score-pct{font:900 1.3rem 'Inter';color:var(--navy);letter-spacing:-.03em}
+.score-cnt{font-size:.6rem;color:var(--muted);font-weight:700}
+.summary-right{display:flex;flex-wrap:wrap;gap:.6rem;align-items:center}
+.status-pill{font:800 .78rem 'Inter';padding:.4rem 1rem;border-radius:20px;display:inline-flex;align-items:center;gap:.4rem}
+.status-pill.danger{background:rgba(220,38,38,.1);color:var(--red)}
+.status-pill.warn{background:rgba(245,158,11,.12);color:var(--gold-text)}
+.status-pill.good{background:rgba(16,185,129,.12);color:var(--green-text)}
+.status-pill.na{background:var(--card);color:var(--muted);border:1px solid var(--border)}
+.mini-bars{display:flex;gap:.6rem;flex-wrap:wrap}
+.mini-bar{display:flex;align-items:center;gap:.4rem;font:700 .7rem 'Inter';color:var(--muted)}
+.mini-bar-track{width:64px;height:6px;border-radius:4px;background:var(--border);overflow:hidden}
+.mini-bar-fill{height:100%;border-radius:4px;transition:width .4s}
+
+/* CATEGORY */
+.cat{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:1.5rem 1.6rem;margin-bottom:1.2rem;box-shadow:var(--shadow)}
+.cat-head{display:flex;align-items:center;gap:.8rem;margin-bottom:.3rem}
+.cat-icon{width:38px;height:38px;border-radius:10px;background:var(--bg);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:1.15rem;flex-shrink:0}
+.cat-title{font:800 1.05rem 'Noto Sans KR';color:var(--navy)}
+.cat-sub{font-size:.76rem;color:var(--muted)}
+.cat.a{border-top:3px solid var(--blue)}
+.cat.b{border-top:3px solid var(--gold)}
+.cat.c{border-top:3px solid var(--violet)}
+.cat-progress{margin:1rem 0 1.3rem}
+.cat-progress-track{height:6px;border-radius:4px;background:var(--bg);overflow:hidden}
+.cat-progress-fill{height:100%;border-radius:4px;transition:width .4s}
+
+.item{padding:.9rem 0;border-top:1px solid var(--border)}
+.item:first-of-type{border-top:none}
+.item-row{display:flex;justify-content:space-between;align-items:flex-start;gap:1rem;flex-wrap:wrap}
+.item-text{font-size:.86rem;color:var(--text);max-width:600px;line-height:1.55}
+.scale{display:flex;gap:.35rem;flex-shrink:0}
+.scale button{
+  width:34px;height:34px;border-radius:8px;border:1px solid var(--border);background:var(--bg);
+  font:700 .78rem 'Inter';color:var(--muted);cursor:pointer;transition:.15s;
+}
+.scale button:hover{border-color:var(--blue);color:var(--blue)}
+.scale button.sel{color:#fff;border-color:transparent}
+.scale button.sel[data-v="0"]{background:var(--red)}
+.scale button.sel[data-v="1"]{background:var(--gold)}
+.scale button.sel[data-v="2"]{background:#60A5FA}
+.scale button.sel[data-v="3"]{background:var(--green)}
+.legend{display:flex;flex-wrap:wrap;gap:1.1rem;font:600 .72rem 'Inter';color:var(--muted);margin:.2rem 0 1.5rem}
+.legend span{display:inline-flex;align-items:center;gap:.35rem}
+.legend i{width:10px;height:10px;border-radius:3px;display:inline-block}
+
+/* PRIORITY */
+.priority{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:1.5rem 1.6rem;box-shadow:var(--shadow)}
+.priority-title{font:800 1rem 'Noto Sans KR';color:var(--navy);margin-bottom:.3rem}
+.priority-sub{font-size:.78rem;color:var(--muted);margin-bottom:1.1rem}
+.p-item{display:flex;gap:.8rem;align-items:flex-start;padding:.85rem 1rem;border-radius:10px;background:var(--bg);border:1px solid var(--border);margin-bottom:.6rem}
+.p-rank{font:900 .95rem 'Inter';color:var(--red);flex-shrink:0;width:20px}
+.p-body{flex:1}
+.p-text{font-size:.82rem;color:var(--navy);font-weight:700;margin-bottom:.3rem;line-height:1.5}
+.p-track{font:700 .66rem 'Inter';padding:.2rem .6rem;border-radius:20px;display:inline-block}
+.p-track.flow{background:rgba(61,92,255,.1);color:var(--accent-text)}
+.p-track.anchor{background:rgba(245,158,11,.12);color:var(--gold-text)}
+.empty-note{font-size:.82rem;color:var(--muted);text-align:center;padding:1rem}
+
+.export-box{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:1.3rem 1.6rem;box-shadow:var(--shadow);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:.8rem;margin-top:1.2rem}
+.export-box p{font-size:.8rem;color:var(--muted);max-width:420px}
+.export-btn{font:700 .8rem 'Inter';background:var(--green-text);color:#fff;border:none;border-radius:9px;padding:.65rem 1.3rem;cursor:pointer}
+.export-btn:hover{background:var(--green)}
+
+@media(max-width:640px){
+  .summary-inner{grid-template-columns:1fr}
+  .score-ring-wrap{margin:0 auto}
+  .summary-right{justify-content:center}
+  .item-row{flex-direction:column}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="hd-top">
+    <div class="logo">PANIC<em>STORMS</em></div>
+    <button class="reset-btn" id="resetBtn">응답 초기화</button>
+  </div>
+
+  <span class="eyebrow">진단 &amp; 감사 · Week 1–2</span>
+  <h1>지식자산 진단표</h1>
+  <p class="sub">150명 규모 IT서비스 기업 기준으로 설계된 진단 체크리스트입니다. 각 항목을 현재 상태에 맞게 0~3점으로 평가하면 영역별 성숙도와 우선순위 개선 과제가 자동으로 계산됩니다.</p>
+  <div class="client-row">
+    <input class="client-input" id="clientName" type="text" placeholder="고객사명 입력">
+    <span class="ctx-chip">🏢 IT서비스 · 약 150명</span>
+  </div>
+
+  <div class="summary">
+    <div class="summary-inner">
+      <div class="score-ring-wrap">
+        <svg class="score-ring" viewBox="0 0 96 96">
+          <circle class="ring-track" cx="48" cy="48" r="40"/>
+          <circle class="ring-fill" id="ringFill" cx="48" cy="48" r="40" stroke="#94A3B8" stroke-dasharray="251.3 251.3" stroke-dashoffset="251.3"/>
+        </svg>
+        <div class="score-center">
+          <span class="score-pct" id="scorePct">–</span>
+          <span class="score-cnt" id="scoreCnt">0/14 응답</span>
+        </div>
+      </div>
+      <div class="summary-right">
+        <span class="status-pill na" id="statusPill">진단 대기 중</span>
+        <div class="mini-bars" id="miniBars"></div>
+      </div>
+    </div>
+  </div>
+
+  <div id="categories"></div>
+
+  <div class="priority">
+    <div class="priority-title">🎯 우선순위 개선 과제</div>
+    <div class="priority-sub">가장 취약한 항목 3개를 자동으로 뽑아 어떤 트랙(Flow/Anchor)에서 다루는지 표시합니다.</div>
+    <div id="priorityList"><p class="empty-note">항목을 3개 이상 체크하면 우선순위가 표시됩니다.</p></div>
+  </div>
+
+  <div class="export-box">
+    <p>응답을 표 형태(CSV)로 저장해 엑셀에서 바로 열 수 있습니다.</p>
+    <button class="export-btn" id="exportCsvBtn">엑셀용 CSV 저장</button>
+  </div>
+
+</div>
+
+<script>
+const SCALE_LABELS = ["없음","부분적","보통","체계적"];
+const SCALE_COLORS = ["var(--red)","var(--gold)","#60A5FA","var(--green)"];
+
+const CATS = [
+  {id:'A', title:'지식 흐름 관리', sub:'Knowledge Officer 영역 · 협업 데이터의 실시간 활용', icon:'🧠', cls:'a', track:'flow',
+   items:[
+    "프로젝트·고객사별 산출물이 표준화된 위치(Notion/Confluence/Drive 등)에 정리되어 있다",
+    "장애·인시던트 발생 시 포스트모템(사후분석) 문서를 남기고 재사용한다",
+    "신규 입사자가 최소한의 문의만으로 필요한 코드·운영 문서를 찾을 수 있다",
+    "팀마다 다른 용어·아키텍처 정의 없이 사내 표준 용어집이 통일되어 있다",
+    "사내 위키·문서 기반 AI 챗봇의 답변을 신뢰할 만한 수준이다",
+   ]},
+  {id:'B', title:'기록 보존 · 무결성', sub:'Digital Archivist 영역 · 장기 보존과 법적 증거력', icon:'🗄️', cls:'b', track:'anchor',
+   items:[
+    "고객사 계약서·SLA·보안 감사 자료의 보존 기간과 위치가 명확하다",
+    "퇴사자의 프로젝트 인수인계 문서가 표준 양식으로 남는다",
+    "2년 이상 지난 레거시 프로젝트의 코드·문서에 그때 상태 그대로 접근 가능하다",
+    "문서·코드의 변경 이력이 위변조 없이 추적 가능하다 (버전 관리, 감사 로그)",
+    "클라우드 서비스 종료나 업체 변경 시에도 과거 기록이 살아남는 백업 체계가 있다",
+   ]},
+  {id:'C', title:'AI 거버넌스 준비도', sub:'KO+DA 융합 영역 · 신뢰 가능한 AI 활용 기반', icon:'🤖', cls:'c', track:'flow',
+   items:[
+    "사내 AI 도구가 참조하는 지식 소스가 검증된 범위로 한정되어 있다",
+    "AI 거버넌스를 담당하는 책임자(팀 또는 직책)가 명확히 있다",
+    "AI가 생성한 답변의 오류를 발견했을 때 피드백하고 개선하는 절차가 있다",
+    "고객 데이터가 AI 학습·추론에 사용될 때의 정책이 문서화되어 있다",
+   ]},
+];
+
+// build item id list
+let ITEMS = [];
+CATS.forEach(cat=>{
+  cat.items.forEach((text,i)=>{
+    ITEMS.push({id:cat.id+i, cat:cat.id, text, track:cat.track});
+  });
+});
+
+const STORE_KEY = 'panicstorms_knowledge_audit_v1';
+let answers = {};
+try{ answers = JSON.parse(localStorage.getItem(STORE_KEY)) || {}; }catch(e){ answers = {}; }
+let clientName = localStorage.getItem(STORE_KEY+'_client') || '';
+
+const catsEl = document.getElementById('categories');
+
+function renderCategories(){
+  catsEl.innerHTML = CATS.map(cat=>{
+    const itemsHtml = cat.items.map((text,i)=>{
+      const id = cat.id+i;
+      const val = answers[id];
+      const scaleBtns = [0,1,2,3].map(v=>{
+        const sel = val===v ? 'sel' : '';
+        return `<button class="${sel}" data-v="${v}" data-id="${id}" title="${SCALE_LABELS[v]}">${v}</button>`;
+      }).join('');
+      return `<div class="item">
+        <div class="item-row">
+          <div class="item-text">${text}</div>
+          <div class="scale">${scaleBtns}</div>
+        </div>
+      </div>`;
+    }).join('');
+    return `<div class="cat ${cat.cls}">
+      <div class="cat-head">
+        <div class="cat-icon">${cat.icon}</div>
+        <div>
+          <div class="cat-title">${cat.title}</div>
+          <div class="cat-sub">${cat.sub}</div>
+        </div>
+      </div>
+      <div class="cat-progress">
+        <div class="cat-progress-track"><div class="cat-progress-fill" id="catbar-${cat.id}" style="width:0%;background:var(--border)"></div></div>
+      </div>
+      ${cat.id==='A' ? `<div class="legend">${SCALE_LABELS.map((l,i)=>`<span><i style="background:${SCALE_COLORS[i]}"></i>${i} · ${l}</span>`).join('')}</div>` : ''}
+      ${itemsHtml}
+    </div>`;
+  }).join('');
+
+  catsEl.querySelectorAll('.scale button').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      const id = btn.dataset.id;
+      const v = parseInt(btn.dataset.v,10);
+      answers[id] = answers[id]===v ? undefined : v;
+      if(answers[id]===undefined) delete answers[id];
+      localStorage.setItem(STORE_KEY, JSON.stringify(answers));
+      renderCategories();
+      renderSummary();
+    });
+  });
+}
+
+const RING_C = 251.3;
+function bandColor(pct){
+  if(pct<40) return {c:'var(--red)', cls:'danger', label:'위험 — 즉시 개선 필요'};
+  if(pct<70) return {c:'var(--gold)', cls:'warn', label:'보통 — 개선 여지 큼'};
+  return {c:'var(--green)', cls:'good', label:'양호 — 고도화 단계'};
+}
+
+function renderSummary(){
+  const answered = ITEMS.filter(it=>answers[it.id]!==undefined);
+  const scorePct = document.getElementById('scorePct');
+  const scoreCnt = document.getElementById('scoreCnt');
+  const ringFill = document.getElementById('ringFill');
+  const statusPill = document.getElementById('statusPill');
+  scoreCnt.textContent = `${answered.length}/${ITEMS.length} 응답`;
+
+  if(answered.length===0){
+    scorePct.textContent = '–';
+    ringFill.style.stroke = '#94A3B8';
+    ringFill.style.strokeDashoffset = RING_C;
+    statusPill.className = 'status-pill na';
+    statusPill.textContent = '진단 대기 중';
+  } else {
+    const sum = answered.reduce((a,it)=>a+answers[it.id],0);
+    const pct = Math.round((sum/(answered.length*3))*100);
+    scorePct.textContent = pct+'%';
+    const band = bandColor(pct);
+    ringFill.style.stroke = band.c;
+    ringFill.style.strokeDashoffset = RING_C*(1-pct/100);
+    statusPill.className = 'status-pill '+band.cls;
+    statusPill.textContent = band.label;
+  }
+
+  // mini bars per category
+  const miniEl = document.getElementById('miniBars');
+  miniEl.innerHTML = CATS.map(cat=>{
+    const catItems = ITEMS.filter(it=>it.cat===cat.id && answers[it.id]!==undefined);
+    let pct = 0;
+    if(catItems.length){
+      const sum = catItems.reduce((a,it)=>a+answers[it.id],0);
+      pct = Math.round((sum/(catItems.length*3))*100);
+    }
+    const band = bandColor(catItems.length ? pct : 0);
+    const color = catItems.length ? band.c : 'var(--border)';
+    return `<div class="mini-bar">${cat.id}<div class="mini-bar-track"><div class="mini-bar-fill" style="width:${pct}%;background:${color}"></div></div></div>`;
+  }).join('');
+
+  // category progress bars (in cards)
+  CATS.forEach(cat=>{
+    const bar = document.getElementById('catbar-'+cat.id);
+    if(!bar) return;
+    const catItems = ITEMS.filter(it=>it.cat===cat.id && answers[it.id]!==undefined);
+    if(!catItems.length){ bar.style.width='0%'; bar.style.background='var(--border)'; return; }
+    const sum = catItems.reduce((a,it)=>a+answers[it.id],0);
+    const pct = Math.round((sum/(catItems.length*3))*100);
+    const band = bandColor(pct);
+    bar.style.width = pct+'%';
+    bar.style.background = band.c;
+  });
+
+  // priority list: lowest 3 answered items
+  const priorityEl = document.getElementById('priorityList');
+  const answeredSorted = ITEMS.filter(it=>answers[it.id]!==undefined)
+    .sort((a,b)=>answers[a.id]-answers[b.id])
+    .slice(0,3);
+  if(answeredSorted.length<3){
+    priorityEl.innerHTML = '<p class="empty-note">항목을 3개 이상 체크하면 우선순위가 표시됩니다.</p>';
+  } else {
+    priorityEl.innerHTML = answeredSorted.map((it,i)=>{
+      const trackLabel = it.track==='flow' ? 'Track 01 — Flow' : 'Track 02 — Anchor';
+      const trackCls = it.track==='flow' ? 'flow' : 'anchor';
+      return `<div class="p-item">
+        <span class="p-rank">${i+1}</span>
+        <div class="p-body">
+          <div class="p-text">${it.text}</div>
+          <span class="p-track ${trackCls}">${trackLabel}</span>
+        </div>
+      </div>`;
+    }).join('');
+  }
+}
+
+document.getElementById('clientName').value = clientName;
+document.getElementById('clientName').addEventListener('input', (e)=>{
+  localStorage.setItem(STORE_KEY+'_client', e.target.value);
+});
+
+document.getElementById('resetBtn').addEventListener('click', ()=>{
+  if(!confirm('모든 응답을 초기화할까요?')) return;
+  answers = {};
+  localStorage.removeItem(STORE_KEY);
+  renderCategories();
+  renderSummary();
+});
+
+async function exportCSV(){
+  const client = document.getElementById('clientName').value || '고객사';
+  const csvEscape = s => {
+    const str = String(s === undefined || s === null ? '' : s);
+    return /[",\n]/.test(str) ? '"' + str.replace(/"/g,'""') + '"' : str;
+  };
+  const rows = [['영역','문항','점수','평가']];
+  CATS.forEach(cat=>{
+    cat.items.forEach((text,i)=>{
+      const id = cat.id+i;
+      const v = answers[id];
+      rows.push([cat.title, text, v!==undefined?v:'', v!==undefined?SCALE_LABELS[v]:'']);
+    });
+  });
+  const csv = '﻿' + rows.map(r=>r.map(csvEscape).join(',')).join('\r\n');
+  const filename = `지식자산진단_${client}.csv`;
+  const btn = document.getElementById('exportCsvBtn');
+  const origText = btn.textContent;
+
+  if(window.claude && typeof window.claude.use === 'function'){
+    let downloads = null;
+    try{ downloads = await window.claude.use('downloads'); }catch(e){ downloads = null; }
+    if(downloads){
+      try{
+        await downloads.save({filename, data: csv});
+        btn.textContent = '저장됨 ✓';
+        setTimeout(()=>btn.textContent = origText, 1500);
+      }catch(err){
+        if(!(err && err.code === 'declined')){
+          alert('저장 실패: ' + (err && err.message ? err.message : '알 수 없는 오류'));
+        }
+      }
+      return;
+    }
+  }
+  const blob = new Blob([csv], {type:'text/csv;charset=utf-8'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = filename;
+  document.body.appendChild(a); a.click(); document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+  btn.textContent = '저장됨 ✓';
+  setTimeout(()=>btn.textContent = origText, 1500);
+}
+document.getElementById('exportCsvBtn').addEventListener('click', exportCSV);
+
+renderCategories();
+renderSummary();
+</script>
+</body>
+</html>
