@@ -1,0 +1,813 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Build Your Legacy</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Noto+Sans+KR:wght@400;500;700;900&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
+:root{
+  --blue:#3D5CFF;--blue-dk:#314ACC;--violet:#7C3AED;--cyan:#00C2FF;
+  --navy:#0F172A;--text:#1E293B;--muted:#64748B;--bg:#F8FAFC;
+  --border:#E2E8F0;--white:#FFFFFF;--gold:#F59E0B;--green:#10B981;--red:#DC2626;
+  --pain-bg:#FFF5F5;--pain-text:#7F1D1D;--benefit-bg:#F0FDF4;--benefit-text:#14532D;
+  --canvas:#DCE3EE;--slide-bg:#FFFFFF;
+  /* text-safe variants — tuned per theme so small/labeled text clears WCAG AA on its actual background */
+  --accent-text:#3D5CFF;--gold-text:#B45309;--green-text:#047857;--rail-dot:#647089;
+  --shadow:0 10px 30px rgba(15,23,42,.10);
+  --w:1180px;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --navy:#F1F5F9;--text:#CBD5E1;--muted:#8B98AC;--bg:#0B0F19;--white:#131B2E;--border:#232E45;
+    --pain-bg:#2C1A1A;--pain-text:#FCA5A5;--benefit-bg:#142E1D;--benefit-text:#86EFAC;
+    --canvas:#060911;--slide-bg:#111827;
+    --accent-text:#7C93FF;--gold-text:#F59E0B;--green-text:#10B981;--rail-dot:#838DA6;
+    --shadow:0 10px 34px rgba(0,0,0,.55);
+  }
+}
+:root[data-theme="dark"]{
+  --navy:#F1F5F9;--text:#CBD5E1;--muted:#8B98AC;--bg:#0B0F19;--white:#131B2E;--border:#232E45;
+  --pain-bg:#2C1A1A;--pain-text:#FCA5A5;--benefit-bg:#142E1D;--benefit-text:#86EFAC;
+  --canvas:#060911;--slide-bg:#111827;
+  --accent-text:#7C93FF;--gold-text:#F59E0B;--green-text:#10B981;--rail-dot:#838DA6;
+  --shadow:0 10px 34px rgba(0,0,0,.55);
+}
+
+html{scroll-behavior:smooth}
+body{
+  font-family:'Noto Sans KR','Pretendard',-apple-system,sans-serif;
+  background:var(--canvas);color:var(--text);line-height:1.6;word-break:keep-all;
+  overflow-x:hidden;
+}
+a{color:inherit}
+.g-text{background:linear-gradient(135deg,#3D5CFF,#7C3AED);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+
+/* fade reveal — subtle, presentation-appropriate */
+.fade-up{opacity:0;transform:translateY(10px);transition:opacity .45s ease,transform .45s ease}
+.fade-up.visible{opacity:1;transform:none}
+.d1{transition-delay:.05s}.d2{transition-delay:.1s}.d3{transition-delay:.15s}.d4{transition-delay:.2s}
+
+/* TOP CHROME */
+.topbar{position:fixed;top:0;left:0;right:0;height:3px;background:var(--border);z-index:60}
+.topbar-fill{height:100%;background:linear-gradient(90deg,var(--blue),var(--violet));width:0%;transition:width .2s}
+.brandmark{position:fixed;top:1rem;left:1.2rem;z-index:55;font:800 .82rem 'Inter';color:var(--navy);letter-spacing:-.02em;opacity:.7}
+.brandmark em{font-style:normal;color:var(--blue)}
+.counter{position:fixed;bottom:1rem;left:1.2rem;z-index:55;font:700 .68rem 'Inter';color:var(--muted);letter-spacing:.04em}
+
+/* NAV RAIL */
+.rail{position:fixed;right:1rem;top:50%;transform:translateY(-50%);display:flex;flex-direction:column;gap:.42rem;z-index:50}
+.rail a{width:7px;height:7px;border-radius:50%;background:var(--rail-dot);display:block;transition:.25s;position:relative}
+.rail a.appendix{background:transparent;border:1.4px solid var(--rail-dot)}
+.rail a.active{background:var(--blue);transform:scale(1.5)}
+.rail a.appendix.active{background:var(--violet);border-color:var(--violet)}
+.rail a:hover::after{
+  content:attr(data-label);position:absolute;right:15px;top:50%;transform:translateY(-50%);
+  background:var(--navy);color:var(--bg);font:600 .66rem 'Inter';padding:.28rem .55rem;border-radius:5px;white-space:nowrap;
+}
+@media(max-width:960px){.rail{display:none}}
+
+/* DECK LAYOUT */
+.deck{display:flex;flex-direction:column;align-items:center;gap:2.2rem;padding:4.2rem 1rem 5rem}
+.slide{
+  width:100%;max-width:var(--w);min-height:640px;
+  background:var(--slide-bg);border:1px solid var(--border);border-radius:8px;box-shadow:var(--shadow);
+  display:flex;flex-direction:column;
+  padding:clamp(1.5rem,3vw,2.6rem) clamp(1.6rem,3.4vw,3rem) clamp(1rem,2vw,1.4rem);
+  position:relative;
+}
+.s-accent{position:absolute;top:0;left:0;right:0;height:4px;background:linear-gradient(90deg,var(--blue),var(--violet));border-radius:8px 8px 0 0}
+.s-head{margin-bottom:1.3rem;padding-top:.4rem}
+.s-idx{font:800 .74rem 'Inter';color:var(--accent-text);letter-spacing:.1em;text-transform:uppercase;display:block;margin-bottom:.5rem}
+.s-title{font:800 clamp(1.35rem,2.6vw,1.85rem) 'Noto Sans KR';color:var(--navy);letter-spacing:-.02em;line-height:1.32;margin-bottom:.5rem;text-wrap:balance}
+.s-sub{font-size:.96rem;color:var(--muted);max-width:640px;line-height:1.6}
+.s-body{flex:1;display:flex;flex-direction:column;justify-content:center}
+.s-foot{display:flex;justify-content:space-between;align-items:center;margin-top:1.2rem;padding-top:.8rem;border-top:1px solid var(--border)}
+.s-foot-logo{font:800 .68rem 'Inter';color:var(--muted);letter-spacing:.02em}
+.s-foot-logo em{font-style:normal;color:var(--blue)}
+.s-foot-page{font:700 .66rem 'Inter';color:var(--muted)}
+.s-foot-tag{font:700 .64rem 'Inter';color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
+
+/* BIG STATS */
+.stat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:.85rem}
+.stat-card{background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:1.1rem 1rem}
+.stat-num{font:900 clamp(1.5rem,2.6vw,1.95rem) 'Inter';color:var(--blue);letter-spacing:-.02em;line-height:1}
+.stat-num.g{color:var(--gold-text)}.stat-num.v{color:var(--violet)}.stat-num.r{color:var(--red)}
+.stat-label{font-size:.86rem;color:var(--muted);font-weight:600;margin-top:.4rem;line-height:1.5}
+.stat-src{font-size:.7rem;color:var(--muted);opacity:.7;margin-top:.35rem;font-family:'Inter',sans-serif}
+.stat-bar{height:4px;border-radius:3px;background:var(--border);margin-top:.6rem;overflow:hidden}
+.stat-bar-fill{height:100%;border-radius:3px;background:var(--blue)}
+.stat-bar-fill.g{background:var(--gold-text)}.stat-bar-fill.v{background:var(--violet)}.stat-bar-fill.r{background:var(--red)}
+
+/* MARKET */
+.market-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem}
+.market-card{background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:1.2rem 1.3rem}
+.mk-label{font:700 .74rem 'Inter';color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:.6rem}
+.mk-flow{display:flex;align-items:baseline;gap:.55rem;margin-bottom:.3rem;flex-wrap:wrap}
+.mk-from{font:700 1.02rem 'Inter';color:var(--muted)}
+.mk-arrow{color:var(--muted)}
+.mk-to{font:900 1.6rem 'Inter';color:var(--navy);letter-spacing:-.02em}
+.mk-cagr{display:inline-block;margin-top:.4rem;font:700 .78rem 'Inter';background:var(--slide-bg);border:1px solid var(--border);padding:.22rem .6rem;border-radius:20px;color:var(--accent-text)}
+.mk-chart{display:flex;align-items:flex-end;gap:.35rem;height:44px;margin:.75rem 0 .2rem}
+.mk-bar{flex:1;border-radius:4px 4px 0 0}
+.mk-bar.from{background:var(--border)}
+.mk-bar.to{background:linear-gradient(180deg,var(--violet),var(--blue))}
+.footnote{font-size:.7rem;color:var(--muted);opacity:.75;margin-top:.7rem;font-family:'Inter',sans-serif}
+
+/* THESIS loop */
+.thesis-slide{overflow:hidden}
+.thesis-glow{position:absolute;inset:0;background:radial-gradient(circle at 50% 42%, rgba(61,92,255,var(--glow-op,.10)), transparent 58%);pointer-events:none;z-index:0}
+:root[data-theme="dark"] .thesis-glow,:root:not([data-theme="light"]) .thesis-glow{--glow-op:.24}
+.loop-wrap{display:flex;align-items:center;justify-content:center;gap:.6rem;margin:.4rem 0 0;flex-wrap:wrap}
+.loop-node{background:var(--bg);border:1px solid var(--border);border-radius:14px;padding:1.3rem 1.6rem;text-align:center;min-width:158px}
+.loop-node.ko{border-top:3px solid var(--blue);box-shadow:0 10px 28px rgba(61,92,255,.16)}
+.loop-node.da{border-top:3px solid var(--gold);box-shadow:0 10px 28px rgba(245,158,11,.16)}
+.loop-node .li{font-size:2.1rem;display:block;margin-bottom:.35rem}
+.loop-node .lr{font:800 1.05rem 'Inter';color:var(--navy)}
+.loop-node .ls{font-size:.68rem;color:var(--muted);margin-bottom:.5rem}
+.loop-node .lv{font:600 .68rem 'Noto Sans KR';color:var(--text);padding-top:.5rem;border-top:1px dashed var(--border)}
+.loop-beam{position:relative;flex:1;min-width:44px;max-width:100px;height:3px;border-radius:2px;overflow:hidden;background:linear-gradient(90deg,var(--border),var(--blue) 40%,var(--violet) 60%,var(--border))}
+.beam-shine{position:absolute;top:0;left:-40%;width:40%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.95),transparent);animation:beamMove 2.2s linear infinite}
+.loop-beam.rev .beam-shine{animation-direction:reverse}
+@keyframes beamMove{to{left:130%}}
+.loop-ai{position:relative;width:88px;height:88px;flex-shrink:0}
+.loop-ai-ring{position:absolute;inset:-4px;border-radius:50%;background:conic-gradient(from 0deg,var(--blue),var(--violet),var(--cyan),var(--blue));animation:spin 5s linear infinite}
+.loop-ai-core{position:absolute;inset:4px;border-radius:50%;background:linear-gradient(135deg,var(--blue),var(--violet));display:flex;flex-direction:column;align-items:center;justify-content:center;color:#fff;box-shadow:0 10px 30px rgba(61,92,255,.4)}
+.loop-ai-core b{font:800 1.08rem 'Inter';line-height:1}
+.loop-ai-core span{font-size:.56rem;opacity:.85;letter-spacing:.05em;margin-top:2px}
+@keyframes spin{to{transform:rotate(360deg)}}
+@media(prefers-reduced-motion:reduce){.loop-ai-ring{animation:none}.beam-shine{animation:none;display:none}}
+.thesis-quote{max-width:640px;margin:1.6rem auto 0;padding:.2rem 0 .2rem 1.3rem;border-left:3px solid var(--blue);text-align:left}
+.thesis-line{font:700 1.08rem 'Noto Sans KR';color:var(--navy);line-height:1.8}
+.thesis-line em{font-style:normal;color:var(--accent-text)}
+@media(max-width:640px){.loop-beam{display:none}}
+
+/* ROLE CARDS */
+.roles-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+.role-card{background:var(--bg);border-radius:10px;padding:1.15rem 1.3rem;border:1px solid var(--border)}
+.role-card.ko{border-top:3px solid var(--blue)}
+.role-card.da{border-top:3px solid var(--gold)}
+.role-icon{width:42px;height:42px;border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:1.35rem;margin-bottom:.7rem;background:var(--slide-bg);border:1px solid var(--border)}
+.role-card.ko .role-icon{box-shadow:0 6px 16px rgba(61,92,255,.18)}
+.role-card.da .role-icon{box-shadow:0 6px 16px rgba(245,158,11,.18)}
+.role-title{font:800 1.02rem 'Noto Sans KR';color:var(--navy);margin-bottom:.15rem}
+.role-sub{font:700 .8rem 'Inter';color:var(--accent-text);margin-bottom:.55rem}
+.da .role-sub{color:var(--gold-text)}
+.role-desc{font-size:.9rem;color:var(--muted);margin-bottom:.7rem;line-height:1.6}
+.role-tags{display:flex;flex-wrap:wrap;gap:.3rem}
+.tag{font:600 .74rem 'Inter';padding:.2rem .55rem;border-radius:5px;background:var(--slide-bg);border:1px solid var(--border);color:var(--text)}
+
+/* PIPELINE mini */
+.pipe-row{display:flex;align-items:stretch;gap:0}
+.pipe-card{flex:1;background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:1rem .95rem}
+.pipe-icon-lg{font-size:1.4rem;display:block;margin-bottom:.5rem}
+.pipe-num{font:900 1.55rem 'Inter';letter-spacing:-.03em;margin-bottom:.15rem}
+.p1{color:var(--blue)}.p2{color:var(--violet)}.p3{color:var(--green-text)}
+.pipe-title{font:800 .98rem 'Noto Sans KR';color:var(--navy);margin-bottom:.15rem}
+.pipe-lead{font:700 .72rem 'Inter';color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:.6rem}
+.pipe-chips{display:flex;flex-wrap:wrap;gap:.25rem}
+.chip{font:600 .74rem 'Inter';padding:.18rem .48rem;border-radius:5px;background:var(--slide-bg);border:1px solid var(--border);color:var(--text)}
+.pipe-conn{display:flex;align-items:center;justify-content:center;width:30px;flex-shrink:0;color:var(--border);font-size:.95rem}
+.pipe-conn.beam{width:30px;height:3px;align-self:center;position:relative;border-radius:2px;overflow:hidden;background:linear-gradient(90deg,var(--border),var(--blue) 40%,var(--violet) 60%,var(--border))}
+
+/* APPROACH TRACK (was "solution") */
+.track-note{background:var(--bg);border:1px dashed var(--border);border-radius:8px;padding:.65rem .9rem;font-size:.82rem;color:var(--muted);margin-bottom:1rem;line-height:1.6}
+.approach-hero{border-radius:12px;padding:1.3rem 1.5rem;color:#fff;flex:1;display:flex;flex-direction:column;justify-content:center}
+.approach-hero.flow{background:linear-gradient(135deg,#0055EE,#4F46E5)}
+.approach-hero.anchor{background:linear-gradient(135deg,#0F172A,#1E293B)}
+.ap-tag{font:700 .7rem 'Inter';color:rgba(255,255,255,.65);text-transform:uppercase;letter-spacing:.1em;margin-bottom:.4rem;display:block}
+.ap-title{font:800 clamp(1.05rem,2.2vw,1.35rem) 'Noto Sans KR';margin-bottom:.85rem;line-height:1.3}
+.ap-items{display:grid;grid-template-columns:1fr 1fr 1fr;gap:.65rem}
+.ap-item{background:rgba(255,255,255,.1);border-radius:9px;padding:.75rem .85rem;border:1px solid rgba(255,255,255,.12)}
+.ap-item strong{display:block;font-size:.74rem;margin-bottom:.22rem;color:#93C5FD}
+.approach-hero.anchor .ap-item strong{color:var(--cyan)}
+.ap-item p{font-size:.8rem;opacity:.85;line-height:1.55}
+
+/* BEFORE/AFTER */
+.ba-grid{display:grid;grid-template-columns:1fr auto 1fr;gap:1rem;align-items:center}
+.ba-card{border-radius:10px;padding:1rem 1.1rem;border:1px solid var(--border)}
+.ba-card.before{background:var(--pain-bg)}
+.ba-card.after{background:var(--benefit-bg)}
+.ba-badge{font:800 .7rem 'Inter';padding:.2rem .65rem;border-radius:20px;text-transform:uppercase;letter-spacing:.06em;display:inline-block;margin-bottom:.6rem}
+.before .ba-badge{background:rgba(220,38,38,.1);color:var(--pain-text)}
+.after .ba-badge{background:rgba(22,163,74,.1);color:var(--benefit-text)}
+.ba-metric{display:flex;align-items:center;gap:.55rem;padding:.5rem .65rem;background:var(--slide-bg);border-radius:8px;border:1px solid var(--border);margin-bottom:.4rem}
+.ba-icon{font-size:.9rem;flex-shrink:0}
+.ba-label{font-size:.82rem;color:var(--muted);font-weight:600;flex:1}
+.ba-val{font:800 .92rem 'Inter';white-space:nowrap}
+.before .ba-val{color:var(--pain-text)}.after .ba-val{color:var(--benefit-text)}
+.ba-center{display:flex;flex-direction:column;align-items:center;gap:.4rem}
+.ba-arrow{width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,var(--blue),var(--violet));display:flex;align-items:center;justify-content:center;color:#fff;font-size:.92rem}
+
+/* INDUSTRY compact */
+.ind-grid{display:grid;grid-template-columns:1fr 1fr;gap:.8rem}
+.ind-card{background:var(--bg);border:1px solid var(--border);border-radius:9px;padding:.85rem 1rem}
+.ind-top{display:flex;align-items:center;gap:.55rem;margin-bottom:.4rem}
+.ind-icon{font-size:1.1rem}
+.ind-name{font:800 .94rem 'Noto Sans KR';color:var(--navy)}
+.ind-cat{font-size:.7rem;color:var(--muted)}
+.ind-line{font-size:.82rem;color:var(--muted);line-height:1.5;margin-bottom:.4rem}
+.ind-kpi{font:700 .68rem 'Inter';padding:.16rem .5rem;border-radius:20px;background:var(--slide-bg);border:1px solid var(--border);color:var(--navy);display:inline-block}
+
+/* ROADMAP */
+.road-row{display:flex;align-items:stretch;gap:0}
+.road-step{flex:1;background:var(--bg);border:1px solid var(--border);border-radius:9px;padding:.9rem 1rem}
+.road-num{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font:800 .8rem 'Inter';color:#fff;margin-bottom:.55rem}
+.rn1{background:var(--blue)}.rn2{background:var(--violet)}.rn3{background:var(--green)}.rn4{background:var(--gold)}
+.road-dur{font:700 .68rem 'Inter';color:var(--muted);text-transform:uppercase;letter-spacing:.05em;margin-bottom:.2rem}
+.road-title{font:800 .96rem 'Noto Sans KR';color:var(--navy);margin-bottom:.4rem}
+.road-task{font-size:.8rem;color:var(--muted);line-height:1.5}
+
+/* STANDARDS */
+.std-row{display:grid;grid-template-columns:repeat(4,1fr);gap:.6rem}
+.std-chip{background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:.75rem .6rem;text-align:center}
+.std-icon{font-size:1.15rem;display:block;margin-bottom:.35rem}
+.std-abbr{font:800 .88rem 'Inter';color:var(--navy)}
+.std-desc{font-size:.72rem;color:var(--muted);margin-top:.18rem}
+
+/* COVER */
+#s1{background:linear-gradient(150deg,#EDF2FF 0%,#F3EEFF 55%,var(--slide-bg) 100%);justify-content:center}
+:root[data-theme="dark"] #s1{background:linear-gradient(150deg,#151A33 0%,#191333 55%,var(--slide-bg) 100%)}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) #s1{background:linear-gradient(150deg,#151A33 0%,#191333 55%,var(--slide-bg) 100%)}}
+.cover-pill{display:inline-flex;align-items:center;gap:.45rem;padding:.32rem .85rem;border-radius:99px;background:var(--slide-bg);color:var(--accent-text);font:700 .66rem 'Inter';margin-bottom:1.1rem;border:1px solid rgba(61,92,255,.2)}
+.cover-logo{font:800 1rem 'Inter';letter-spacing:-.02em;color:var(--navy);margin-bottom:1.4rem}
+.cover-logo em{font-style:normal;color:var(--blue)}
+.cover-title{font:900 clamp(1.9rem,4.4vw,3rem) 'Noto Sans KR';letter-spacing:-.03em;line-height:1.18;color:var(--navy);margin-bottom:.9rem}
+.cover-desc{font-size:.98rem;color:var(--muted);max-width:560px;margin-bottom:1.8rem;font-weight:500}
+.meta-row{display:flex;flex-wrap:wrap;gap:.6rem;margin-bottom:.9rem}
+.meta-chip{font:600 .82rem 'Inter';background:var(--slide-bg);border:1px solid var(--border);padding:.4rem .85rem;border-radius:8px;color:var(--text)}
+.meta-chip b{color:var(--navy)}
+.time-badge{font:700 .72rem 'Inter';color:var(--muted);letter-spacing:.05em;text-transform:uppercase}
+.cover-body{display:grid;grid-template-columns:1fr auto;gap:2rem;align-items:center}
+.cover-visual{display:flex;justify-content:center}
+.cv-orb{position:relative;width:148px;height:148px}
+.cv-ring{position:absolute;inset:-6px;border-radius:50%;background:conic-gradient(from 0deg,var(--blue),var(--violet),var(--cyan),var(--blue));animation:spin 6s linear infinite}
+.cv-core{position:absolute;inset:6px;border-radius:50%;background:var(--slide-bg);display:flex;flex-direction:column;align-items:center;justify-content:center;box-shadow:inset 0 0 0 1px var(--border)}
+.cv-core b{font:800 1.15rem 'Inter';color:var(--navy);line-height:1.2}
+.cv-core span{font-size:.66rem;color:var(--muted);margin:.15rem 0}
+@media(max-width:760px){.cover-body{grid-template-columns:1fr}.cover-visual{display:none}}
+@media(prefers-reduced-motion:reduce){.cv-ring{animation:none}}
+
+/* CLOSING */
+#s13{background:linear-gradient(135deg,#22338C 0%,#3D5CFF 45%,#7C3AED 100%);color:#fff}
+#s13 .s-idx{color:rgba(255,255,255,.75)}
+#s13 .s-title{color:#fff}
+#s13 .s-sub{color:rgba(255,255,255,.85)}
+#s13 .s-foot{border-color:rgba(255,255,255,.2)}
+#s13 .s-foot-logo,#s13 .s-foot-page{color:rgba(255,255,255,.65)}
+.next-steps{display:grid;gap:.5rem;margin:.3rem 0 1.1rem;max-width:560px}
+.next-item{display:flex;gap:.65rem;align-items:flex-start;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.16);border-radius:9px;padding:.6rem .85rem}
+.next-num{font:800 .7rem 'Inter';flex-shrink:0}
+.next-item p{font-size:.88rem;opacity:.92;line-height:1.5}
+.cta-box{display:flex;flex-wrap:wrap;gap:.85rem;align-items:center}
+.cta-btn{background:#fff;color:var(--blue);padding:.65rem 1.5rem;font-size:.94rem;border-radius:10px;font-weight:800;display:inline-block}
+.cta-note{font-size:.86rem;opacity:.85}
+
+/* DIVIDER */
+.divider{background:linear-gradient(135deg,#0F172A,#1E293B);color:#fff;text-align:center;align-items:center;justify-content:center}
+.divider .s-title{color:#fff}
+.divider .s-sub{color:rgba(255,255,255,.75);margin-left:auto;margin-right:auto}
+.divider .s-idx{color:var(--cyan)}
+.divider .s-foot{border-color:rgba(255,255,255,.2)}
+.divider .s-foot-logo,.divider .s-foot-page{color:rgba(255,255,255,.6)}
+.divider .s-head{text-align:center}
+
+/* QA formula */
+.qa-body{font-size:.96rem;color:var(--text);line-height:1.75;max-width:700px}
+.qa-list{display:grid;gap:.5rem}
+.qa-list li{display:flex;gap:.6rem;font-size:.92rem;color:var(--text);line-height:1.55}
+.qa-list li::before{content:'→';color:var(--blue);font-weight:800;flex-shrink:0}
+.formula-box{background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:1rem 1.2rem;margin-top:.9rem;font-family:'Inter',monospace;font-size:.86rem;color:var(--navy);line-height:1.8}
+.formula-note{font-size:.74rem;color:var(--muted);margin-top:.5rem;font-family:'Noto Sans KR',sans-serif}
+
+@media(max-width:760px){
+  .slide{min-height:auto}
+  .stat-grid{grid-template-columns:1fr 1fr}
+  .market-grid{grid-template-columns:1fr}
+  .roles-grid{grid-template-columns:1fr}
+  .ind-grid{grid-template-columns:1fr}
+  .std-row{grid-template-columns:1fr 1fr}
+  .road-row{flex-wrap:wrap}
+  .road-step{flex:1 1 45%}
+  .ap-items{grid-template-columns:1fr}
+  .pipe-row{flex-direction:column}
+  .pipe-conn{width:100%;height:20px;transform:rotate(90deg)}
+  .road-row .pipe-conn.beam{display:none}
+}
+
+@media print{
+  @page{size:13.333in 7.5in;margin:0}
+  html,body{background:#fff}
+  .topbar,.brandmark,.counter,.rail{display:none!important}
+  .deck{padding:0;gap:0}
+  .slide{
+    width:13.333in;height:7.5in;max-width:none;min-height:0;
+    box-shadow:none;border:none;border-radius:0;
+    page-break-after:always;break-after:page;
+    padding:.55in .7in;
+  }
+  .slide:last-child{page-break-after:auto;break-after:auto}
+  .fade-up{opacity:1!important;transform:none!important}
+  .loop-ai-ring,.beam-shine,.cv-ring{animation:none!important}
+  /* force desktop layout regardless of the headless renderer's layout viewport */
+  .stat-grid{grid-template-columns:repeat(4,1fr)!important}
+  .market-grid{grid-template-columns:1fr 1fr!important}
+  .roles-grid{grid-template-columns:1fr 1fr!important}
+  .ind-grid{grid-template-columns:1fr 1fr!important}
+  .std-row{grid-template-columns:repeat(4,1fr)!important}
+  .road-row{flex-wrap:nowrap!important}
+  .road-row .pipe-conn.beam{display:flex!important}
+  .pipe-row{flex-direction:row!important}
+  .pipe-conn{width:30px!important;height:3px!important;transform:none!important}
+  .ap-items{grid-template-columns:1fr 1fr 1fr!important}
+  .cover-body{grid-template-columns:1fr auto!important}
+  .cover-visual{display:flex!important}
+  .loop-beam{display:flex!important}
+  /* gradient background-clip:text leaves a faint box artifact in this PDF renderer — use a flat color for print */
+  .g-text{background:none!important;-webkit-background-clip:initial!important;background-clip:initial!important;-webkit-text-fill-color:var(--violet)!important;color:var(--violet)!important}
+}
+</style>
+</head>
+<body>
+
+<div class="topbar"><div class="topbar-fill" id="topbarFill"></div></div>
+<a class="brandmark" href="#s1">PANIC<em>STORMS</em></a>
+<div class="counter" id="counter">01 / 19</div>
+<nav class="rail" id="rail"></nav>
+
+<div class="deck">
+
+<!-- S1 COVER -->
+<section class="slide" id="s1">
+  <div class="s-body cover-body">
+    <div style="display:flex;flex-direction:column;align-items:flex-start">
+      <div class="cover-pill fade-up"><span>●</span>&nbsp;CLIENT INTRODUCTION</div>
+      <div class="cover-logo fade-up d1">PANIC<em>STORMS</em></div>
+      <h1 class="cover-title fade-up d2">Build Your <span class="g-text">Legacy</span></h1>
+      <p class="cover-desc fade-up d3">지식은 흐르게, 기록은 고정되게 — Knowledge Officer × Digital Archivist 융합 거버넌스 제안</p>
+      <div class="meta-row fade-up d4">
+        <span class="meta-chip">발표 대상 · <b>[고객사명]</b></span>
+        <span class="meta-chip">발표자 · <b>[담당자명]</b></span>
+        <span class="meta-chip">[YYYY.MM.DD]</span>
+      </div>
+      <span class="time-badge fade-up d4">15분 발표 · 15분 Q&amp;A</span>
+    </div>
+    <div class="cover-visual fade-up d3">
+      <div class="cv-orb"><div class="cv-ring"></div><div class="cv-core"><b>KO+DA</b><span>Intelligence</span><b style="font-size:.85rem">Loop</b></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- S2 PROBLEM -->
+<section class="slide" id="s2">
+  <div class="s-accent"></div>
+  <div class="s-head fade-up">
+    <span class="s-idx">01 · Why Now</span>
+    <h2 class="s-title">조직의 지식은 <span class="g-text">흐르다 사라집니다</span></h2>
+    <p class="s-sub">협업툴 안에서 매일 생성되는 결정과 노하우가, 정작 필요한 순간엔 아무도 찾지 못합니다.</p>
+  </div>
+  <div class="s-body">
+    <div class="stat-grid fade-up d1">
+      <div class="stat-card"><div class="stat-num">47%</div><div class="stat-bar"><div class="stat-bar-fill" style="width:47%"></div></div><div class="stat-label">필요한 정보를 찾는 데 어려움을 겪는 직원 비율</div><div class="stat-src">Gartner</div></div>
+      <div class="stat-card"><div class="stat-num v">30%</div><div class="stat-bar"><div class="stat-bar-fill v" style="width:30%"></div></div><div class="stat-label">정보 탐색에 낭비되는 근무시간</div><div class="stat-src">McKinsey</div></div>
+      <div class="stat-card"><div class="stat-num g">80%</div><div class="stat-bar"><div class="stat-bar-fill g" style="width:80%"></div></div><div class="stat-label">퇴사와 함께 사라지는 조직 지식·노하우</div><div class="stat-src">내부 추정치</div></div>
+      <div class="stat-card"><div class="stat-num r">8%</div><div class="stat-bar"><div class="stat-bar-fill r" style="width:8%"></div></div><div class="stat-label">AI 사용 기업 88% 중 체계적 거버넌스 보유 비율</div><div class="stat-src">2025 설문</div></div>
+    </div>
+  </div>
+  <div class="s-foot"><span class="s-foot-logo">PANIC<em>STORMS</em></span><span class="s-foot-page">02 / 19</span></div>
+</section>
+
+<!-- S3 MARKET -->
+<section class="slide" id="s3">
+  <div class="s-accent"></div>
+  <div class="s-head fade-up">
+    <span class="s-idx">02 · Market</span>
+    <h2 class="s-title">지식관리 + 아카이빙, <span class="g-text">동시에 커지는 시장</span></h2>
+    <p class="s-sub">두 시장이 각각 두 자릿수 성장률로 확대되는 동안, AI 거버넌스 조직 편제는 이제 막 시작됐습니다.</p>
+  </div>
+  <div class="s-body">
+    <div class="market-grid fade-up d1">
+      <div class="market-card">
+        <div class="mk-label">지식관리 소프트웨어 시장</div>
+        <div class="mk-flow"><span class="mk-from">2026 · $16.2B</span><span class="mk-arrow">→</span><span class="mk-to">$61.3B</span></div>
+        <div class="mk-chart"><div class="mk-bar from" style="height:26%"></div><div class="mk-bar to" style="height:100%"></div></div>
+        <span class="mk-cagr">2030년 전망 · CAGR 17.1%</span>
+      </div>
+      <div class="market-card">
+        <div class="mk-label">기업 정보 아카이빙 시장</div>
+        <div class="mk-flow"><span class="mk-from">2023 · $7.6B</span><span class="mk-arrow">→</span><span class="mk-to">$18.9B</span></div>
+        <div class="mk-chart"><div class="mk-bar from" style="height:40%"></div><div class="mk-bar to" style="height:100%"></div></div>
+        <span class="mk-cagr">2030년 전망 · CAGR 14.1%</span>
+      </div>
+    </div>
+    <div class="stat-grid fade-up d2" style="grid-template-columns:1fr 1fr">
+      <div class="stat-card"><div class="stat-num">76%</div><div class="stat-bar"><div class="stat-bar-fill" style="width:76%"></div></div><div class="stat-label">AI 거버넌스 전담 임원(CAIO) 보유 기업 — 전년 26%에서 급증</div><div class="stat-src">IAPP 2025</div></div>
+      <div class="stat-card"><div class="stat-num v">$2.9B → $13.4B</div><div class="stat-label">엔터프라이즈 지식그래프 시장, 2025→2033 (CAGR 21.3%)</div><div class="stat-src">Technavio</div></div>
+    </div>
+    <p class="footnote">출처: Mordor Intelligence, Grand View Research, Technavio, IAPP 2025 AI Governance Profession Report (2026년 8월 기준 공개 데이터)</p>
+  </div>
+  <div class="s-foot"><span class="s-foot-logo">PANIC<em>STORMS</em></span><span class="s-foot-page">03 / 19</span></div>
+</section>
+
+<!-- S4 THESIS -->
+<section class="slide thesis-slide" id="s4">
+  <div class="s-accent"></div>
+  <div class="thesis-glow"></div>
+  <div class="s-head fade-up" style="text-align:center;position:relative">
+    <span class="s-idx">03 · Our Answer</span>
+    <h2 class="s-title">두 역할, <span class="g-text">하나의 인텔리전스</span></h2>
+  </div>
+  <div class="s-body" style="position:relative">
+    <div class="loop-wrap fade-up d1">
+      <div class="loop-node ko"><span class="li">🧠</span><div class="lr">KO</div><div class="ls">Knowledge Officer</div><div class="lv">지식의 흐름을 설계</div></div>
+      <div class="loop-beam" aria-hidden="true"><span class="beam-shine"></span></div>
+      <div class="loop-ai"><div class="loop-ai-ring"></div><div class="loop-ai-core"><b>AI</b><span>ENGINE</span></div></div>
+      <div class="loop-beam rev" aria-hidden="true"><span class="beam-shine"></span></div>
+      <div class="loop-node da"><span class="li">🗄️</span><div class="lr">DA</div><div class="ls">Digital Archivist</div><div class="lv">기록의 무결성을 보증</div></div>
+    </div>
+    <div class="thesis-quote fade-up d2">
+      <p class="thesis-line"><em>KO</em>가 지식의 흐름을 설계해 AI가 정확한 맥락을 학습하게 하고, <em>DA</em>가 기록의 무결성을 지켜 그 자산이 10년 뒤에도 증명 가능하게 만듭니다.</p>
+    </div>
+  </div>
+  <div class="s-foot"><span class="s-foot-logo">PANIC<em>STORMS</em></span><span class="s-foot-page">04 / 19</span></div>
+</section>
+
+<!-- S5 ROLES -->
+<section class="slide" id="s5">
+  <div class="s-accent"></div>
+  <div class="s-head fade-up">
+    <span class="s-idx">04 · Roles</span>
+    <h2 class="s-title">KO와 DA, <span class="g-text">역할 정의</span></h2>
+  </div>
+  <div class="s-body">
+    <div class="roles-grid fade-up d1">
+      <div class="role-card ko">
+        <div class="role-icon">🧠</div>
+        <div class="role-title">지식 전략가</div>
+        <div class="role-sub">Knowledge Officer · CKO Track</div>
+        <p class="role-desc">조직의 암묵지를 명시화하고 AI가 정확한 맥락을 학습하도록 지식 인프라를 설계합니다. 부서 간 사일로를 해소하고 협업 데이터에서 상업적 가치를 발굴합니다.</p>
+        <div class="role-tags"><span class="tag">Knowledge Strategy</span><span class="tag">GraphRAG</span><span class="tag">AI Governance</span><span class="tag">ISO 30401</span></div>
+      </div>
+      <div class="role-card da">
+        <div class="role-icon">🗄️</div>
+        <div class="role-title">기록 기술 전문가</div>
+        <div class="role-sub">Digital Archivist · CDO Track</div>
+        <p class="role-desc">OAIS 국제 표준에 따른 장기 보존 체계를 구축하고, M&amp;A·위기 상황에서도 데이터 주권을 기술적으로 증명합니다. AI 학습 데이터 정제·포렌식 검증까지 역할이 확장됩니다.</p>
+        <div class="role-tags"><span class="tag">OAIS Standard</span><span class="tag">WORM Storage</span><span class="tag">Digital Preservation</span><span class="tag">Data Lineage</span></div>
+      </div>
+    </div>
+  </div>
+  <div class="s-foot"><span class="s-foot-logo">PANIC<em>STORMS</em></span><span class="s-foot-page">05 / 19</span></div>
+</section>
+
+<!-- S6 PIPELINE -->
+<section class="slide" id="s6">
+  <div class="s-accent"></div>
+  <div class="s-head fade-up">
+    <span class="s-idx">05 · Architecture</span>
+    <h2 class="s-title">3단계 <span class="g-text">지식 엔지니어링 프레임워크</span></h2>
+    <p class="s-sub">Raw 데이터에서 영구 지식 자산까지, 저희가 설계·적용하는 세 단계 접근입니다.</p>
+  </div>
+  <div class="s-body">
+    <div class="pipe-row fade-up d1">
+      <div class="pipe-card"><span class="pipe-icon-lg">📥</span><div class="pipe-num p1">01</div><div class="pipe-title">Dynamic Ingestion</div><div class="pipe-lead">데이터 인입 · KO 주도</div><div class="pipe-chips"><span class="chip">Google Workspace</span><span class="chip">실시간 스트리밍</span><span class="chip">온톨로지 분류</span></div></div>
+      <div class="pipe-conn beam"><span class="beam-shine"></span></div>
+      <div class="pipe-card"><span class="pipe-icon-lg">🔬</span><div class="pipe-num p2">02</div><div class="pipe-title">Semantic Reasoning</div><div class="pipe-lead">의미 분석 · KO+DA 협업</div><div class="pipe-chips"><span class="chip">GraphRAG</span><span class="chip">벡터 DB</span><span class="chip">엔티티 관계망</span></div></div>
+      <div class="pipe-conn beam"><span class="beam-shine"></span></div>
+      <div class="pipe-card"><span class="pipe-icon-lg">🔒</span><div class="pipe-num p3">03</div><div class="pipe-title">Permanent Fixation</div><div class="pipe-lead">영구 보존 · DA 주도</div><div class="pipe-chips"><span class="chip">OAIS ISO 14721</span><span class="chip">WORM 스토리지</span><span class="chip">데이터 주권</span></div></div>
+    </div>
+  </div>
+  <div class="s-foot"><span class="s-foot-logo">PANIC<em>STORMS</em></span><span class="s-foot-page">06 / 19</span></div>
+</section>
+
+<!-- S7 TRACK 1 -->
+<section class="slide" id="s7">
+  <div class="s-accent"></div>
+  <div class="s-head fade-up">
+    <span class="s-idx">06 · Track 01</span>
+    <h2 class="s-title">Flow — 실시간 협업 인텔리전스</h2>
+    <div class="track-note">※ 상용 패키지 제품이 아닌, 컨설팅 엔게이지먼트를 통해 고객사 환경에 맞춰 함께 설계·구축하는 접근 영역입니다.</div>
+  </div>
+  <div class="s-body">
+    <div class="approach-hero flow fade-up d1">
+      <span class="ap-tag">Track 01 — Flow</span>
+      <div class="ap-title">Google Workspace 기반<br>지능형 지식 체계 설계</div>
+      <div class="ap-items">
+        <div class="ap-item"><strong>🔄 협업 컨텍스트 자산화 설계</strong><p>Docs·Sheets 수정 이력과 코멘트를 분석해 팀의 의사결정 프로세스를 DB화하는 구조를 함께 설계합니다.</p></div>
+        <div class="ap-item"><strong>🤖 RAG 기반 사내 AI 구축 지원</strong><p>조직 Drive와 벡터 DB를 연동해 온보딩부터 프로젝트 히스토리 파악까지 지원하는 체계를 구축합니다.</p></div>
+        <div class="ap-item"><strong>🔍 시맨틱 검색 아키텍처 수립</strong><p>'의도와 맥락'을 이해하는 벡터 검색 구조로 수만 건 문서 중 핵심을 빠르게 찾도록 설계합니다.</p></div>
+      </div>
+    </div>
+  </div>
+  <div class="s-foot"><span class="s-foot-logo">PANIC<em>STORMS</em></span><span class="s-foot-page">07 / 19</span></div>
+</section>
+
+<!-- S8 TRACK 2 -->
+<section class="slide" id="s8">
+  <div class="s-accent"></div>
+  <div class="s-head fade-up">
+    <span class="s-idx">07 · Track 02</span>
+    <h2 class="s-title">Anchor — 영구 보존 체계</h2>
+    <div class="track-note">※ 상용 패키지 제품이 아닌, 컨설팅 엔게이지먼트를 통해 고객사 환경에 맞춰 함께 설계·구축하는 접근 영역입니다.</div>
+  </div>
+  <div class="s-body">
+    <div class="approach-hero anchor fade-up d1">
+      <span class="ap-tag">Track 02 — Anchor</span>
+      <div class="ap-title">Archive &amp; Rescue<br>영구 보존 아키텍처 설계</div>
+      <div class="ap-items">
+        <div class="ap-item"><strong>⚖️ 비즈니스 리스크 방어 설계</strong><p>M&amp;A·소송 시 과거 의사결정 증거를 즉각 추출할 수 있는 기술적 Due Diligence 근거 체계를 설계합니다.</p></div>
+        <div class="ap-item"><strong>🌐 탈중앙화 보존 아키텍처</strong><p>클라우드 서비스 종료에 영향받지 않는 분산 스토리지와 블록체인 타임스탬핑 구조를 수립합니다.</p></div>
+        <div class="ap-item"><strong>🔐 무결성 증명 체계 구축</strong><p>WORM + SHA-256 해시 체인으로 기록이 생성 시점부터 변조되지 않았음을 법적으로 증명하는 체계를 구축합니다.</p></div>
+      </div>
+    </div>
+  </div>
+  <div class="s-foot"><span class="s-foot-logo">PANIC<em>STORMS</em></span><span class="s-foot-page">08 / 19</span></div>
+</section>
+
+<!-- S9 BEFORE/AFTER -->
+<section class="slide" id="s9">
+  <div class="s-accent"></div>
+  <div class="s-head fade-up">
+    <span class="s-idx">08 · Impact</span>
+    <h2 class="s-title">도입 전후, <span class="g-text">무엇이 달라지나요</span></h2>
+    <p class="s-sub">동일 규모 조직 기준 시뮬레이션 지표입니다. 실제 수치는 진단 단계에서 고객사 데이터로 재산정합니다.</p>
+  </div>
+  <div class="s-body">
+    <div class="ba-grid fade-up d1">
+      <div class="ba-card before">
+        <span class="ba-badge">Before</span>
+        <div class="ba-metric"><span class="ba-icon">⏱️</span><span class="ba-label">정보 탐색 시간 / 건</span><span class="ba-val">평균 30분</span></div>
+        <div class="ba-metric"><span class="ba-icon">🚪</span><span class="ba-label">퇴사 시 지식 손실률</span><span class="ba-val">약 80%</span></div>
+        <div class="ba-metric"><span class="ba-icon">⚖️</span><span class="ba-label">감사·소송 대응 준비</span><span class="ba-val">평균 2주</span></div>
+        <div class="ba-metric"><span class="ba-icon">🤖</span><span class="ba-label">사내 AI 답변 정확도</span><span class="ba-val">약 30%</span></div>
+      </div>
+      <div class="ba-center"><div class="ba-arrow">→</div></div>
+      <div class="ba-card after">
+        <span class="ba-badge">After</span>
+        <div class="ba-metric"><span class="ba-icon">⚡</span><span class="ba-label">정보 탐색 시간 / 건</span><span class="ba-val">3분 (90%↓)</span></div>
+        <div class="ba-metric"><span class="ba-icon">🔐</span><span class="ba-label">퇴사 시 지식 손실률</span><span class="ba-val">5% (94%↓)</span></div>
+        <div class="ba-metric"><span class="ba-icon">✅</span><span class="ba-label">감사·소송 대응 준비</span><span class="ba-val">2일 (86%↓)</span></div>
+        <div class="ba-metric"><span class="ba-icon">🎯</span><span class="ba-label">사내 AI 답변 정확도</span><span class="ba-val">85% (+183%)</span></div>
+      </div>
+    </div>
+  </div>
+  <div class="s-foot"><span class="s-foot-logo">PANIC<em>STORMS</em></span><span class="s-foot-page">09 / 19</span></div>
+</section>
+
+<!-- S10 INDUSTRY -->
+<section class="slide" id="s10">
+  <div class="s-accent"></div>
+  <div class="s-head fade-up">
+    <span class="s-idx">09 · Industry Fit</span>
+    <h2 class="s-title">우리 산업엔 <span class="g-text">어떻게 적용되나요</span></h2>
+  </div>
+  <div class="s-body">
+    <div class="ind-grid fade-up d1">
+      <div class="ind-card"><div class="ind-top"><span class="ind-icon">⚖️</span><div><div class="ind-name">법무 / 컴플라이언스</div><div class="ind-cat">법률사무소 · 금융 · 규제 산업</div></div></div><p class="ind-line">WORM 타임스탬프 아카이빙으로 법적 증거력 확보, 규정 온톨로지 자동화로 검증 시간 단축.</p><span class="ind-kpi">감사 대응 2주→2일</span></div>
+      <div class="ind-card"><div class="ind-top"><span class="ind-icon">🏭</span><div><div class="ind-name">제조 / R&amp;D</div><div class="ind-cat">제조업 · 바이오 · 엔지니어링</div></div></div><p class="ind-line">숙련 기술자 노하우를 구조화된 지식 DB로 자산화, R&amp;D 아카이브를 AI 학습 데이터셋으로 전환.</p><span class="ind-kpi">기술 이탈 95% 차단</span></div>
+      <div class="ind-card"><div class="ind-top"><span class="ind-icon">🎬</span><div><div class="ind-name">미디어 / 헤리티지</div><div class="ind-cat">방송 · 출판 · 문화재단 · 브랜드</div></div></div><p class="ind-line">레거시 콘텐츠를 PDF/A·IPFS 기반으로 영구 보존, AI 큐레이션으로 헤리티지 자산 수익화.</p><span class="ind-kpi">레거시 100% 디지털화</span></div>
+      <div class="ind-card"><div class="ind-top"><span class="ind-icon">🤝</span><div><div class="ind-name">M&amp;A / 투자 활성 기업</div><div class="ind-cat">PE · VC · 대기업 인수합병팀</div></div></div><p class="ind-line">지식 자산 계보 맵으로 DD 기간 단축, 표준화된 온톨로지로 합병 후 지식 통합을 체계화.</p><span class="ind-kpi">DD 기간 60% 단축</span></div>
+    </div>
+  </div>
+  <div class="s-foot"><span class="s-foot-logo">PANIC<em>STORMS</em></span><span class="s-foot-page">10 / 19</span></div>
+</section>
+
+<!-- S11 ROADMAP -->
+<section class="slide" id="s11">
+  <div class="s-accent"></div>
+  <div class="s-head fade-up">
+    <span class="s-idx">10 · Roadmap</span>
+    <h2 class="s-title">도입 로드맵, <span class="g-text">4단계로 완성</span></h2>
+    <p class="s-sub">실사 요청부터 운영 안정화까지, 검증된 프로세스로 진행됩니다. 평균 도입 기간 약 14주.</p>
+  </div>
+  <div class="s-body">
+    <div class="road-row fade-up d1">
+      <div class="road-step"><div class="road-num rn1">01</div><div class="road-dur">Week 1–2</div><div class="road-title">진단 &amp; 감사</div><div class="road-task">지식 자산 인벤토리 · 병목 분석 · 갭 리포트</div></div>
+      <div class="pipe-conn beam"><span class="beam-shine"></span></div>
+      <div class="road-step"><div class="road-num rn2">02</div><div class="road-dur">Week 3–6</div><div class="road-title">설계 &amp; 전략</div><div class="road-task">온톨로지 설계 · 도구 스택 선정 · 거버넌스 문서화</div></div>
+      <div class="pipe-conn beam"><span class="beam-shine"></span></div>
+      <div class="road-step"><div class="road-num rn3">03</div><div class="road-dur">Week 7–14</div><div class="road-title">구축 &amp; 이전</div><div class="road-task">지식 베이스 구축 · 데이터 마이그레이션 · 파일럿 운영</div></div>
+      <div class="pipe-conn beam"><span class="beam-shine"></span></div>
+      <div class="road-step"><div class="road-num rn4">04</div><div class="road-dur">Week 15~</div><div class="road-title">운영 &amp; 최적화</div><div class="road-task">월간 KPI 모니터링 · 정기 감사 · 분기별 고도화</div></div>
+    </div>
+  </div>
+  <div class="s-foot"><span class="s-foot-logo">PANIC<em>STORMS</em></span><span class="s-foot-page">11 / 19</span></div>
+</section>
+
+<!-- S12 STANDARDS -->
+<section class="slide" id="s12">
+  <div class="s-accent"></div>
+  <div class="s-head fade-up">
+    <span class="s-idx">11 · Trust</span>
+    <h2 class="s-title">글로벌 표준 및 인증</h2>
+    <p class="s-sub">임의 기준이 아닌, 검증된 국제 표준 위에 설계됩니다.</p>
+  </div>
+  <div class="s-body">
+    <div class="std-row fade-up d1">
+      <div class="std-chip"><span class="std-icon">📦</span><div class="std-abbr">OAIS · ISO 14721</div><div class="std-desc">디지털 장기 보존 표준</div></div>
+      <div class="std-chip"><span class="std-icon">📋</span><div class="std-abbr">ISO 30401</div><div class="std-desc">지식 관리 시스템 표준</div></div>
+      <div class="std-chip"><span class="std-icon">🔒</span><div class="std-abbr">WORM Storage</div><div class="std-desc">불변성 스토리지 아키텍처</div></div>
+      <div class="std-chip"><span class="std-icon">📄</span><div class="std-abbr">PDF/A · ISO 19005</div><div class="std-desc">장기 보존용 문서 포맷</div></div>
+      <div class="std-chip"><span class="std-icon">🏷️</span><div class="std-abbr">Dublin Core</div><div class="std-desc">디지털 자원 기술 표준</div></div>
+      <div class="std-chip"><span class="std-icon">🔗</span><div class="std-abbr">JSON-LD</div><div class="std-desc">시맨틱 웹 핵심 포맷</div></div>
+      <div class="std-chip"><span class="std-icon">🎓</span><div class="std-abbr">CKM</div><div class="std-desc">지식 전략가 국제 자격</div></div>
+      <div class="std-chip"><span class="std-icon">🏛️</span><div class="std-abbr">CA · ACA 발급</div><div class="std-desc">디지털 아키비스트 국제 인증</div></div>
+    </div>
+  </div>
+  <div class="s-foot"><span class="s-foot-logo">PANIC<em>STORMS</em></span><span class="s-foot-page">12 / 19</span></div>
+</section>
+
+<!-- S13 CLOSING -->
+<section class="slide" id="s13">
+  <div class="s-accent" style="background:rgba(255,255,255,.3)"></div>
+  <div class="s-head fade-up">
+    <span class="s-idx">12 · Next Step</span>
+    <h2 class="s-title">Build Your Legacy</h2>
+    <p class="s-sub">조직의 지식이 어떻게 자산이 되는지, 4주 진단으로 먼저 확인하실 수 있습니다.</p>
+  </div>
+  <div class="s-body">
+    <div class="next-steps fade-up d1">
+      <div class="next-item"><span class="next-num">01</span><p>무료 전략 실사 신청 — 현재 지식 자산 현황과 리스크를 30분 인터뷰로 진단합니다.</p></div>
+      <div class="next-item"><span class="next-num">02</span><p>2주 내 갭 분석 리포트 전달 — 정량화된 우선순위와 예상 ROI를 제시합니다.</p></div>
+      <div class="next-item"><span class="next-num">03</span><p>파일럿 범위 확정 — 전사 확산 전, 한 팀 단위로 먼저 검증합니다.</p></div>
+    </div>
+    <div class="cta-box fade-up d2">
+      <a href="mailto:kyle@panicstorms.com" class="cta-btn">무료 전략 실사 요청하기</a>
+      <span class="cta-note">kyle@panicstorms.com</span>
+    </div>
+  </div>
+  <div class="s-foot"><span class="s-foot-logo">PANIC<em>STORMS</em></span><span class="s-foot-page">13 / 19</span></div>
+</section>
+
+<!-- DIVIDER -->
+<section class="slide divider" id="qa0">
+  <div class="s-head fade-up">
+    <span class="s-idx">13 · 여기까지 약 15분</span>
+    <h2 class="s-title">질의응답</h2>
+    <p class="s-sub">이후 슬라이드는 예상 질문에 대한 백업 자료입니다 — 질문이 나올 때만 해당 페이지로 이동합니다.</p>
+  </div>
+  <div class="s-foot"><span class="s-foot-logo">PANIC<em>STORMS</em></span><span class="s-foot-page">14 / 19</span></div>
+</section>
+
+<!-- QA1 SECURITY -->
+<section class="slide" id="qa1">
+  <div class="s-accent"></div>
+  <div class="s-head fade-up">
+    <span class="s-idx">부록 A · 보안 &amp; 데이터 주권</span>
+    <h2 class="s-title">데이터는 어디에, 누구 통제 하에 있나요?</h2>
+  </div>
+  <div class="s-body">
+    <ul class="qa-list fade-up d1">
+      <li>온프레미스·VPC·하이브리드 클라우드 배포 옵션 — 고객사 보안 정책에 맞춰 선택</li>
+      <li>WORM(S3 Object Lock 등) 기반 불변 저장 — 보존 기간 내 삭제·변조 원천 차단</li>
+      <li>역할 기반 접근 제어(RBAC) + 전 구간 감사 로그(Audit Trail)</li>
+      <li>기업 93%가 데이터 통제권 확보를 위해 하이브리드 클라우드로 전환 중인 추세와 정합</li>
+    </ul>
+  </div>
+  <div class="s-foot"><span class="s-foot-logo">PANIC<em>STORMS</em></span><span class="s-foot-page">15 / 19</span></div>
+</section>
+
+<!-- QA2 PRICING/ROI -->
+<section class="slide" id="qa2">
+  <div class="s-accent"></div>
+  <div class="s-head fade-up">
+    <span class="s-idx">부록 B · 가격 &amp; ROI</span>
+    <h2 class="s-title">투자 대비 효과는 어떻게 계산하나요?</h2>
+    <p class="s-sub">비용 구조는 초기 구축(Project Fee) + 운영 리테이너(월간)로 구성되며, 정확한 견적은 진단 단계 결과로 산정합니다.</p>
+  </div>
+  <div class="s-body">
+    <div class="formula-box fade-up d1">
+      직원 [N]명 × 주간 정보탐색 [5]건 × 건당 절감 27분<br>
+      × 연 50주 ÷ 60분 = 연간 약 [N × 112.5] 시간 절약
+    </div>
+    <p class="formula-note fade-up d2">* 30분→3분 탐색시간 개선치를 적용한 단순 예시이며, 인원·빈도는 고객사 실측 데이터로 대체해 재산정합니다. 부서별 시급 기준 인건비 환산도 추가 반영 가능합니다.</p>
+  </div>
+  <div class="s-foot"><span class="s-foot-logo">PANIC<em>STORMS</em></span><span class="s-foot-page">16 / 19</span></div>
+</section>
+
+<!-- QA3 DIFFERENTIATION -->
+<section class="slide" id="qa3">
+  <div class="s-accent"></div>
+  <div class="s-head fade-up">
+    <span class="s-idx">부록 C · 경쟁 대비 차별점</span>
+    <h2 class="s-title">Notion·Guru, Preservica와 무엇이 다른가요?</h2>
+  </div>
+  <div class="s-body">
+    <ul class="qa-list fade-up d1">
+      <li>범용 KM 툴(Notion·Guru)은 '수집·검색'에 강하지만 장기 보존·법적 무결성 증명 기능이 없습니다</li>
+      <li>전문 아카이빙 벤더(Preservica 등)는 보존에 강하지만 실시간 협업 인텔리전스와 연결되지 않습니다</li>
+      <li>PANICSTORMS는 KO+DA를 하나의 거버넌스 체계로 통합 — Flow(흐름)와 Anchor(고정)를 동시에 설계하는 접근입니다</li>
+      <li>ISO 30401(지식관리) + OAIS ISO 14721(보존), 이중 국제 표준을 동시에 준수합니다</li>
+    </ul>
+  </div>
+  <div class="s-foot"><span class="s-foot-logo">PANIC<em>STORMS</em></span><span class="s-foot-page">17 / 19</span></div>
+</section>
+
+<!-- QA4 RISK -->
+<section class="slide" id="qa4">
+  <div class="s-accent"></div>
+  <div class="s-head fade-up">
+    <span class="s-idx">부록 D · 도입 리스크</span>
+    <h2 class="s-title">도입 과정의 리스크는 어떻게 관리하나요?</h2>
+  </div>
+  <div class="s-body">
+    <ul class="qa-list fade-up d1">
+      <li>데이터 마이그레이션 부담 → 1~2주 진단 단계에서 우선순위 자산부터 단계적 이전</li>
+      <li>현업 변화관리 저항 → 담당자 교육 + 한 팀 단위 파일럿 선행 후 전사 확산</li>
+      <li>초기 투자 회수 불확실성 → 월간 KPI(탐색시간·AI 정확도 등) 모니터링으로 조기 검증</li>
+      <li>표준 미준수 리스크 → ISO 30401·OAIS 등 국제 표준 준수를 설계 단계부터 내재화</li>
+    </ul>
+  </div>
+  <div class="s-foot"><span class="s-foot-logo">PANIC<em>STORMS</em></span><span class="s-foot-page">18 / 19</span></div>
+</section>
+
+<!-- QA5 TECH STACK -->
+<section class="slide" id="qa5">
+  <div class="s-accent"></div>
+  <div class="s-head fade-up">
+    <span class="s-idx">부록 E · 참고 기술 스택</span>
+    <h2 class="s-title">실제로 어떤 도구를 검토하나요?</h2>
+    <div class="track-note">※ 아래는 저희가 설계 시 검토·제안하는 대표 도구 예시이며, 최종 스택은 고객사 환경 진단 후 확정됩니다.</div>
+  </div>
+  <div class="s-body">
+    <div class="pipe-row fade-up d1">
+      <div class="pipe-card"><div class="pipe-title" style="font-size:.74rem">수집 Capture</div><div class="pipe-chips" style="margin-top:.5rem"><span class="chip">Google Workspace</span><span class="chip">Slack AI</span><span class="chip">Notion/Confluence</span></div></div>
+      <div class="pipe-conn beam"><span class="beam-shine"></span></div>
+      <div class="pipe-card"><div class="pipe-title" style="font-size:.74rem">정제 Process</div><div class="pipe-chips" style="margin-top:.5rem"><span class="chip">LlamaIndex</span><span class="chip">LangChain</span><span class="chip">NotebookLM</span></div></div>
+      <div class="pipe-conn beam"><span class="beam-shine"></span></div>
+      <div class="pipe-card"><div class="pipe-title" style="font-size:.74rem">분석 Analyze</div><div class="pipe-chips" style="margin-top:.5rem"><span class="chip">Pinecone/Weaviate</span><span class="chip">GraphRAG</span></div></div>
+      <div class="pipe-conn beam"><span class="beam-shine"></span></div>
+      <div class="pipe-card"><div class="pipe-title" style="font-size:.74rem">보존 Preserve</div><div class="pipe-chips" style="margin-top:.5rem"><span class="chip">WORM/S3 Lock</span><span class="chip">Filecoin/IPFS</span></div></div>
+    </div>
+  </div>
+  <div class="s-foot"><span class="s-foot-logo">PANIC<em>STORMS</em></span><span class="s-foot-page">19 / 19</span></div>
+</section>
+
+</div>
+
+<script>
+const SLIDES=[
+  {id:'s1',label:'Cover'},{id:'s2',label:'Why now'},{id:'s3',label:'Market'},{id:'s4',label:'Thesis'},
+  {id:'s5',label:'Roles'},{id:'s6',label:'Architecture'},{id:'s7',label:'Track 01 Flow'},{id:'s8',label:'Track 02 Anchor'},
+  {id:'s9',label:'Impact'},{id:'s10',label:'Industry'},{id:'s11',label:'Roadmap'},{id:'s12',label:'Standards'},
+  {id:'s13',label:'Closing'},
+  {id:'qa0',label:'Q&A',appendix:true},{id:'qa1',label:'Security',appendix:true},{id:'qa2',label:'Pricing/ROI',appendix:true},
+  {id:'qa3',label:'Differentiation',appendix:true},{id:'qa4',label:'Risk',appendix:true},{id:'qa5',label:'Tech Stack',appendix:true}
+];
+const rail=document.getElementById('rail');
+SLIDES.forEach((s,i)=>{
+  const a=document.createElement('a');
+  a.href='#'+s.id;
+  a.dataset.label=(i+1)+'. '+s.label;
+  if(s.appendix)a.classList.add('appendix');
+  rail.appendChild(a);
+});
+const railLinks=[...rail.children];
+const counterEl=document.getElementById('counter');
+const fillEl=document.getElementById('topbarFill');
+const sections=SLIDES.map(s=>document.getElementById(s.id));
+
+const io=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible');});
+},{threshold:0.1,rootMargin:'0px 0px -8% 0px'});
+document.querySelectorAll('.fade-up').forEach(el=>io.observe(el));
+
+function closestToCenter(){
+  const cy=window.innerHeight/2;
+  let best=0,bestDist=Infinity;
+  sections.forEach((s,i)=>{
+    const r=s.getBoundingClientRect();
+    const dist=Math.abs((r.top+r.bottom)/2-cy);
+    if(dist<bestDist){bestDist=dist;best=i;}
+  });
+  return best;
+}
+let ticking=false;
+function updateActive(){
+  const idx=closestToCenter();
+  railLinks.forEach(l=>l.classList.remove('active'));
+  railLinks[idx].classList.add('active');
+  counterEl.textContent=String(idx+1).padStart(2,'0')+' / '+SLIDES.length;
+  fillEl.style.width=((idx+1)/SLIDES.length*100)+'%';
+  ticking=false;
+}
+window.addEventListener('scroll',()=>{
+  if(!ticking){requestAnimationFrame(updateActive);ticking=true;}
+},{passive:true});
+updateActive();
+
+window.addEventListener('keydown',(e)=>{
+  const cur=closestToCenter();
+  if(['ArrowDown','ArrowRight','PageDown'].includes(e.key)&&cur<sections.length-1){
+    e.preventDefault();sections[cur+1].scrollIntoView({behavior:'smooth',block:'center'});
+  }else if(['ArrowUp','ArrowLeft','PageUp'].includes(e.key)&&cur>0){
+    e.preventDefault();sections[cur-1].scrollIntoView({behavior:'smooth',block:'center'});
+  }
+});
+</script>
+</body>
+</html>
