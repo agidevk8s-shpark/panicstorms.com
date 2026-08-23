@@ -1,0 +1,388 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>지식자산 ROI 계산기</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Noto+Sans+KR:wght@400;500;700;900&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --blue:#3D5CFF;--violet:#7C3AED;--cyan:#00C2FF;
+  --navy:#0F172A;--text:#1E293B;--muted:#64748B;--bg:#F8FAFC;
+  --border:#E2E8F0;--white:#FFFFFF;--gold:#F59E0B;--green:#10B981;--red:#DC2626;
+  --accent-text:#3D5CFF;--gold-text:#B45309;--green-text:#047857;
+  --card:#FFFFFF;--shadow:0 4px 20px rgba(15,23,42,.06);--shadow-lg:0 16px 44px rgba(15,23,42,.10);
+  --w:980px;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --navy:#F1F5F9;--text:#CBD5E1;--muted:#8B98AC;--bg:#0B0F19;--card:#131B2E;--border:#232E45;
+    --accent-text:#7C93FF;--gold-text:#F59E0B;--green-text:#10B981;
+    --shadow:0 4px 20px rgba(0,0,0,.4);--shadow-lg:0 16px 44px rgba(0,0,0,.6);
+  }
+}
+:root[data-theme="dark"]{
+  --navy:#F1F5F9;--text:#CBD5E1;--muted:#8B98AC;--bg:#0B0F19;--card:#131B2E;--border:#232E45;
+  --accent-text:#7C93FF;--gold-text:#F59E0B;--green-text:#10B981;
+  --shadow:0 4px 20px rgba(0,0,0,.4);--shadow-lg:0 16px 44px rgba(0,0,0,.6);
+}
+body{font-family:'Noto Sans KR','Pretendard',-apple-system,sans-serif;background:var(--bg);color:var(--text);line-height:1.65;word-break:keep-all}
+.wrap{max-width:var(--w);margin:0 auto;padding:2.2rem 1.3rem 5rem}
+a{color:inherit}
+
+.hd-top{display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:1rem;margin-bottom:1.6rem}
+.logo{font:800 1.05rem 'Inter';letter-spacing:-.02em;color:var(--navy)}
+.logo em{font-style:normal;color:var(--blue)}
+.reset-btn{font:700 .78rem 'Inter';color:var(--muted);background:var(--card);border:1px solid var(--border);border-radius:8px;padding:.5rem 1rem;cursor:pointer}
+.reset-btn:hover{border-color:var(--red);color:var(--red)}
+.eyebrow{color:var(--blue);font-weight:800;font-size:.74rem;margin-bottom:.5rem;display:block;text-transform:uppercase;letter-spacing:.13em;font-family:'Inter',sans-serif}
+h1{font:900 clamp(1.5rem,4vw,2.1rem) 'Noto Sans KR';color:var(--navy);letter-spacing:-.02em;margin-bottom:.5rem}
+.sub{font-size:.9rem;color:var(--muted);max-width:680px;margin-bottom:1.4rem}
+.client-row{display:flex;gap:.7rem;flex-wrap:wrap}
+.client-input{font:600 .85rem 'Inter';padding:.55rem .9rem;border-radius:8px;border:1px solid var(--border);background:var(--card);color:var(--navy);min-width:180px}
+.client-input::placeholder{color:var(--muted);font-weight:500}
+
+/* ASSUMPTIONS BAR */
+.assume{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:1.3rem 1.6rem;box-shadow:var(--shadow);margin:1.4rem 0}
+.assume-title{font:800 .88rem 'Noto Sans KR';color:var(--navy);margin-bottom:.9rem;display:flex;align-items:center;gap:.5rem}
+.assume-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem}
+.field{display:flex;flex-direction:column;gap:.35rem}
+.field label{font:700 .68rem 'Inter';color:var(--muted);text-transform:uppercase;letter-spacing:.04em}
+.field .unit-row{display:flex;align-items:center;gap:.5rem}
+.field input{font:700 .95rem 'Inter';padding:.5rem .7rem;border-radius:8px;border:1px solid var(--border);background:var(--bg);color:var(--navy);width:100%}
+.field .unit{font:600 .74rem 'Inter';color:var(--muted);white-space:nowrap}
+
+/* LEVER CARDS */
+.lever{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:1.5rem 1.6rem;margin-bottom:1.1rem;box-shadow:var(--shadow)}
+.lever.l1{border-top:3px solid var(--blue)}
+.lever.l2{border-top:3px solid var(--gold)}
+.lever.l3{border-top:3px solid var(--violet)}
+.lever-head{display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:.8rem;margin-bottom:1.1rem}
+.lever-title-wrap{display:flex;align-items:center;gap:.7rem}
+.lever-icon{width:36px;height:36px;border-radius:10px;background:var(--bg);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:1.05rem;flex-shrink:0}
+.lever-title{font:800 .98rem 'Noto Sans KR';color:var(--navy)}
+.lever-sub{font-size:.74rem;color:var(--muted)}
+.lever-result{text-align:right}
+.lever-result .lr-money{font:900 1.25rem 'Inter';color:var(--green-text);letter-spacing:-.02em}
+.lever-result .lr-hours{font-size:.7rem;color:var(--muted);font-weight:600}
+.lever-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:.9rem}
+.formula-note{margin-top:1rem;padding-top:.8rem;border-top:1px dashed var(--border);font-family:'Inter',monospace;font-size:.72rem;color:var(--muted);line-height:1.7}
+
+/* TOTAL */
+.total-box{background:linear-gradient(135deg,#22338C 0%,#3D5CFF 45%,#7C3AED 100%);border-radius:18px;padding:1.8rem 1.9rem;color:#fff;margin:1.4rem 0}
+.total-top{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem;margin-bottom:1.2rem}
+.total-label{font:700 .74rem 'Inter';color:rgba(255,255,255,.75);text-transform:uppercase;letter-spacing:.1em;margin-bottom:.4rem}
+.total-amount{font:900 clamp(1.8rem,4vw,2.6rem) 'Inter';letter-spacing:-.03em}
+.total-hours{font-size:.82rem;color:rgba(255,255,255,.85);margin-top:.3rem}
+.total-3yr{text-align:right}
+.total-3yr .t3-num{font:800 1.3rem 'Inter'}
+.total-3yr .t3-lbl{font-size:.7rem;color:rgba(255,255,255,.75)}
+.payback-row{display:flex;gap:1rem;flex-wrap:wrap;align-items:center;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);border-radius:12px;padding:.9rem 1.1rem}
+.payback-row label{font:700 .72rem 'Inter';color:rgba(255,255,255,.8)}
+.payback-row input{font:700 .9rem 'Inter';padding:.45rem .7rem;border-radius:7px;border:none;background:rgba(255,255,255,.9);color:var(--navy);width:150px}
+.payback-result{font:800 .9rem 'Inter';margin-left:auto}
+
+.export-box{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:1.3rem 1.6rem;box-shadow:var(--shadow);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:.8rem}
+.export-box p{font-size:.8rem;color:var(--muted);max-width:480px}
+.export-btn{font:700 .8rem 'Inter';background:var(--green-text);color:#fff;border:none;border-radius:9px;padding:.65rem 1.3rem;cursor:pointer}
+.export-btn:hover{background:var(--green)}
+.disclaimer{font-size:.7rem;color:var(--muted);text-align:center;margin-top:1.4rem;line-height:1.7}
+
+@media(max-width:760px){
+  .assume-grid{grid-template-columns:1fr 1fr}
+  .lever-grid{grid-template-columns:1fr 1fr}
+}
+@media(max-width:480px){
+  .assume-grid{grid-template-columns:1fr}
+  .lever-grid{grid-template-columns:1fr}
+  .payback-result{margin-left:0}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="hd-top">
+    <div class="logo">PANIC<em>STORMS</em></div>
+    <button class="reset-btn" id="resetBtn">기본값으로 초기화</button>
+  </div>
+
+  <span class="eyebrow">부록 B · 가격 &amp; ROI 확장</span>
+  <h1>지식자산 ROI 계산기</h1>
+  <p class="sub">가정값을 고객사 실제 데이터로 바꾸면 절감 효과가 실시간으로 재계산됩니다. 모든 계산식이 투명하게 공개되어 있어 그 자리에서 함께 검증할 수 있습니다.</p>
+  <div class="client-row">
+    <input class="client-input" id="clientName" type="text" placeholder="고객사명">
+  </div>
+
+  <div class="assume">
+    <div class="assume-title">⚙️ 공통 가정</div>
+    <div class="assume-grid">
+      <div class="field"><label>직원 수</label><div class="unit-row"><input type="number" id="headcount" value="150" min="1"><span class="unit">명</span></div></div>
+      <div class="field"><label>평균 시간당 인건비</label><div class="unit-row"><input type="number" id="wage" value="35000" step="1000" min="0"><span class="unit">원/시간</span></div></div>
+      <div class="field"><label>연간 근무 주수</label><div class="unit-row"><input type="number" id="weeks" value="50" min="1" max="52"><span class="unit">주</span></div></div>
+    </div>
+  </div>
+
+  <div class="lever l1">
+    <div class="lever-head">
+      <div class="lever-title-wrap">
+        <div class="lever-icon">🔍</div>
+        <div><div class="lever-title">정보 탐색 시간 절감</div><div class="lever-sub">Track 01 — Flow</div></div>
+      </div>
+      <div class="lever-result"><div class="lr-money" id="l1-money">₩0</div><div class="lr-hours" id="l1-hours">0시간/년</div></div>
+    </div>
+    <div class="lever-grid">
+      <div class="field"><label>주간 탐색 건수/인</label><input type="number" id="l1-freq" value="5" min="0"></div>
+      <div class="field"><label>현재 평균 탐색시간</label><div class="unit-row"><input type="number" id="l1-before" value="30" min="0"><span class="unit">분</span></div></div>
+      <div class="field"><label>개선 후 예상 탐색시간</label><div class="unit-row"><input type="number" id="l1-after" value="3" min="0"><span class="unit">분</span></div></div>
+    </div>
+    <div class="formula-note" id="l1-formula"></div>
+  </div>
+
+  <div class="lever l2">
+    <div class="lever-head">
+      <div class="lever-title-wrap">
+        <div class="lever-icon">🚪</div>
+        <div><div class="lever-title">퇴사 인수인계 손실 방지</div><div class="lever-sub">Track 02 — Anchor</div></div>
+      </div>
+      <div class="lever-result"><div class="lr-money" id="l2-money">₩0</div><div class="lr-hours" id="l2-hours">0시간/년</div></div>
+    </div>
+    <div class="lever-grid">
+      <div class="field"><label>연간 이직률</label><div class="unit-row"><input type="number" id="l2-rate" value="15" min="0" max="100"><span class="unit">%</span></div></div>
+      <div class="field"><label>퇴사자 1인당 현재 재현시간</label><div class="unit-row"><input type="number" id="l2-before" value="40" min="0"><span class="unit">시간</span></div></div>
+      <div class="field"><label>개선 후 예상 재현시간</label><div class="unit-row"><input type="number" id="l2-after" value="8" min="0"><span class="unit">시간</span></div></div>
+    </div>
+    <div class="formula-note" id="l2-formula"></div>
+  </div>
+
+  <div class="lever l3">
+    <div class="lever-head">
+      <div class="lever-title-wrap">
+        <div class="lever-icon">⚖️</div>
+        <div><div class="lever-title">감사·소송 대응 준비 단축</div><div class="lever-sub">Track 02 — Anchor</div></div>
+      </div>
+      <div class="lever-result"><div class="lr-money" id="l3-money">₩0</div><div class="lr-hours" id="l3-hours">0시간/년</div></div>
+    </div>
+    <div class="lever-grid">
+      <div class="field"><label>연간 대응 횟수</label><input type="number" id="l3-freq" value="2" min="0"></div>
+      <div class="field"><label>현재 준비 소요일</label><div class="unit-row"><input type="number" id="l3-before" value="10" min="0"><span class="unit">일</span></div></div>
+      <div class="field"><label>개선 후 소요일</label><div class="unit-row"><input type="number" id="l3-after" value="2" min="0"><span class="unit">일</span></div></div>
+      <div class="field"><label>대응 투입 인원</label><div class="unit-row"><input type="number" id="l3-people" value="3" min="0"><span class="unit">명</span></div></div>
+    </div>
+    <div class="formula-note" id="l3-formula"></div>
+  </div>
+
+  <div class="total-box">
+    <div class="total-top">
+      <div>
+        <div class="total-label">연간 총 절감 효과</div>
+        <div class="total-amount" id="totalMoney">₩0</div>
+        <div class="total-hours" id="totalHours">0시간/년 절약</div>
+      </div>
+      <div class="total-3yr"><div class="t3-num" id="total3yr">₩0</div><div class="t3-lbl">3년 누적 기준</div></div>
+    </div>
+    <div class="payback-row">
+      <label>예상 프로젝트 투자비용</label>
+      <input type="number" id="investCost" placeholder="원 단위 입력" min="0">
+      <span class="payback-result" id="paybackResult">투자비용을 입력하면 회수기간이 계산됩니다</span>
+    </div>
+  </div>
+
+  <div class="export-box">
+    <p>가정값과 계산 결과를 표 형태(CSV)로 저장해 견적서·제안서에 첨부할 수 있습니다.</p>
+    <button class="export-btn" id="exportCsvBtn">엑셀용 CSV 저장</button>
+  </div>
+
+  <p class="disclaimer">본 계산은 입력된 가정값에 기반한 추정치이며, 실제 효과는 진단 단계에서 고객사 데이터로 재산정합니다. 지식자산 재활용률·AI 답변 정확도 개선 등 정성적 효과는 포함되지 않았습니다.</p>
+
+</div>
+
+<script>
+const DEFAULTS = {
+  headcount:150, wage:35000, weeks:50,
+  'l1-freq':5, 'l1-before':30, 'l1-after':3,
+  'l2-rate':15, 'l2-before':40, 'l2-after':8,
+  'l3-freq':2, 'l3-before':10, 'l3-after':2, 'l3-people':3,
+};
+const STORE_KEY = 'panicstorms_roi_calc_v1';
+const fmtWon = n => '₩' + Math.round(n).toLocaleString('ko-KR');
+const fmtHours = n => Math.round(n).toLocaleString('ko-KR') + '시간/년';
+
+function val(id){ return parseFloat(document.getElementById(id).value) || 0; }
+
+function loadSaved(){
+  let saved = {};
+  try{ saved = JSON.parse(localStorage.getItem(STORE_KEY)) || {}; }catch(e){ saved = {}; }
+  Object.keys(DEFAULTS).forEach(id=>{
+    const el = document.getElementById(id);
+    if(el) el.value = saved[id] !== undefined ? saved[id] : DEFAULTS[id];
+  });
+  const client = localStorage.getItem(STORE_KEY+'_client');
+  if(client) document.getElementById('clientName').value = client;
+  const invest = localStorage.getItem(STORE_KEY+'_invest');
+  if(invest) document.getElementById('investCost').value = invest;
+}
+
+function saveState(){
+  const state = {};
+  Object.keys(DEFAULTS).forEach(id=>{ state[id] = val(id); });
+  localStorage.setItem(STORE_KEY, JSON.stringify(state));
+  localStorage.setItem(STORE_KEY+'_client', document.getElementById('clientName').value);
+  localStorage.setItem(STORE_KEY+'_invest', document.getElementById('investCost').value);
+}
+
+let lastCalc = null;
+
+function calc(){
+  const headcount = val('headcount'), wage = val('wage'), weeks = val('weeks');
+
+  // Lever 1: search time
+  const l1freq = val('l1-freq'), l1before = val('l1-before'), l1after = val('l1-after');
+  const l1hours = headcount * l1freq * Math.max(0,l1before-l1after) * weeks / 60;
+  const l1money = l1hours * wage;
+
+  // Lever 2: exit handover
+  const l2rate = val('l2-rate'), l2before = val('l2-before'), l2after = val('l2-after');
+  const leavers = headcount * (l2rate/100);
+  const l2hours = leavers * Math.max(0,l2before-l2after);
+  const l2money = l2hours * wage;
+
+  // Lever 3: audit prep
+  const l3freq = val('l3-freq'), l3before = val('l3-before'), l3after = val('l3-after'), l3people = val('l3-people');
+  const l3hours = l3freq * Math.max(0,l3before-l3after) * l3people * 8;
+  const l3money = l3hours * wage;
+
+  document.getElementById('l1-money').textContent = fmtWon(l1money);
+  document.getElementById('l1-hours').textContent = fmtHours(l1hours);
+  document.getElementById('l1-formula').textContent =
+    `${headcount}명 × 주 ${l1freq}건 × (${l1before}-${l1after})분 × ${weeks}주 ÷ 60 = ${Math.round(l1hours).toLocaleString('ko-KR')}시간 × ${wage.toLocaleString('ko-KR')}원`;
+
+  document.getElementById('l2-money').textContent = fmtWon(l2money);
+  document.getElementById('l2-hours').textContent = fmtHours(l2hours);
+  document.getElementById('l2-formula').textContent =
+    `${headcount}명 × ${l2rate}% ≈ ${leavers.toFixed(1)}명 × (${l2before}-${l2after})시간 = ${Math.round(l2hours).toLocaleString('ko-KR')}시간 × ${wage.toLocaleString('ko-KR')}원`;
+
+  document.getElementById('l3-money').textContent = fmtWon(l3money);
+  document.getElementById('l3-hours').textContent = fmtHours(l3hours);
+  document.getElementById('l3-formula').textContent =
+    `${l3freq}회 × (${l3before}-${l3after})일 × ${l3people}명 × 8시간 = ${Math.round(l3hours).toLocaleString('ko-KR')}시간 × ${wage.toLocaleString('ko-KR')}원`;
+
+  const totalMoney = l1money + l2money + l3money;
+  const totalHours = l1hours + l2hours + l3hours;
+  document.getElementById('totalMoney').textContent = fmtWon(totalMoney);
+  document.getElementById('totalHours').textContent = fmtHours(totalHours) + ' 절약';
+  document.getElementById('total3yr').textContent = fmtWon(totalMoney*3);
+
+  const invest = parseFloat(document.getElementById('investCost').value) || 0;
+  const paybackEl = document.getElementById('paybackResult');
+  if(invest > 0 && totalMoney > 0){
+    const months = invest / (totalMoney/12);
+    paybackEl.textContent = `예상 회수기간: 약 ${months.toFixed(1)}개월`;
+  } else {
+    paybackEl.textContent = '투자비용을 입력하면 회수기간이 계산됩니다';
+  }
+
+  lastCalc = {headcount,wage,weeks,l1freq,l1before,l1after,l1hours,l1money,l2rate,leavers,l2before,l2after,l2hours,l2money,l3freq,l3before,l3after,l3people,l3hours,l3money,totalMoney,totalHours,invest};
+  saveState();
+}
+
+document.querySelectorAll('.assume input, .lever input, #investCost').forEach(inp=>{
+  inp.addEventListener('input', calc);
+});
+document.getElementById('clientName').addEventListener('input', saveState);
+
+document.getElementById('resetBtn').addEventListener('click', ()=>{
+  if(!confirm('모든 값을 기본값으로 초기화할까요? (고객사명·투자비용 포함)')) return;
+  localStorage.removeItem(STORE_KEY);
+  localStorage.removeItem(STORE_KEY+'_client');
+  localStorage.removeItem(STORE_KEY+'_invest');
+  document.getElementById('clientName').value = '';
+  document.getElementById('investCost').value = '';
+  loadSaved();
+  calc();
+});
+
+async function exportCSV(){
+  if(!lastCalc) calc();
+  const client = document.getElementById('clientName').value || '고객사';
+  const c = lastCalc;
+  const csvEscape = s => {
+    const str = String(s === undefined || s === null ? '' : s);
+    return /[",\n]/.test(str) ? '"' + str.replace(/"/g,'""') + '"' : str;
+  };
+  const rows = [
+    ['항목','값'],
+    ['고객사', client],
+    ['직원 수', c.headcount],
+    ['평균 시간당 인건비(원)', c.wage],
+    ['연간 근무 주수', c.weeks],
+    [],
+    ['Lever 1 — 정보 탐색 시간 절감', ''],
+    ['주간 탐색 건수/인', c.l1freq],
+    ['현재 평균 탐색시간(분)', c.l1before],
+    ['개선 후 예상 탐색시간(분)', c.l1after],
+    ['연간 절감시간', Math.round(c.l1hours)],
+    ['연간 절감액(원)', Math.round(c.l1money)],
+    [],
+    ['Lever 2 — 퇴사 인수인계 손실 방지', ''],
+    ['연간 이직률(%)', c.l2rate],
+    ['추정 퇴사자수', c.leavers.toFixed(1)],
+    ['현재 재현시간(시간/인)', c.l2before],
+    ['개선 후 재현시간(시간/인)', c.l2after],
+    ['연간 절감시간', Math.round(c.l2hours)],
+    ['연간 절감액(원)', Math.round(c.l2money)],
+    [],
+    ['Lever 3 — 감사·소송 대응 준비 단축', ''],
+    ['연간 대응 횟수', c.l3freq],
+    ['현재 준비 소요일', c.l3before],
+    ['개선 후 소요일', c.l3after],
+    ['대응 투입 인원', c.l3people],
+    ['연간 절감시간', Math.round(c.l3hours)],
+    ['연간 절감액(원)', Math.round(c.l3money)],
+    [],
+    ['연간 총 절감액(원)', Math.round(c.totalMoney)],
+    ['연간 총 절감시간', Math.round(c.totalHours)],
+    ['3년 누적 절감액(원)', Math.round(c.totalMoney*3)],
+    ['예상 투자비용(원)', c.invest || ''],
+    ['예상 회수기간(개월)', c.invest>0 ? (c.invest/(c.totalMoney/12)).toFixed(1) : ''],
+  ];
+  const csv = '﻿' + rows.map(r=>r.map(csvEscape).join(',')).join('\r\n');
+  const filename = `ROI계산_${client}.csv`;
+  const btn = document.getElementById('exportCsvBtn');
+  const origText = btn.textContent;
+
+  if(window.claude && typeof window.claude.use === 'function'){
+    let downloads = null;
+    try{ downloads = await window.claude.use('downloads'); }catch(e){ downloads = null; }
+    if(downloads){
+      try{
+        await downloads.save({filename, data: csv});
+        btn.textContent = '저장됨 ✓';
+        setTimeout(()=>btn.textContent = origText, 1500);
+      }catch(err){
+        if(!(err && err.code === 'declined')){
+          alert('저장 실패: ' + (err && err.message ? err.message : '알 수 없는 오류'));
+        }
+      }
+      return;
+    }
+  }
+  const blob = new Blob([csv], {type:'text/csv;charset=utf-8'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = filename;
+  document.body.appendChild(a); a.click(); document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+  btn.textContent = '저장됨 ✓';
+  setTimeout(()=>btn.textContent = origText, 1500);
+}
+document.getElementById('exportCsvBtn').addEventListener('click', exportCSV);
+
+loadSaved();
+calc();
+</script>
+</body>
+</html>

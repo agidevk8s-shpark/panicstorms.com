@@ -1,0 +1,344 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>WBS &amp; 산출물 등록부</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Noto+Sans+KR:wght@400;500;700;900&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --blue:#3D5CFF;--violet:#7C3AED;--cyan:#00C2FF;
+  --navy:#0F172A;--text:#1E293B;--muted:#64748B;--bg:#F8FAFC;
+  --border:#E2E8F0;--white:#FFFFFF;--gold:#F59E0B;--green:#10B981;--red:#DC2626;
+  --accent-text:#3D5CFF;--gold-text:#B45309;--green-text:#047857;
+  --card:#FFFFFF;--shadow:0 4px 20px rgba(15,23,42,.06);
+  --w:1100px;--s1:#3D5CFF;--s2:#7C3AED;--s3:#10B981;--s4:#F59E0B;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --navy:#F1F5F9;--text:#CBD5E1;--muted:#8B98AC;--bg:#0B0F19;--card:#131B2E;--border:#232E45;
+    --accent-text:#7C93FF;--gold-text:#F59E0B;--green-text:#10B981;
+    --shadow:0 4px 20px rgba(0,0,0,.4);
+  }
+}
+:root[data-theme="dark"]{
+  --navy:#F1F5F9;--text:#CBD5E1;--muted:#8B98AC;--bg:#0B0F19;--card:#131B2E;--border:#232E45;
+  --accent-text:#7C93FF;--gold-text:#F59E0B;--green-text:#10B981;
+  --shadow:0 4px 20px rgba(0,0,0,.4);
+}
+body{font-family:'Noto Sans KR','Pretendard',-apple-system,sans-serif;background:var(--bg);color:var(--text);line-height:1.65;word-break:keep-all}
+.wrap{max-width:var(--w);margin:0 auto;padding:2.2rem 1.3rem 5rem}
+a{color:inherit}
+
+.hd-top{display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:1rem;margin-bottom:1.6rem}
+.logo{font:800 1.05rem 'Inter';letter-spacing:-.02em;color:var(--navy)}
+.logo em{font-style:normal;color:var(--blue)}
+.reset-btn{font:700 .78rem 'Inter';color:var(--muted);background:var(--card);border:1px solid var(--border);border-radius:8px;padding:.5rem 1rem;cursor:pointer}
+.reset-btn:hover{border-color:var(--red);color:var(--red)}
+.eyebrow{color:var(--blue);font-weight:800;font-size:.74rem;margin-bottom:.5rem;display:block;text-transform:uppercase;letter-spacing:.13em;font-family:'Inter',sans-serif}
+h1{font:900 clamp(1.5rem,4vw,2.1rem) 'Noto Sans KR';color:var(--navy);letter-spacing:-.02em;margin-bottom:.5rem}
+.sub{font-size:.9rem;color:var(--muted);max-width:720px;margin-bottom:1.4rem}
+.client-input{font:600 .85rem 'Inter';padding:.55rem .9rem;border-radius:8px;border:1px solid var(--border);background:var(--card);color:var(--navy);min-width:220px}
+.client-input::placeholder{color:var(--muted);font-weight:500}
+
+.section-title{display:flex;align-items:center;gap:.6rem;margin:2rem 0 1rem}
+.section-title h2{font:800 1.15rem 'Noto Sans KR';color:var(--navy)}
+.section-title .cnt{font:700 .72rem 'Inter';color:var(--muted);background:var(--card);border:1px solid var(--border);padding:.2rem .6rem;border-radius:20px}
+
+/* STAGE WBS */
+.stage-card{background:var(--card);border:1px solid var(--border);border-radius:16px;margin-bottom:1rem;box-shadow:var(--shadow);overflow:hidden}
+.stage-head{display:flex;align-items:center;justify-content:space-between;gap:1rem;padding:1.1rem 1.4rem;cursor:pointer;user-select:none}
+.stage-head-left{display:flex;align-items:center;gap:.8rem}
+.stage-dot{width:12px;height:12px;border-radius:4px;flex-shrink:0}
+.stage-name{font:800 1rem 'Noto Sans KR';color:var(--navy)}
+.stage-wk{font:700 .7rem 'Inter';color:var(--muted)}
+.stage-days{font:700 .74rem 'Inter';color:var(--muted)}
+.chevron{transition:transform .2s;color:var(--muted)}
+.stage-card.collapsed .chevron{transform:rotate(-90deg)}
+.stage-body{padding:0 1.4rem 1.2rem}
+.stage-card.collapsed .stage-body{display:none}
+
+.wbs-l2{margin-top:.9rem;padding-top:.9rem;border-top:1px solid var(--border)}
+.wbs-l2:first-child{margin-top:0;padding-top:0;border-top:none}
+.wbs-l2-head{display:flex;align-items:baseline;gap:.6rem;margin-bottom:.5rem;flex-wrap:wrap}
+.wbs-num{font:800 .78rem 'Inter';color:var(--accent-text)}
+.wbs-l2-title{font:700 .88rem 'Noto Sans KR';color:var(--navy)}
+.wbs-l2-wk{font:600 .68rem 'Inter';color:var(--muted)}
+
+.wbs-l3{display:flex;align-items:flex-start;gap:.6rem;padding:.5rem 0 .5rem 1.6rem;border-left:2px solid var(--border);margin-left:.35rem}
+.wbs-l3-num{font:700 .72rem 'Inter';color:var(--muted);flex-shrink:0;width:38px}
+.wbs-l3-body{flex:1}
+.wbs-l3-text{font-size:.82rem;color:var(--text);line-height:1.55}
+.wbs-l3-tags{display:flex;flex-wrap:wrap;gap:.4rem;margin-top:.4rem}
+.tag-days{font:700 .64rem 'Inter';color:var(--muted);background:var(--bg);border:1px solid var(--border);padding:.15rem .5rem;border-radius:20px}
+.tag-owner{font:700 .64rem 'Inter';padding:.15rem .5rem;border-radius:20px}
+.tag-owner.panic{background:rgba(61,92,255,.1);color:var(--accent-text)}
+.tag-owner.client{background:rgba(245,158,11,.12);color:var(--gold-text)}
+.tag-owner.both{background:rgba(16,185,129,.1);color:var(--green-text)}
+.tag-deliv{font:700 .64rem 'Inter';background:rgba(220,38,38,.08);color:var(--red);padding:.15rem .5rem;border-radius:20px}
+
+/* DELIVERABLES TABLE */
+.dtable-wrap{background:var(--card);border:1px solid var(--border);border-radius:16px;box-shadow:var(--shadow);overflow-x:auto}
+table.dtable{width:100%;border-collapse:collapse;min-width:820px}
+.dtable th{font:700 .68rem 'Inter';color:var(--muted);text-transform:uppercase;letter-spacing:.05em;text-align:left;padding:.9rem 1rem;border-bottom:1px solid var(--border);background:var(--bg)}
+.dtable td{font-size:.8rem;color:var(--text);padding:.85rem 1rem;border-bottom:1px solid var(--border);vertical-align:top}
+.dtable tr:last-child td{border-bottom:none}
+.d-id{font:800 .74rem 'Inter';color:var(--navy);white-space:nowrap}
+.d-name{font-weight:700;color:var(--navy)}
+.d-stage-chip{display:inline-block;width:8px;height:8px;border-radius:2px;margin-right:.4rem}
+.d-milestone{font:700 .64rem 'Inter';color:var(--red);white-space:nowrap}
+
+.export-box{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:1.3rem 1.6rem;box-shadow:var(--shadow);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:.8rem;margin-top:1.4rem}
+.export-box p{font-size:.8rem;color:var(--muted);max-width:480px}
+.btn-row{display:flex;gap:.6rem;flex-wrap:wrap}
+.export-btn{font:700 .8rem 'Inter';background:var(--navy);color:#fff;border:none;border-radius:9px;padding:.65rem 1.3rem;cursor:pointer}
+.export-btn:hover{background:var(--blue)}
+.export-btn.csv{background:var(--green-text)}
+.export-btn.csv:hover{background:var(--green)}
+.disclaimer{font-size:.7rem;color:var(--muted);text-align:center;margin-top:1.2rem;line-height:1.7}
+
+@media(max-width:640px){
+  .wbs-l3{padding-left:1rem}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="hd-top">
+    <div class="logo">PANIC<em>STORMS</em></div>
+    <button class="reset-btn" id="resetBtn">고객사명 초기화</button>
+  </div>
+
+  <span class="eyebrow">제안서 첨부용 · WBS &amp; Deliverables Register</span>
+  <h1>WBS &amp; 산출물 등록부</h1>
+  <p class="sub">14주 일정표를 작업분류체계(WBS) 3단계로 분해하고, 전체 12개 정식 산출물을 승인기준까지 명시한 등록부입니다. 소요일 합계는 70 영업일(14주) 기준입니다.</p>
+  <input class="client-input" id="clientName" type="text" placeholder="고객사명">
+
+  <div class="section-title"><h2>📐 작업분류체계 (WBS)</h2><span class="cnt">4단계 · 12개 작업 패키지 · 30개 세부 작업</span></div>
+  <div id="wbsList"></div>
+
+  <div class="section-title"><h2>📦 산출물 등록부</h2><span class="cnt">정식 산출물 12건 (마일스톤 4건 포함)</span></div>
+  <div class="dtable-wrap">
+    <table class="dtable">
+      <thead><tr><th>ID</th><th>산출물명</th><th>설명</th><th>관련 WBS</th><th>형식</th><th>담당</th><th>승인기준</th></tr></thead>
+      <tbody id="dtableBody"></tbody>
+    </table>
+  </div>
+
+  <div class="export-box">
+    <p>WBS와 산출물 등록부를 각각 CSV로 저장해 제안서·프로젝트 계획서에 첨부할 수 있습니다.</p>
+    <div class="btn-row">
+      <button class="export-btn" id="exportWbsBtn">WBS CSV 저장</button>
+      <button class="export-btn csv" id="exportDelivBtn">산출물 등록부 CSV 저장</button>
+    </div>
+  </div>
+
+  <p class="disclaimer">소요일은 영업일 기준 표준 산정치이며, 고객사 데이터 규모·의사결정 속도에 따라 진단 단계에서 재산정됩니다. 굵게 표시된 산출물은 단계 종료 마일스톤입니다.</p>
+
+</div>
+
+<script>
+const STAGES = [
+  {id:1, name:'진단 & 감사', wk:'Week 1–2', color:'var(--s1)', days:10, l2:[
+    {num:'1.1', title:'킥오프 및 이해관계자 인터뷰', wk:'Week 1', l3:[
+      {num:'1.1.1', text:'킥오프 미팅 준비 및 진행', days:1, owner:'panic'},
+      {num:'1.1.2', text:'이해관계자 인터뷰 (부서장급 3~5명)', days:1.5, owner:'both'},
+      {num:'1.1.3', text:'시스템 접근 권한·계정 셋업', days:.5, owner:'client'},
+    ]},
+    {num:'1.2', title:'지식자산 인벤토리', wk:'Week 1–2', l3:[
+      {num:'1.2.1', text:'문서·코드 저장소 현황 조사', days:1.5, owner:'panic'},
+      {num:'1.2.2', text:'지식자산 목록화 및 분류', days:1.5, owner:'panic'},
+    ]},
+    {num:'1.3', title:'갭 분석 및 리포트', wk:'Week 2', l3:[
+      {num:'1.3.1', text:'정보 흐름·병목 지점 분석', days:1.5, owner:'panic'},
+      {num:'1.3.2', text:'보존 위험 기록물 우선순위화', days:1, owner:'panic'},
+      {num:'1.3.3', text:'갭 분석 리포트 작성 및 제출', days:1.5, owner:'panic', deliv:'D-01'},
+    ]},
+  ]},
+  {id:2, name:'설계 & 전략', wk:'Week 3–6', color:'var(--s2)', days:20, l2:[
+    {num:'2.1', title:'온톨로지·분류체계 설계', wk:'Week 3', l3:[
+      {num:'2.1.1', text:'용어집·분류체계 초안 작성', days:2.5, owner:'panic'},
+      {num:'2.1.2', text:'온톨로지 모델링 (엔티티·관계 정의)', days:2.5, owner:'panic', deliv:'D-02'},
+    ]},
+    {num:'2.2', title:'도구 스택·아키텍처 수립', wk:'Week 4', l3:[
+      {num:'2.2.1', text:'도구 후보 비교·선정', days:2, owner:'both'},
+      {num:'2.2.2', text:'시스템 아키텍처 설계', days:3, owner:'panic', deliv:'D-03'},
+    ]},
+    {num:'2.3', title:'거버넌스 정책 수립', wk:'Week 5', l3:[
+      {num:'2.3.1', text:'보존 정책 초안 작성', days:2.5, owner:'panic'},
+      {num:'2.3.2', text:'KPI 측정기준·목표 설정', days:1, owner:'both'},
+      {num:'2.3.3', text:'접근권한·감사 정책 문서화', days:1.5, owner:'panic', deliv:'D-04'},
+    ]},
+    {num:'2.4', title:'설계 검토 및 승인', wk:'Week 6', l3:[
+      {num:'2.4.1', text:'내부 검토 및 보완', days:2, owner:'panic'},
+      {num:'2.4.2', text:'고객사 검토 세션', days:1, owner:'client'},
+      {num:'2.4.3', text:'최종 승인 획득', days:2, owner:'client', deliv:'D-05'},
+    ]},
+  ]},
+  {id:3, name:'구축 & 이전', wk:'Week 7–14', color:'var(--s3)', days:40, l2:[
+    {num:'3.1', title:'지식베이스 인프라 구축', wk:'Week 7–8', l3:[
+      {num:'3.1.1', text:'벡터 DB·검색 인프라 셋업', days:5, owner:'panic'},
+      {num:'3.1.2', text:'지식베이스 스키마 구현', days:5, owner:'panic', deliv:'D-06'},
+    ]},
+    {num:'3.2', title:'데이터 마이그레이션', wk:'Week 9–10', l3:[
+      {num:'3.2.1', text:'우선순위 자산 1차 이전', days:5, owner:'both'},
+      {num:'3.2.2', text:'2차 이전 및 무결성 검증', days:5, owner:'both', deliv:'D-07'},
+    ]},
+    {num:'3.3', title:'보존 아카이브 시스템 구성', wk:'Week 11–12', l3:[
+      {num:'3.3.1', text:'WORM 스토리지 구성', days:5, owner:'panic'},
+      {num:'3.3.2', text:'백업·재해복구 체계 구성 및 테스트', days:5, owner:'panic', deliv:'D-08'},
+    ]},
+    {num:'3.4', title:'교육 및 파일럿 운영', wk:'Week 13–14', l3:[
+      {num:'3.4.1', text:'담당자 교육 (KO/DA 운영)', days:5, owner:'both', deliv:'D-09'},
+      {num:'3.4.2', text:'파일럿 운영 및 피드백 반영', days:5, owner:'both', deliv:'D-10'},
+    ]},
+  ]},
+  {id:4, name:'운영 & 최적화', wk:'Week 15~ (지속)', color:'var(--s4)', days:null, l2:[
+    {num:'4.1', title:'상시 운영', wk:'매월/매분기 반복', l3:[
+      {num:'4.1.1', text:'월간 KPI 모니터링·보고', days:null, owner:'both', deliv:'D-11'},
+      {num:'4.1.2', text:'AI 정확도 지속 개선 피드백', days:null, owner:'panic'},
+      {num:'4.1.3', text:'분기별 거버넌스 감사', days:null, owner:'panic', deliv:'D-12'},
+      {num:'4.1.4', text:'분기별 아키텍처 고도화', days:null, owner:'both'},
+    ]},
+  ]},
+];
+
+const DELIVERABLES = [
+  {id:'D-01', name:'갭 분석 리포트', stage:1, desc:'현행 지식자산 현황, 정보흐름 병목, 보존위험 기록물 우선순위를 정리한 진단 보고서', wbs:'1.3.3', format:'문서(PPT/PDF)', owner:'PANICSTORMS', accept:'고객사 검토 후 서면 확인', milestone:true},
+  {id:'D-02', name:'온톨로지 설계서', stage:2, desc:'전사 표준 용어집과 분류체계, 엔티티-관계 모델 정의서', wbs:'2.1.2', format:'문서', owner:'PANICSTORMS', accept:'KO 실무팀 내부 검토 통과', milestone:false},
+  {id:'D-03', name:'아키텍처 설계서', stage:2, desc:'도구 스택 선정 근거와 시스템 아키텍처 다이어그램', wbs:'2.2.2', format:'문서', owner:'PANICSTORMS', accept:'고객사 IT팀 기술 검토 통과', milestone:false},
+  {id:'D-04', name:'거버넌스 정책 문서', stage:2, desc:'보존 정책, KPI 측정기준, 접근권한·감사 정책 통합 문서', wbs:'2.3.3', format:'문서', owner:'PANICSTORMS', accept:'고객사 컴플라이언스 검토 통과', milestone:false},
+  {id:'D-05', name:'설계 승인서', stage:2, desc:'아키텍처·거버넌스 설계에 대한 고객사 공식 승인 기록', wbs:'2.4.3', format:'승인 문서', owner:'고객사', accept:'의사결정권자 서명', milestone:true},
+  {id:'D-06', name:'지식베이스 시스템', stage:3, desc:'벡터 DB 기반 시맨틱 검색 인프라 및 지식베이스 스키마', wbs:'3.1.2', format:'시스템', owner:'PANICSTORMS', accept:'검색 정확도 테스트 통과', milestone:false},
+  {id:'D-07', name:'마이그레이션 검증 리포트', stage:3, desc:'기존 데이터 이전 결과와 무결성 검증 결과 요약', wbs:'3.2.2', format:'문서', owner:'PANICSTORMS+고객사', accept:'샘플 데이터 대사 100% 일치', milestone:false},
+  {id:'D-08', name:'보존 시스템 + DR 테스트 리포트', stage:3, desc:'WORM 스토리지 구성 내역과 백업 복구 테스트 결과', wbs:'3.3.2', format:'시스템+문서', owner:'PANICSTORMS', accept:'복구 테스트 성공 확인', milestone:false},
+  {id:'D-09', name:'교육자료 + 이수확인서', stage:3, desc:'KO/DA 운영 교육 자료 및 실무자 이수 확인 기록', wbs:'3.4.1', format:'교육자료', owner:'PANICSTORMS+고객사', accept:'대상 인원 90% 이상 이수', milestone:false},
+  {id:'D-10', name:'파일럿 완료 보고서', stage:3, desc:'파일럿 운영 결과와 프로덕션 전환 승인 요청', wbs:'3.4.2', format:'문서', owner:'PANICSTORMS+고객사', accept:'고객사 프로덕션 전환 승인', milestone:true},
+  {id:'D-11', name:'월간 KPI 리포트', stage:4, desc:'정보탐색시간·AI정확도 등 핵심 KPI 월간 추이 보고 (반복)', wbs:'4.1.1', format:'문서(월간)', owner:'PANICSTORMS+고객사', accept:'매월 정기 공유', milestone:false},
+  {id:'D-12', name:'분기 거버넌스 감사 리포트', stage:4, desc:'거버넌스 정책 준수 현황 감사 결과 (반복)', wbs:'4.1.3', format:'문서(분기)', owner:'PANICSTORMS', accept:'매분기 정기 공유', milestone:false},
+];
+
+const OWNER_LABEL = {panic:'PANICSTORMS', client:'고객사', both:'공동'};
+const STORE_KEY = 'panicstorms_wbs_v1';
+
+function renderWBS(){
+  const el = document.getElementById('wbsList');
+  el.innerHTML = STAGES.map(stage=>{
+    const l2html = stage.l2.map(l2=>{
+      const l3html = l2.l3.map(l3=>{
+        const tags = [];
+        if(l3.days!==null && l3.days!==undefined) tags.push(`<span class="tag-days">${l3.days}일</span>`);
+        tags.push(`<span class="tag-owner ${l3.owner}">${OWNER_LABEL[l3.owner]}</span>`);
+        if(l3.deliv) tags.push(`<span class="tag-deliv">📦 ${l3.deliv}</span>`);
+        return `<div class="wbs-l3">
+          <span class="wbs-l3-num">${l3.num}</span>
+          <div class="wbs-l3-body">
+            <div class="wbs-l3-text">${l3.text}</div>
+            <div class="wbs-l3-tags">${tags.join('')}</div>
+          </div>
+        </div>`;
+      }).join('');
+      return `<div class="wbs-l2">
+        <div class="wbs-l2-head"><span class="wbs-num">${l2.num}</span><span class="wbs-l2-title">${l2.title}</span><span class="wbs-l2-wk">${l2.wk}</span></div>
+        ${l3html}
+      </div>`;
+    }).join('');
+    return `<div class="stage-card" data-stage="${stage.id}">
+      <div class="stage-head">
+        <div class="stage-head-left">
+          <span class="stage-dot" style="background:${stage.color}"></span>
+          <span class="stage-name">Stage ${stage.id} — ${stage.name}</span>
+          <span class="stage-wk">${stage.wk}</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:.8rem">
+          <span class="stage-days">${stage.days!==null ? stage.days+'영업일' : '상시'}</span>
+          <span class="chevron">▾</span>
+        </div>
+      </div>
+      <div class="stage-body">${l2html}</div>
+    </div>`;
+  }).join('');
+
+  el.querySelectorAll('.stage-head').forEach(h=>{
+    h.addEventListener('click', ()=>h.closest('.stage-card').classList.toggle('collapsed'));
+  });
+}
+
+function renderDeliverables(){
+  const stageColor = {1:'var(--s1)',2:'var(--s2)',3:'var(--s3)',4:'var(--s4)'};
+  document.getElementById('dtableBody').innerHTML = DELIVERABLES.map(d=>`
+    <tr>
+      <td class="d-id">${d.id}</td>
+      <td class="d-name"><span class="d-stage-chip" style="background:${stageColor[d.stage]}"></span>${d.name}${d.milestone?' <span class="d-milestone">◆마일스톤</span>':''}</td>
+      <td>${d.desc}</td>
+      <td>${d.wbs}</td>
+      <td>${d.format}</td>
+      <td>${d.owner}</td>
+      <td>${d.accept}</td>
+    </tr>`).join('');
+}
+
+document.getElementById('clientName').value = localStorage.getItem(STORE_KEY+'_client') || '';
+document.getElementById('clientName').addEventListener('input', e=>localStorage.setItem(STORE_KEY+'_client', e.target.value));
+document.getElementById('resetBtn').addEventListener('click', ()=>{
+  localStorage.removeItem(STORE_KEY+'_client');
+  document.getElementById('clientName').value = '';
+});
+
+async function saveFile(filename, csv){
+  if(window.claude && typeof window.claude.use === 'function'){
+    let downloads = null;
+    try{ downloads = await window.claude.use('downloads'); }catch(e){ downloads = null; }
+    if(downloads){
+      try{ await downloads.save({filename, data: csv}); }
+      catch(err){ if(!(err && err.code==='declined')) alert('저장 실패: '+(err&&err.message?err.message:'알 수 없는 오류')); }
+      return;
+    }
+  }
+  const blob = new Blob([csv], {type:'text/csv;charset=utf-8'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = filename;
+  document.body.appendChild(a); a.click(); document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+}
+const csvEscape = s => {
+  const str = String(s === undefined || s === null ? '' : s);
+  return /[",\n]/.test(str) ? '"' + str.replace(/"/g,'""') + '"' : str;
+};
+
+document.getElementById('exportWbsBtn').addEventListener('click', async ()=>{
+  const client = document.getElementById('clientName').value || '고객사';
+  const rows = [['WBS 번호','작업명','주차','소요일','담당','관련 산출물']];
+  STAGES.forEach(stage=>{
+    rows.push([`${stage.id}`, `Stage ${stage.id} — ${stage.name}`, stage.wk, stage.days!==null?stage.days:'상시', '', '']);
+    stage.l2.forEach(l2=>{
+      rows.push([l2.num, l2.title, l2.wk, '', '', '']);
+      l2.l3.forEach(l3=>{
+        rows.push([l3.num, l3.text, '', l3.days!==null&&l3.days!==undefined?l3.days:'', OWNER_LABEL[l3.owner], l3.deliv||'']);
+      });
+    });
+  });
+  const csv = '﻿' + rows.map(r=>r.map(csvEscape).join(',')).join('\r\n');
+  await saveFile(`WBS_${client}.csv`, csv);
+});
+
+document.getElementById('exportDelivBtn').addEventListener('click', async ()=>{
+  const client = document.getElementById('clientName').value || '고객사';
+  const rows = [['ID','산출물명','마일스톤','설명','관련WBS','형식','담당','승인기준']];
+  DELIVERABLES.forEach(d=>{
+    rows.push([d.id, d.name, d.milestone?'Y':'', d.desc, d.wbs, d.format, d.owner, d.accept]);
+  });
+  const csv = '﻿' + rows.map(r=>r.map(csvEscape).join(',')).join('\r\n');
+  await saveFile(`산출물등록부_${client}.csv`, csv);
+});
+
+renderWBS();
+renderDeliverables();
+</script>
+</body>
+</html>

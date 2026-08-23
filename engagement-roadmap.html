@@ -1,0 +1,354 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>14주 엔게이지먼트 일정표</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Noto+Sans+KR:wght@400;500;700;900&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --blue:#3D5CFF;--violet:#7C3AED;--cyan:#00C2FF;
+  --navy:#0F172A;--text:#1E293B;--muted:#64748B;--bg:#F8FAFC;
+  --border:#E2E8F0;--white:#FFFFFF;--gold:#F59E0B;--green:#10B981;--red:#DC2626;
+  --accent-text:#3D5CFF;--gold-text:#B45309;--green-text:#047857;
+  --card:#FFFFFF;--shadow:0 4px 20px rgba(15,23,42,.06);--shadow-lg:0 16px 44px rgba(15,23,42,.10);
+  --w:1080px;
+  --s1:#3D5CFF;--s2:#7C3AED;--s3:#10B981;--s4:#F59E0B;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --navy:#F1F5F9;--text:#CBD5E1;--muted:#8B98AC;--bg:#0B0F19;--card:#131B2E;--border:#232E45;
+    --accent-text:#7C93FF;--gold-text:#F59E0B;--green-text:#10B981;
+    --shadow:0 4px 20px rgba(0,0,0,.4);--shadow-lg:0 16px 44px rgba(0,0,0,.6);
+  }
+}
+:root[data-theme="dark"]{
+  --navy:#F1F5F9;--text:#CBD5E1;--muted:#8B98AC;--bg:#0B0F19;--card:#131B2E;--border:#232E45;
+  --accent-text:#7C93FF;--gold-text:#F59E0B;--green-text:#10B981;
+  --shadow:0 4px 20px rgba(0,0,0,.4);--shadow-lg:0 16px 44px rgba(0,0,0,.6);
+}
+body{font-family:'Noto Sans KR','Pretendard',-apple-system,sans-serif;background:var(--bg);color:var(--text);line-height:1.65;word-break:keep-all}
+.wrap{max-width:var(--w);margin:0 auto;padding:2.2rem 1.3rem 5rem}
+a{color:inherit}
+
+.hd-top{display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:1rem;margin-bottom:1.6rem}
+.logo{font:800 1.05rem 'Inter';letter-spacing:-.02em;color:var(--navy)}
+.logo em{font-style:normal;color:var(--blue)}
+.reset-btn{font:700 .78rem 'Inter';color:var(--muted);background:var(--card);border:1px solid var(--border);border-radius:8px;padding:.5rem 1rem;cursor:pointer}
+.reset-btn:hover{border-color:var(--red);color:var(--red)}
+.eyebrow{color:var(--blue);font-weight:800;font-size:.74rem;margin-bottom:.5rem;display:block;text-transform:uppercase;letter-spacing:.13em;font-family:'Inter',sans-serif}
+h1{font:900 clamp(1.5rem,4vw,2.1rem) 'Noto Sans KR';color:var(--navy);letter-spacing:-.02em;margin-bottom:.5rem}
+.sub{font-size:.9rem;color:var(--muted);max-width:700px;margin-bottom:1.4rem}
+.client-row{display:flex;gap:.7rem;flex-wrap:wrap;align-items:center}
+.client-input{font:600 .85rem 'Inter';padding:.55rem .9rem;border-radius:8px;border:1px solid var(--border);background:var(--card);color:var(--navy);min-width:180px}
+.client-input::placeholder{color:var(--muted);font-weight:500}
+.date-field{display:flex;align-items:center;gap:.5rem;font:700 .8rem 'Inter';color:var(--muted)}
+.date-field input{font:600 .85rem 'Inter';padding:.5rem .8rem;border-radius:8px;border:1px solid var(--border);background:var(--card);color:var(--navy)}
+
+/* LEGEND */
+.legend{display:flex;flex-wrap:wrap;gap:1.1rem;margin:1.5rem 0 1rem}
+.legend span{display:inline-flex;align-items:center;gap:.4rem;font:700 .74rem 'Inter';color:var(--text)}
+.legend i{width:11px;height:11px;border-radius:3px;display:inline-block}
+
+/* GANTT */
+.gantt-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:1.5rem 1.6rem;box-shadow:var(--shadow);margin-bottom:1.4rem;overflow-x:auto}
+.gantt{min-width:820px}
+.gantt-axis{display:grid;grid-template-columns:110px repeat(14,1fr) 90px;gap:2px;margin-bottom:.5rem}
+.gantt-axis span{font:700 .62rem 'Inter';color:var(--muted);text-align:center}
+.gantt-row{display:grid;grid-template-columns:110px repeat(14,1fr) 90px;gap:2px;align-items:center;margin-bottom:6px;height:34px}
+.gantt-row .row-label{font:700 .76rem 'Noto Sans KR';color:var(--navy);padding-right:.5rem}
+.gantt-cell-bg{height:100%;background:var(--bg);border-radius:3px}
+.gantt-bar{grid-row:1;height:100%;border-radius:7px;display:flex;align-items:center;justify-content:center;font:800 .68rem 'Inter';color:#fff;position:relative}
+.gantt-bar.milestone::after{content:'◆';position:absolute;right:-6px;top:50%;transform:translateY(-50%);font-size:.7rem;color:var(--navy)}
+.gantt-bar.ongoing{background:repeating-linear-gradient(135deg,var(--s4),var(--s4) 8px,#FBBF54 8px,#FBBF54 16px)}
+
+/* WEEK TABLE */
+.week-list{display:flex;flex-direction:column;gap:.7rem}
+.week-item{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:1.1rem 1.3rem;box-shadow:var(--shadow)}
+.week-item.stage1{border-left:4px solid var(--s1)}
+.week-item.stage2{border-left:4px solid var(--s2)}
+.week-item.stage3{border-left:4px solid var(--s3)}
+.week-item.stage4{border-left:4px solid var(--s4)}
+.week-top{display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:.6rem;margin-bottom:.5rem}
+.week-title-wrap{display:flex;align-items:center;gap:.7rem}
+.week-num{font:900 .95rem 'Inter';color:var(--navy);background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:.3rem .65rem;flex-shrink:0}
+.week-stage{font:700 .68rem 'Inter';text-transform:uppercase;letter-spacing:.05em}
+.week-date{font:700 .74rem 'Inter';color:var(--muted)}
+.week-activities{font-size:.84rem;color:var(--text);margin:.5rem 0;line-height:1.6}
+.week-foot{display:flex;flex-wrap:wrap;gap:.5rem;align-items:center;margin-top:.6rem}
+.deliverable-tag{font:700 .7rem 'Inter';padding:.28rem .7rem;border-radius:20px;background:var(--bg);border:1px solid var(--border);color:var(--navy);display:inline-flex;align-items:center;gap:.3rem}
+.deliverable-tag.milestone{background:rgba(220,38,38,.08);border-color:rgba(220,38,38,.25);color:var(--red)}
+.owner-tag{font:700 .68rem 'Inter';padding:.24rem .6rem;border-radius:20px}
+.owner-tag.panic{background:rgba(61,92,255,.1);color:var(--accent-text)}
+.owner-tag.client{background:rgba(245,158,11,.12);color:var(--gold-text)}
+
+.export-box{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:1.3rem 1.6rem;box-shadow:var(--shadow);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:.8rem;margin-top:1.4rem}
+.export-box p{font-size:.8rem;color:var(--muted);max-width:480px}
+.btn-row{display:flex;gap:.6rem;flex-wrap:wrap}
+.export-btn{font:700 .8rem 'Inter';background:var(--navy);color:#fff;border:none;border-radius:9px;padding:.65rem 1.3rem;cursor:pointer}
+.export-btn:hover{background:var(--blue)}
+.export-btn.csv{background:var(--green-text)}
+.export-btn.csv:hover{background:var(--green)}
+.disclaimer{font-size:.7rem;color:var(--muted);text-align:center;margin-top:1.2rem;line-height:1.7}
+
+@media(max-width:640px){
+  .week-title-wrap{flex-wrap:wrap}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="hd-top">
+    <div class="logo">PANIC<em>STORMS</em></div>
+    <button class="reset-btn" id="resetBtn">초기화</button>
+  </div>
+
+  <span class="eyebrow">제안서 첨부용 · Engagement Schedule</span>
+  <h1>14주 엔게이지먼트 일정표</h1>
+  <p class="sub">진단부터 파일럿 운영까지, 4단계 14주 전체를 주차별 활동·산출물·담당 주체까지 명시한 제안서급 일정표입니다. 착수일을 입력하면 실제 캘린더 날짜로 환산됩니다.</p>
+  <div class="client-row">
+    <input class="client-input" id="clientName" type="text" placeholder="고객사명">
+    <div class="date-field">착수일 <input type="date" id="startDate"></div>
+  </div>
+
+  <div class="legend">
+    <span><i style="background:var(--s1)"></i>Stage 1 · 진단 &amp; 감사</span>
+    <span><i style="background:var(--s2)"></i>Stage 2 · 설계 &amp; 전략</span>
+    <span><i style="background:var(--s3)"></i>Stage 3 · 구축 &amp; 이전</span>
+    <span><i style="background:var(--s4)"></i>Stage 4 · 운영 &amp; 최적화</span>
+    <span>◆ 마일스톤</span>
+  </div>
+
+  <div class="gantt-card">
+    <div class="gantt">
+      <div class="gantt-axis" id="ganttAxis"></div>
+      <div id="ganttRows"></div>
+    </div>
+  </div>
+
+  <div class="week-list" id="weekList"></div>
+
+  <div class="export-box">
+    <p>주차별 일정을 표(CSV)로 저장하거나 제안서에 바로 붙여넣을 텍스트로 복사할 수 있습니다.</p>
+    <div class="btn-row">
+      <button class="export-btn" id="copyBtn">제안서용 텍스트 복사</button>
+      <button class="export-btn csv" id="exportCsvBtn">엑셀용 CSV 저장</button>
+    </div>
+  </div>
+
+  <p class="disclaimer">실제 일정은 고객사 의사결정 속도, 데이터 규모, 시스템 접근 승인 절차에 따라 조정될 수 있습니다. 착수일은 실사 계약 체결일 기준으로 입력하는 것을 권장합니다.</p>
+
+</div>
+
+<script>
+const WEEKS = [
+  {w:1, stage:1, activities:"킥오프 미팅 · 이해관계자 인터뷰 · 시스템 접근 권한 셋업", deliverable:"킥오프 회의록", milestone:false, owner:"panic-lead"},
+  {w:2, stage:1, activities:"지식자산 인벤토리 완료 · 정보 흐름·병목 분석 · 보존 위험 기록물 우선순위화", deliverable:"갭 분석 리포트", milestone:true, owner:"panic-lead"},
+  {w:3, stage:2, activities:"전사 온톨로지·분류 체계 초안 설계", deliverable:"온톨로지 초안", milestone:false, owner:"panic"},
+  {w:4, stage:2, activities:"도구 스택 선정 및 아키텍처 수립 (고객사 IT팀 협의)", deliverable:"아키텍처 설계서 초안", milestone:false, owner:"both"},
+  {w:5, stage:2, activities:"보존 정책·거버넌스 문서화 · KPI 측정 기준 설계", deliverable:"거버넌스 정책 문서", milestone:false, owner:"panic"},
+  {w:6, stage:2, activities:"설계 최종 검토 및 승인", deliverable:"아키텍처·거버넌스 설계 승인", milestone:true, owner:"client"},
+  {w:7, stage:3, activities:"지식 베이스 인프라 구축 착수", deliverable:"", milestone:false, owner:"panic"},
+  {w:8, stage:3, activities:"벡터 DB·시맨틱 검색 인프라 구축", deliverable:"", milestone:false, owner:"panic"},
+  {w:9, stage:3, activities:"우선순위 자산 데이터 마이그레이션 (1차)", deliverable:"", milestone:false, owner:"both"},
+  {w:10, stage:3, activities:"데이터 마이그레이션 (2차) 및 무결성 검증", deliverable:"", milestone:false, owner:"both"},
+  {w:11, stage:3, activities:"보존 아카이브 시스템 구성 (WORM 스토리지)", deliverable:"", milestone:false, owner:"panic"},
+  {w:12, stage:3, activities:"백업·재해복구 체계 구성 및 복구 테스트", deliverable:"", milestone:false, owner:"panic"},
+  {w:13, stage:3, activities:"담당자 교육 (KO/DA 운영 교육)", deliverable:"", milestone:false, owner:"client"},
+  {w:14, stage:3, activities:"파일럿 운영 및 피드백 반영", deliverable:"파일럿 완료 보고 · 프로덕션 전환 승인", milestone:true, owner:"both"},
+];
+const ONGOING = {stage:4, activities:"월간 KPI 모니터링·보고 · AI 정확도 지속 개선 피드백 · 분기별 거버넌스 감사 · 분기별 아키텍처 고도화", owner:"both"};
+
+const STAGE_META = {
+  1:{name:'진단 & 감사', color:'var(--s1)'},
+  2:{name:'설계 & 전략', color:'var(--s2)'},
+  3:{name:'구축 & 이전', color:'var(--s3)'},
+  4:{name:'운영 & 최적화', color:'var(--s4)'},
+};
+const OWNER_META = {
+  'panic-lead':[{label:'PANICSTORMS 주도', cls:'panic'}],
+  'panic':[{label:'PANICSTORMS', cls:'panic'}],
+  'client':[{label:'고객사 필수 참여', cls:'client'}],
+  'both':[{label:'PANICSTORMS', cls:'panic'},{label:'고객사 협업', cls:'client'}],
+};
+
+const STORE_KEY = 'panicstorms_roadmap_v1';
+
+function fmtDate(d){
+  return (d.getMonth()+1)+'/'+d.getDate();
+}
+function weekRange(startDate, weekNum){
+  if(!startDate) return null;
+  const s = new Date(startDate);
+  s.setDate(s.getDate() + (weekNum-1)*7);
+  const e = new Date(s);
+  e.setDate(e.getDate()+6);
+  return fmtDate(s)+' ~ '+fmtDate(e);
+}
+
+function renderGantt(){
+  const axis = document.getElementById('ganttAxis');
+  axis.innerHTML = '<span></span>' + Array.from({length:14},(_,i)=>`<span>W${i+1}</span>`).join('') + '<span>W15~</span>';
+
+  const rows = document.getElementById('ganttRows');
+  rows.innerHTML = [1,2,3,4].map(stage=>{
+    const meta = STAGE_META[stage];
+    const weeksInStage = WEEKS.filter(w=>w.stage===stage).map(w=>w.w);
+    const start = stage===4 ? 15 : Math.min(...weeksInStage);
+    const end = stage===4 ? 15 : Math.max(...weeksInStage);
+    const hasMilestone = WEEKS.some(w=>w.stage===stage && w.milestone);
+    let cells = `<div class="row-label">${meta.name}</div>`;
+    for(let i=1;i<=14;i++){
+      if(i>=start && i<=end && stage!==4){
+        if(i===start){
+          const span = end-start+1;
+          cells += `<div style="grid-column:span ${span}"><div class="gantt-bar ${hasMilestone && i+span-1===end ? 'milestone':''}" style="background:${meta.color}">${meta.name}</div></div>`;
+        }
+      } else if(stage!==4){
+        cells += `<div class="gantt-cell-bg"></div>`;
+      } else {
+        cells += `<div class="gantt-cell-bg"></div>`;
+      }
+    }
+    cells += stage===4
+      ? `<div><div class="gantt-bar ongoing">계속</div></div>`
+      : `<div class="gantt-cell-bg"></div>`;
+    return `<div class="gantt-row">${cells}</div>`;
+  }).join('');
+}
+
+function renderWeeks(){
+  const startDate = document.getElementById('startDate').value;
+  const list = document.getElementById('weekList');
+  let html = WEEKS.map(item=>{
+    const meta = STAGE_META[item.stage];
+    const owners = OWNER_META[item.owner].map(o=>`<span class="owner-tag ${o.cls}">${o.label}</span>`).join('');
+    const dateTxt = weekRange(startDate, item.w);
+    return `<div class="week-item stage${item.stage}">
+      <div class="week-top">
+        <div class="week-title-wrap">
+          <span class="week-num">Week ${item.w}</span>
+          <span class="week-stage" style="color:${meta.color}">${meta.name}</span>
+        </div>
+        ${dateTxt ? `<span class="week-date">${dateTxt}</span>` : ''}
+      </div>
+      <div class="week-activities">${item.activities}</div>
+      <div class="week-foot">
+        ${item.deliverable ? `<span class="deliverable-tag ${item.milestone?'milestone':''}">${item.milestone?'◆ 마일스톤':'📄 산출물'} · ${item.deliverable}</span>` : ''}
+        ${owners}
+      </div>
+    </div>`;
+  }).join('');
+
+  const ongoingDate = startDate ? (()=>{ const s=new Date(startDate); s.setDate(s.getDate()+14*7); return fmtDate(s)+' ~'; })() : '';
+  html += `<div class="week-item stage4">
+    <div class="week-top">
+      <div class="week-title-wrap">
+        <span class="week-num">Week 15~</span>
+        <span class="week-stage" style="color:var(--s4)">운영 &amp; 최적화</span>
+      </div>
+      ${ongoingDate ? `<span class="week-date">${ongoingDate} 지속</span>` : ''}
+    </div>
+    <div class="week-activities">${ONGOING.activities}</div>
+    <div class="week-foot">${OWNER_META[ONGOING.owner].map(o=>`<span class="owner-tag ${o.cls}">${o.label}</span>`).join('')}</div>
+  </div>`;
+
+  list.innerHTML = html;
+}
+
+function saveState(){
+  localStorage.setItem(STORE_KEY+'_client', document.getElementById('clientName').value);
+  localStorage.setItem(STORE_KEY+'_start', document.getElementById('startDate').value);
+}
+function loadState(){
+  document.getElementById('clientName').value = localStorage.getItem(STORE_KEY+'_client') || '';
+  document.getElementById('startDate').value = localStorage.getItem(STORE_KEY+'_start') || '';
+}
+
+document.getElementById('clientName').addEventListener('input', saveState);
+document.getElementById('startDate').addEventListener('input', ()=>{ saveState(); renderWeeks(); });
+
+document.getElementById('resetBtn').addEventListener('click', ()=>{
+  if(!confirm('고객사명과 착수일을 초기화할까요?')) return;
+  localStorage.removeItem(STORE_KEY+'_client');
+  localStorage.removeItem(STORE_KEY+'_start');
+  loadState();
+  renderWeeks();
+});
+
+document.getElementById('copyBtn').addEventListener('click', ()=>{
+  const client = document.getElementById('clientName').value || '[고객사명]';
+  const startDate = document.getElementById('startDate').value;
+  let lines = [`${client} — 지식자산 거버넌스 구축 엔게이지먼트 일정 (14주)`, ''];
+  WEEKS.forEach(item=>{
+    const meta = STAGE_META[item.stage];
+    const dateTxt = weekRange(startDate, item.w);
+    lines.push(`Week ${item.w}${dateTxt?' ('+dateTxt+')':''} — [${meta.name}] ${item.activities}`);
+    if(item.deliverable) lines.push(`  → ${item.milestone?'마일스톤':'산출물'}: ${item.deliverable}`);
+  });
+  lines.push(`Week 15~ — [운영 & 최적화] ${ONGOING.activities}`);
+  navigator.clipboard.writeText(lines.join('\n')).then(()=>{
+    const btn = document.getElementById('copyBtn');
+    const orig = btn.textContent;
+    btn.textContent = '복사됨 ✓';
+    setTimeout(()=>btn.textContent = orig, 1500);
+  }).catch(()=>alert('복사 실패 — 브라우저 권한을 확인해주세요.'));
+});
+
+async function exportCSV(){
+  const client = document.getElementById('clientName').value || '고객사';
+  const startDate = document.getElementById('startDate').value;
+  const csvEscape = s => {
+    const str = String(s === undefined || s === null ? '' : s);
+    return /[",\n]/.test(str) ? '"' + str.replace(/"/g,'""') + '"' : str;
+  };
+  const rows = [['주차','날짜','단계','활동 내용','산출물/마일스톤','담당']];
+  WEEKS.forEach(item=>{
+    const meta = STAGE_META[item.stage];
+    const dateTxt = weekRange(startDate, item.w) || '';
+    const ownerTxt = OWNER_META[item.owner].map(o=>o.label).join(' + ');
+    rows.push([`Week ${item.w}`, dateTxt, meta.name, item.activities, item.deliverable, ownerTxt]);
+  });
+  rows.push(['Week 15~','','운영 & 최적화', ONGOING.activities, '', OWNER_META[ONGOING.owner].map(o=>o.label).join(' + ')]);
+  const csv = '﻿' + rows.map(r=>r.map(csvEscape).join(',')).join('\r\n');
+  const filename = `엔게이지먼트일정_${client}.csv`;
+  const btn = document.getElementById('exportCsvBtn');
+  const origText = btn.textContent;
+
+  if(window.claude && typeof window.claude.use === 'function'){
+    let downloads = null;
+    try{ downloads = await window.claude.use('downloads'); }catch(e){ downloads = null; }
+    if(downloads){
+      try{
+        await downloads.save({filename, data: csv});
+        btn.textContent = '저장됨 ✓';
+        setTimeout(()=>btn.textContent = origText, 1500);
+      }catch(err){
+        if(!(err && err.code === 'declined')){
+          alert('저장 실패: ' + (err && err.message ? err.message : '알 수 없는 오류'));
+        }
+      }
+      return;
+    }
+  }
+  const blob = new Blob([csv], {type:'text/csv;charset=utf-8'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = filename;
+  document.body.appendChild(a); a.click(); document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+  btn.textContent = '저장됨 ✓';
+  setTimeout(()=>btn.textContent = origText, 1500);
+}
+document.getElementById('exportCsvBtn').addEventListener('click', exportCSV);
+
+loadState();
+renderGantt();
+renderWeeks();
+</script>
+</body>
+</html>
