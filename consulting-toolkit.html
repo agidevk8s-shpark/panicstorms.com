@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>컨설팅 툴킷</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Noto+Sans+KR:wght@400;500;700;900&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --blue:#3D5CFF;--violet:#7C3AED;--cyan:#00C2FF;
+  --navy:#0F172A;--text:#1E293B;--muted:#64748B;--bg:#F8FAFC;
+  --border:#E2E8F0;--white:#FFFFFF;--gold:#F59E0B;--green:#10B981;
+  --card:#FFFFFF;--shadow:0 4px 20px rgba(15,23,42,.06);--shadow-lg:0 16px 40px rgba(15,23,42,.12);
+  --w:980px;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --navy:#F1F5F9;--text:#CBD5E1;--muted:#8B98AC;--bg:#0B0F19;--card:#131B2E;--border:#232E45;
+    --shadow:0 4px 20px rgba(0,0,0,.4);--shadow-lg:0 16px 40px rgba(0,0,0,.6);
+  }
+}
+:root[data-theme="dark"]{
+  --navy:#F1F5F9;--text:#CBD5E1;--muted:#8B98AC;--bg:#0B0F19;--card:#131B2E;--border:#232E45;
+  --shadow:0 4px 20px rgba(0,0,0,.4);--shadow-lg:0 16px 40px rgba(0,0,0,.6);
+}
+body{font-family:'Noto Sans KR','Pretendard',-apple-system,sans-serif;background:var(--bg);color:var(--text);line-height:1.65;word-break:keep-all}
+.wrap{max-width:var(--w);margin:0 auto;padding:3rem 1.3rem 5rem}
+a{color:inherit;text-decoration:none}
+
+.logo{font:800 1.05rem 'Inter';letter-spacing:-.02em;color:var(--navy);margin-bottom:1.6rem}
+.logo em{font-style:normal;color:var(--blue)}
+.eyebrow{color:var(--blue);font-weight:800;font-size:.74rem;margin-bottom:.6rem;display:block;text-transform:uppercase;letter-spacing:.13em;font-family:'Inter',sans-serif}
+h1{font:900 clamp(1.7rem,4.5vw,2.5rem) 'Noto Sans KR';color:var(--navy);letter-spacing:-.02em;margin-bottom:.6rem}
+.sub{font-size:.94rem;color:var(--muted);max-width:640px;margin-bottom:2.4rem}
+
+.group{margin-bottom:2.4rem}
+.group-head{display:flex;align-items:baseline;gap:.7rem;margin-bottom:1rem}
+.group-num{font:800 .74rem 'Inter';color:var(--blue);letter-spacing:.05em}
+.group-title{font:800 1.05rem 'Noto Sans KR';color:var(--navy)}
+.group-desc{font-size:.8rem;color:var(--muted);margin-left:auto}
+
+.cards{display:grid;grid-template-columns:repeat(2,1fr);gap:1rem}
+.card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:1.4rem 1.5rem;box-shadow:var(--shadow);display:flex;flex-direction:column;gap:.7rem;transition:.2s}
+.card:hover{transform:translateY(-3px);box-shadow:var(--shadow-lg);border-color:var(--blue)}
+.card.wide{grid-column:1/-1}
+.card-top{display:flex;align-items:center;gap:.8rem}
+.card-icon{width:42px;height:42px;border-radius:11px;background:var(--bg);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:1.3rem;flex-shrink:0}
+.card-name{font:800 .98rem 'Noto Sans KR';color:var(--navy)}
+.card-tag{font:700 .64rem 'Inter';color:var(--muted);text-transform:uppercase;letter-spacing:.04em}
+.card-desc{font-size:.8rem;color:var(--muted);line-height:1.55}
+.card-links{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:auto;padding-top:.3rem}
+.card-link{font:700 .74rem 'Inter';padding:.4rem .85rem;border-radius:8px;background:var(--bg);border:1px solid var(--border);color:var(--navy);display:inline-flex;align-items:center;gap:.3rem}
+.card-link:hover{border-color:var(--blue);color:var(--blue)}
+.card-link.primary{background:var(--navy);color:#fff;border-color:var(--navy)}
+.card-link.primary:hover{background:var(--blue);border-color:var(--blue);color:#fff}
+
+.footer-note{font-size:.72rem;color:var(--muted);text-align:center;margin-top:1rem;line-height:1.7}
+
+@media(max-width:680px){
+  .cards{grid-template-columns:1fr}
+  .group-desc{display:none}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="logo">PANIC<em>STORMS</em></div>
+  <span class="eyebrow">Internal Toolkit</span>
+  <h1>컨설팅 툴킷</h1>
+  <p class="sub">KO+DA 엔게이지먼트 전 과정에서 쓰는 6개 산출물 모음입니다. 영업 단계 소개자료부터 진단·ROI 검증, 제안서 첨부용 일정·WBS까지 순서대로 정리했습니다.</p>
+
+  <div class="group">
+    <div class="group-head">
+      <span class="group-num">01</span>
+      <span class="group-title">고객 소개</span>
+      <span class="group-desc">영업 · 첫 미팅</span>
+    </div>
+    <div class="cards">
+      <div class="card wide">
+        <div class="card-top">
+          <div class="card-icon">🧠</div>
+          <div><div class="card-name">Build Your Legacy</div><div class="card-tag">Client Pitch Deck</div></div>
+        </div>
+        <p class="card-desc">15분 발표 + 15분 Q&amp;A 구조의 KO+DA 고객사 소개 프레젠테이션. 문제정의·시장·역할·아키텍처·솔루션 트랙·도입효과·로드맵까지 13장 + Q&amp;A 백업 5장.</p>
+        <div class="card-links">
+          <a class="card-link primary" href="Build Your Legacy.html">웹으로 보기 →</a>
+          <a class="card-link" href="Build Your Legacy.pdf">PDF 다운로드</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="group">
+    <div class="group-head">
+      <span class="group-num">02</span>
+      <span class="group-title">진단 &amp; 효과 검증</span>
+      <span class="group-desc">실사 · Week 1–2</span>
+    </div>
+    <div class="cards">
+      <div class="card">
+        <div class="card-top">
+          <div class="card-icon">📋</div>
+          <div><div class="card-name">지식자산 진단표</div><div class="card-tag">Quick Checklist</div></div>
+        </div>
+        <p class="card-desc">첫 미팅에서 5분 내로 답하는 가벼운 진단. 14문항 · 3개 영역 · 우선순위 자동 산출.</p>
+        <div class="card-links"><a class="card-link primary" href="knowledge-audit-tool.html">열기 →</a></div>
+      </div>
+      <div class="card">
+        <div class="card-top">
+          <div class="card-icon">🔬</div>
+          <div><div class="card-name">지식자산 심층진단표</div><div class="card-tag">Practitioner Deep-Dive</div></div>
+        </div>
+        <p class="card-desc">실무자 대상 정밀 진단. 26문항 · 4개 영역(보안 포함) · 메모 기록 지원.</p>
+        <div class="card-links"><a class="card-link primary" href="knowledge-audit-deep.html">열기 →</a></div>
+      </div>
+      <div class="card wide">
+        <div class="card-top">
+          <div class="card-icon">📈</div>
+          <div><div class="card-name">지식자산 ROI 계산기</div><div class="card-tag">Savings &amp; Payback Calculator</div></div>
+        </div>
+        <p class="card-desc">탐색시간·인수인계·감사대응 3개 레버로 연간 절감효과를 실시간 계산하고, 투자비용 입력 시 회수기간(개월)까지 산출합니다.</p>
+        <div class="card-links"><a class="card-link primary" href="roi-calculator.html">열기 →</a></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="group">
+    <div class="group-head">
+      <span class="group-num">03</span>
+      <span class="group-title">제안서 첨부 자료</span>
+      <span class="group-desc">제안 · 계약</span>
+    </div>
+    <div class="cards">
+      <div class="card">
+        <div class="card-top">
+          <div class="card-icon">🗓️</div>
+          <div><div class="card-name">14주 엔게이지먼트 일정표</div><div class="card-tag">Engagement Schedule</div></div>
+        </div>
+        <p class="card-desc">4단계 간트차트 + 주차별 활동·산출물·담당. 착수일 입력 시 실제 날짜로 환산.</p>
+        <div class="card-links"><a class="card-link primary" href="engagement-roadmap.html">열기 →</a></div>
+      </div>
+      <div class="card">
+        <div class="card-top">
+          <div class="card-icon">📐</div>
+          <div><div class="card-name">WBS &amp; 산출물 등록부</div><div class="card-tag">Work Breakdown Structure</div></div>
+        </div>
+        <p class="card-desc">3단계 WBS(12 작업패키지·30 세부작업) + 산출물 12건 승인기준 명시.</p>
+        <div class="card-links"><a class="card-link primary" href="wbs-deliverables.html">열기 →</a></div>
+      </div>
+    </div>
+  </div>
+
+  <p class="footer-note">모든 도구는 서버 없는 단일 HTML 파일로 동작하며, 입력값은 브라우저에 자동 저장됩니다.</p>
+
+</div>
+</body>
+</html>
