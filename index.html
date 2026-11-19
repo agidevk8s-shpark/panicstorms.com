@@ -1,0 +1,718 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'unsafe-inline' https://cdn.jsdelivr.net; font-src https://cdn.jsdelivr.net; img-src 'self' data:; connect-src 'none'; base-uri 'none'; form-action 'none'; upgrade-insecure-requests">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<link rel="canonical" href="https://panicstorms.com/">
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" content="#F6F7FB" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0B0F19" media="(prefers-color-scheme: dark)">
+<script src="assets/theme.js"></script>
+<title>Panicstorms — 지식 설계와 기록 보존 서비스</title>
+<meta name="description" content="Knowledge Officer는 지식이 찾아지고 AI에 안전하게 쓰이도록 설계하고, Digital Archivist는 기록이 오래 열리고 변조되지 않았음을 검증할 수 있게 보존합니다. 고객사에 제공하는 서비스와 인프라를 소개합니다.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Panicstorms — 지식 설계와 기록 보존 서비스">
+<meta property="og:description" content="지식은 흐르게, 기록은 남기게. Knowledge Officer × Digital Archivist 서비스 소개.">
+<meta property="og:site_name" content="Panicstorms">
+<meta property="og:url" content="https://panicstorms.com/">
+<meta property="og:image" content="https://panicstorms.com/og-image.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Panicstorms — 지식은 흐르게, 기록은 남기게">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://panicstorms.com/og-image.jpg">
+<script type="application/ld+json">
+{
+ "@context": "https://schema.org",
+ "@graph": [
+  {
+   "@type": "Organization",
+   "@id": "https://panicstorms.com/#org",
+   "name": "Panicstorms",
+   "url": "https://panicstorms.com/",
+   "description": "Knowledge Officer는 지식이 찾아지고 AI에 안전하게 쓰이도록 설계하고, Digital Archivist는 기록이 오래 열리고 변조되지 않았음을 검증할 수 있게 보존합니다.",
+   "knowsAbout": [
+    "지식자산 진단",
+    "분류체계·온톨로지 설계",
+    "검색·AI 지식베이스 구축",
+    "AI 답변 거버넌스",
+    "기록 인벤토리·보존 위험 분석",
+    "장기 보존 아카이브 구축",
+    "무결성 검증 체계",
+    "증빙 추출 체계"
+   ]
+  },
+  {
+   "@type": "WebSite",
+   "@id": "https://panicstorms.com/#web",
+   "url": "https://panicstorms.com/",
+   "name": "Panicstorms",
+   "inLanguage": "ko",
+   "publisher": {
+    "@id": "https://panicstorms.com/#org"
+   }
+  }
+ ]
+}
+</script>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%233D5CFF'/%3E%3Ctext x='16' y='23' font-family='Arial' font-weight='800' font-size='20' text-anchor='middle' fill='white'%3EP%3C/text%3E%3C/svg%3E">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pretendard@1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css" integrity="sha384-/uC/GIvKJ/9RN6i1izHoBY9ubYo60OAsQRNQ3NRFiNsN+N/MVQJHD5OYcZz6wvwn" crossorigin="anonymous">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#F6F7FB;--surface:#FFFFFF;--ink:#0E1220;--muted:#565E73;--line:#D9DDEA;
+  --ko:#3D5CFF;--ko-soft:#E8ECFF;--da:#E8A317;--da-ink:#8A5A00;--da-soft:#FFF3D6;
+  --focus:#3D5CFF;
+}
+html[data-theme="dark"]{
+  --bg:#0B0F19;--surface:#121829;--ink:#EEF1FA;--muted:#9AA3BA;--line:#26304A;
+  --ko:#8AA0FF;--ko-soft:#1B2447;--da:#F2B544;--da-ink:#F2B544;--da-soft:#2A2110;
+  --focus:#8AA0FF;
+}
+html{scroll-behavior:smooth;scroll-padding-top:24px;-webkit-text-size-adjust:100%}
+body{background:var(--bg);color:var(--ink);font-family:'Pretendard Variable',Pretendard,-apple-system,'Segoe UI',sans-serif;font-size:1rem;line-height:1.7;letter-spacing:-.005em;word-break:keep-all}
+a{color:inherit}
+button{font:inherit;color:inherit}
+.wrap{width:min(1120px,100% - 2.5rem);margin-inline:auto}
+.ic{width:1em;height:1em;flex-shrink:0;stroke:currentColor;fill:none;stroke-width:1.75;stroke-linecap:round;stroke-linejoin:round;vertical-align:-.125em}
+a:focus-visible,button:focus-visible,summary:focus-visible{outline:2px solid var(--focus);outline-offset:3px}
+.skip{position:absolute;left:-999px;top:0;background:var(--ink);color:var(--bg);padding:.6rem 1rem;z-index:100}
+.skip:focus{left:1rem;top:1rem}
+
+/* header */
+.site-head{position:sticky;top:0;z-index:50;background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.head-in{display:flex;align-items:center;gap:1.5rem;height:64px}
+.logo{font-weight:800;font-size:1.2rem;letter-spacing:-.04em;text-decoration:none}
+.logo b{color:var(--ko);font-weight:800}
+.nav{display:flex;gap:1.4rem;margin-left:auto;font-size:.92rem}
+.nav a{text-decoration:none;color:var(--muted);padding:.3rem 0}
+.nav a:hover{color:var(--ink)}
+.theme-btn{background:none;border:1px solid var(--line);border-radius:10px;width:38px;height:38px;display:grid;place-items:center;cursor:pointer;font-size:1.1rem}
+.theme-btn .moon{display:none}
+html[data-theme="dark"] .theme-btn .sun{display:none}
+html[data-theme="dark"] .theme-btn .moon{display:inline}
+
+/* hero */
+.hero{padding:clamp(3rem,8vw,6rem) 0 2.5rem}
+h1{font-size:clamp(2.3rem,7vw,4.9rem);line-height:1.12;font-weight:800;letter-spacing:-.05em}
+.h-line{display:block;border-left:8px solid var(--c);padding-left:clamp(.8rem,2vw,1.4rem)}
+.h-line+.h-line{margin-top:.5rem}
+.h-ko{--c:var(--ko)}.h-da{--c:var(--da)}
+.hero-sub{max-width:62ch;margin-top:1.8rem;font-size:clamp(1rem,1.6vw,1.15rem);color:var(--muted)}
+.hero-sub strong{color:var(--ink);font-weight:700}
+.legend{display:flex;gap:1.4rem;flex-wrap:wrap;margin-top:1.4rem;font-size:.88rem;color:var(--muted)}
+.legend span{display:inline-flex;align-items:center;gap:.5rem}
+.legend i{width:14px;height:14px;border-radius:3px;background:var(--c)}
+
+/* journey */
+.journey{margin-top:3rem}
+.journey-head{display:flex;justify-content:space-between;gap:1rem;flex-wrap:wrap;align-items:baseline;margin-bottom:1rem}
+.journey-head h2{font-size:1.15rem;font-weight:700;letter-spacing:-.02em}
+.journey-head p{font-size:.85rem;color:var(--muted)}
+.stations{display:grid;grid-template-columns:repeat(6,1fr);gap:0 .6rem}
+.station{--c:var(--ko);position:relative;background:none;border:0;text-align:left;padding:1.1rem .2rem 0 0;cursor:pointer;display:flex;flex-direction:column;gap:.35rem;color:var(--muted)}
+.station.da{--c:var(--da)}
+.station::before,.station::after{content:"";position:absolute;top:0;left:0;right:0;height:4px;border-radius:2px}
+.station::before{background:var(--line)}
+.station::after{background:var(--c);transform:scaleX(0);transform-origin:left;transition:transform .5s ease}
+.stations.lit .station::after{transform:scaleX(1)}
+.stations.lit .station:nth-child(2)::after{transition-delay:.35s}
+.stations.lit .station:nth-child(3)::after{transition-delay:.7s}
+.stations.lit .station:nth-child(4)::after{transition-delay:1.05s}
+.stations.lit .station:nth-child(5)::after{transition-delay:1.4s}
+.stations.lit .station:nth-child(6)::after{transition-delay:1.75s}
+.station .ic{font-size:1.6rem;color:var(--c)}
+.station .st-name{font-size:1.05rem;font-weight:700;color:var(--ink);letter-spacing:-.02em}
+.station .st-by{font-size:.78rem}
+.station[aria-selected="true"]{color:var(--ink)}
+.station[aria-selected="true"] .st-name{text-decoration:underline;text-decoration-color:var(--c);text-decoration-thickness:3px;text-underline-offset:5px}
+.station.da[aria-selected="true"] .st-name{text-decoration-color:var(--da-ink)}
+.panel{margin-top:1.4rem;border-left:4px solid var(--c);background:var(--surface);padding:1.3rem 1.5rem;border-radius:0 12px 12px 0;max-width:80ch}
+.panel[data-side="ko"]{--c:var(--ko)}.panel[data-side="da"]{--c:var(--da)}
+.panel p{margin-bottom:.8rem}
+.panel .rel{font-size:.9rem;color:var(--muted)}
+.panel .rel a{font-weight:700;margin-left:.6rem;text-underline-offset:3px}
+
+/* facts */
+.facts{padding:3.5rem 0 1rem}
+.facts h2,.sec h2{font-size:clamp(1.5rem,3.6vw,2.3rem);font-weight:800;letter-spacing:-.04em;line-height:1.3;margin-bottom:1.2rem}
+.fact-list{list-style:none;border-top:1px solid var(--line)}
+.fact-list li{padding:1rem 0;border-bottom:1px solid var(--line);display:grid;grid-template-columns:1fr;gap:.2rem}
+.fact-list sup a{color:var(--ko);text-decoration:none;font-weight:700}
+
+/* sections */
+.sec{padding:clamp(3rem,7vw,5.5rem) 0}
+.sec-lead{max-width:64ch;color:var(--muted);margin-bottom:2rem}
+.sec-alt{background:var(--surface);border-block:1px solid var(--line)}
+
+/* catalog */
+.catalog{display:grid;grid-template-columns:1fr 1fr;gap:2.5rem}
+.cat-col h3{font-size:1.25rem;font-weight:800;letter-spacing:-.03em;padding-bottom:.8rem;border-bottom:3px solid var(--c);display:flex;align-items:baseline;gap:.7rem;flex-wrap:wrap}
+.cat-col h3 small{font-size:.85rem;font-weight:500;color:var(--muted);letter-spacing:0}
+.cat-col.ko{--c:var(--ko)}.cat-col.da{--c:var(--da)}
+.svc{border-bottom:1px solid var(--line)}
+.svc summary{list-style:none;cursor:pointer;display:grid;grid-template-columns:1fr auto;gap:.1rem 1rem;padding:1rem 0;align-items:center}
+.svc summary::-webkit-details-marker{display:none}
+.svc-name{font-weight:700;font-size:1.02rem;letter-spacing:-.02em;justify-self:start}
+.svc-brief{grid-column:1;font-size:.9rem;color:var(--muted)}
+.svc summary .ic{grid-column:2;grid-row:1/3;color:var(--muted);transition:transform .2s ease}
+.svc[open] summary .ic{transform:rotate(180deg)}
+.svc[open] .svc-name{box-shadow:inset 0 -.4em 0 color-mix(in srgb,var(--c) 28%,transparent)}
+.svc-body{padding:0 0 1.2rem;font-size:.94rem}
+.svc-body dt{font-weight:700;font-size:.82rem;color:var(--muted);margin-top:.7rem}
+.svc-body dd{margin-top:.15rem}
+.svc:target summary{background:color-mix(in srgb,var(--c) 10%,transparent)}
+.svc,.svc summary,.faq summary{scroll-margin-top:84px}
+
+/* infra */
+.infra{display:grid;grid-template-columns:repeat(4,1fr);gap:0}
+.layer{padding:0 1.1rem 1rem 0;position:relative}
+.layer+.layer{padding-left:1.1rem;border-left:1px dashed var(--line)}
+.layer h3{font-size:1rem;font-weight:800;letter-spacing:-.02em;padding-top:.8rem;border-top:4px solid var(--c);margin-bottom:.2rem}
+.layer .who{font-size:.8rem;color:var(--muted);margin-bottom:.6rem;display:block}
+.layer ul{list-style:none;font-size:.92rem}
+.layer li{padding:.35rem 0;border-bottom:1px solid var(--line)}
+.layer.src{--c:var(--muted)}.layer.ko{--c:var(--ko)}.layer.da{--c:var(--da)}.layer.out{--c:var(--ink)}
+.control{margin-top:1.5rem;border:1.5px solid var(--line);border-radius:12px;padding:1rem 1.3rem;background:var(--bg)}
+.control strong{display:block;margin-bottom:.2rem}
+.control span{font-size:.92rem;color:var(--muted)}
+.together{margin-top:3rem}
+.together h3{font-size:1.2rem;font-weight:800;letter-spacing:-.03em;margin-bottom:1rem}
+.tg-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem}
+.tg{border-left:4px solid var(--ko);padding-left:1rem;position:relative}
+.tg::after{content:"";position:absolute;left:-4px;bottom:0;height:50%;width:4px;background:var(--da)}
+.tg b{display:block;margin-bottom:.3rem;letter-spacing:-.02em}
+.tg p{font-size:.92rem;color:var(--muted)}
+
+/* process */
+.steps{list-style:none;counter-reset:s;display:grid;grid-template-columns:repeat(4,1fr);gap:1.5rem}
+.steps li{counter-increment:s;border-top:3px solid var(--ink);padding-top:.9rem}
+.steps li::before{content:counter(s);display:block;font-weight:800;font-size:1.6rem;letter-spacing:-.04em;margin-bottom:.2rem}
+.steps b{display:block;font-size:1.05rem;margin-bottom:.3rem}
+.steps p{font-size:.92rem;color:var(--muted)}
+.note{margin-top:1.5rem;font-size:.92rem;color:var(--muted);max-width:70ch}
+
+/* trust */
+.trust{display:grid;grid-template-columns:1.1fr .9fr;gap:3rem}
+.trust>div{min-width:0}
+.trust h3{font-size:1.15rem;font-weight:800;letter-spacing:-.03em;margin-bottom:.8rem}
+.std{width:100%;border-collapse:collapse;font-size:.92rem}
+.std th,.std td{text-align:left;padding:.6rem .5rem .6rem 0;border-bottom:1px solid var(--line);vertical-align:top}
+.std th{font-weight:700;padding-right:1rem;width:40%}
+.std td{color:var(--muted)}
+.disclaim{margin-top:1rem;font-size:.88rem;color:var(--muted)}
+.tools dl{font-size:.92rem}
+.tools dt{font-weight:700;margin-top:.9rem}
+.tools dt:first-child{margin-top:0}
+.tools dd{color:var(--muted)}
+
+/* deliverables */
+.docs{max-width:920px}
+.doc{--c:var(--ink)}
+.doc-body{padding:0 0 1.3rem}
+.sheets{font-size:.9rem;color:var(--muted);margin-bottom:.9rem}
+.sheets b{color:var(--ink);margin-right:.5rem}
+.tbl-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:10px;background:var(--bg)}
+.sample{border-collapse:collapse;width:100%;min-width:620px;font-size:.9rem}
+.sample caption{text-align:left;padding:.7rem .9rem;font-weight:700;font-size:.85rem;color:var(--muted);caption-side:top}
+.sample th{text-align:left;padding:.6rem .9rem;border-block:2px solid var(--line);white-space:nowrap;font-weight:700;background:var(--surface)}
+.sample td{padding:.6rem .9rem;border-top:1px solid var(--line);color:var(--muted);vertical-align:top}
+.steps a{font-weight:700;text-underline-offset:3px}
+/* self-check + glossary */
+[hidden]{display:none!important}
+.sc-grid{display:grid;grid-template-columns:1fr 1fr;gap:2.5rem}
+.chk{display:grid;grid-template-columns:auto 1fr;gap:.8rem;padding:.9rem 0;border-bottom:1px solid var(--line);cursor:pointer;align-items:start}
+.chk input{width:1.15rem;height:1.15rem;margin-top:.3rem;accent-color:var(--c);cursor:pointer}
+.chk span{font-size:.95rem}
+.sc-result{margin-top:2rem;border-left:4px solid var(--ink);padding:1rem 1.3rem;background:var(--bg);border-radius:0 12px 12px 0;max-width:80ch}
+.sc-list{margin:.6rem 0 0 1.2rem;font-size:.95rem}
+.sc-list a{font-weight:700;text-underline-offset:3px}
+.sc-actions{display:flex;gap:.7rem;flex-wrap:wrap;margin-top:1rem}
+.sc-mail{background:var(--ink);color:var(--bg)}
+.btn.sc-reset{background:transparent;color:var(--ink);border-color:var(--line);font-family:inherit}
+.gloss{display:grid;grid-template-columns:1fr 1fr;gap:0 3rem;max-width:960px}
+.gloss>div{padding:.9rem 0;border-bottom:1px solid var(--line)}
+.gloss dt{font-weight:800;letter-spacing:-.02em}
+.gloss dd{color:var(--muted);font-size:.94rem}
+/* faq */
+.faq{max-width:78ch}
+.faq details{border-bottom:1px solid var(--line)}
+.faq summary{list-style:none;cursor:pointer;padding:1rem 0;font-weight:700;display:flex;justify-content:space-between;gap:1rem;align-items:center;letter-spacing:-.02em}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary .ic{color:var(--muted);transition:transform .2s ease}
+.faq details[open] summary .ic{transform:rotate(180deg)}
+.faq p{padding:0 0 1.1rem;color:var(--muted)}
+
+/* cta */
+.cta{padding:clamp(3rem,7vw,5rem) 0;background:var(--ink);color:var(--bg)}
+.cta h2{font-size:clamp(1.6rem,4vw,2.6rem);font-weight:800;letter-spacing:-.04em;line-height:1.25;max-width:20ch}
+.cta p{margin-top:1rem;max-width:60ch;opacity:.85}
+.cta ul{margin:1rem 0 0 1.2rem;opacity:.85;font-size:.94rem}
+.cta-actions{display:flex;gap:.8rem;flex-wrap:wrap;margin-top:1.8rem}
+.btn{display:inline-block;padding:.9rem 1.7rem;border-radius:10px;font-weight:800;font-size:.95rem;text-decoration:none;cursor:pointer;border:1.5px solid transparent}
+.btn-main{background:var(--bg);color:var(--ink)}
+.btn-ghost{background:transparent;color:var(--bg);border-color:color-mix(in srgb,var(--bg) 55%,transparent)}
+.cta .mail{margin-top:1rem;font-size:.88rem;font-weight:600}
+.cta a:focus-visible,.cta button:focus-visible{outline-color:var(--bg)}
+footer{padding:2rem 0 3rem;font-size:.85rem;color:var(--muted)}
+footer ol{margin:0 0 1.2rem 1.2rem}
+footer li{margin-bottom:.25rem}
+footer a{color:var(--muted)}
+
+@media(max-width:900px){
+  .nav{display:none}
+  .theme-btn{margin-left:auto}
+  .stations{grid-template-columns:1fr;gap:.2rem 0}
+  .station{flex-direction:row;align-items:center;gap:.9rem;padding:.9rem 0 .9rem 0;flex-wrap:wrap}
+  .station::before,.station::after{height:3px}
+  .station .st-by{margin-left:auto}
+  .catalog,.trust{grid-template-columns:1fr;gap:2.2rem}
+  .infra{grid-template-columns:1fr 1fr;row-gap:1.5rem}
+  .layer:nth-child(3){border-left:0;padding-left:0}
+  .tg-grid,.steps,.sc-grid,.gloss{grid-template-columns:1fr}
+}
+@media(max-width:560px){
+  .infra{grid-template-columns:1fr}
+  .layer+.layer{border-left:0;padding-left:0}
+}
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}
+  .station::after{transform:scaleX(1)}
+}
+</style>
+</head>
+<body>
+<!-- Icons: Lucide (https://lucide.dev), ISC License.
+     Copyright (c) for portions of Lucide are held by Cole Bemis 2013-2022 as part of Feather (MIT).
+     All other copyright (c) for Lucide are held by Lucide Contributors 2022.
+     Full license text: /LICENSE-lucide.txt -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><symbol id="i-archive" viewBox="0 0 24 24"><rect width="20" height="5" x="2" y="3" rx="1" /> <path d="M4 8v11a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8" /> <path d="M10 12h4" /></symbol><symbol id="i-bot" viewBox="0 0 24 24"><path d="M12 8V4H8" /> <rect width="16" height="12" x="4" y="8" rx="2" /> <path d="M2 14h2" /> <path d="M20 14h2" /> <path d="M15 13v2" /> <path d="M9 13v2" /></symbol><symbol id="i-chevron-down" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6" /></symbol><symbol id="i-fingerprint" viewBox="0 0 24 24"><path d="M12 10a2 2 0 0 0-2 2c0 1.02-.1 2.51-.26 4" /> <path d="M14 13.12c0 2.38 0 6.38-1 8.88" /> <path d="M17.29 21.02c.12-.6.43-2.3.5-3.02" /> <path d="M2 12a10 10 0 0 1 18-6" /> <path d="M2 16h.01" /> <path d="M21.8 16c.2-2 .131-5.354 0-6" /> <path d="M5 19.5C5.5 18 6 15 6 12a6 6 0 0 1 .34-2" /> <path d="M8.65 22c.21-.66.45-1.32.57-2" /> <path d="M9 6.8a6 6 0 0 1 9 5.2v2" /></symbol><symbol id="i-folder-tree" viewBox="0 0 24 24"><path d="M20 10a1 1 0 0 0 1-1V6a1 1 0 0 0-1-1h-2.5a1 1 0 0 1-.8-.4l-.9-1.2A1 1 0 0 0 15 3h-2a1 1 0 0 0-1 1v5a1 1 0 0 0 1 1Z" /> <path d="M20 21a1 1 0 0 0 1-1v-3a1 1 0 0 0-1-1h-2.9a1 1 0 0 1-.88-.55l-.42-.85a1 1 0 0 0-.92-.6H13a1 1 0 0 0-1 1v5a1 1 0 0 0 1 1Z" /> <path d="M3 5a2 2 0 0 0 2 2h3" /> <path d="M3 3v13a2 2 0 0 0 2 2h3" /></symbol><symbol id="i-moon" viewBox="0 0 24 24"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z" /></symbol><symbol id="i-scale" viewBox="0 0 24 24"><path d="m16 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z" /> <path d="m2 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z" /> <path d="M7 21h10" /> <path d="M12 3v18" /> <path d="M3 7h2c2 0 5-1 7-2 2 1 5 2 7 2h2" /></symbol><symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8" /> <path d="m21 21-4.3-4.3" /></symbol><symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4" /> <path d="M12 2v2" /> <path d="M12 20v2" /> <path d="m4.93 4.93 1.41 1.41" /> <path d="m17.66 17.66 1.41 1.41" /> <path d="M2 12h2" /> <path d="M20 12h2" /> <path d="m6.34 17.66-1.41 1.41" /> <path d="m19.07 4.93-1.41 1.41" /></symbol></svg>
+<a class="skip" href="#main">본문으로 건너뛰기</a>
+
+<header class="site-head">
+  <div class="wrap head-in">
+    <a class="logo" href="#top">PANIC<b>STORMS</b></a>
+    <nav class="nav" aria-label="주요 메뉴">
+      <a href="#services">서비스</a>
+      <a href="#infra">인프라</a>
+      <a href="#process">진행 방식</a>
+      <a href="#trust">기준과 도구</a>
+      <a href="#faq">자주 묻는 질문</a>
+      <a href="#selfcheck">자가 점검</a>
+      <a href="#contact">상담 요청</a>
+    </nav>
+    <button class="theme-btn" id="themeBtn" type="button" aria-label="화면 테마 전환">
+      <svg class="ic sun" aria-hidden="true"><use href="#i-sun"/></svg>
+      <svg class="ic moon" aria-hidden="true"><use href="#i-moon"/></svg>
+    </button>
+  </div>
+</header>
+
+<main id="main">
+<section class="hero" id="top">
+  <div class="wrap">
+    <h1>
+      <span class="h-line h-ko">지식은 흐르게,</span>
+      <span class="h-line h-da">기록은 남기게.</span>
+    </h1>
+    <p class="hero-sub">
+      <strong>Knowledge Officer</strong>는 흩어진 조직의 지식이 필요한 순간에 찾아지고 AI에 안전하게 쓰이도록 설계합니다.
+      <strong>Digital Archivist</strong>는 그 지식과 기록이 시간이 지나도 열리고, 바뀌지 않았음을 확인할 수 있게 보존합니다.
+      이 페이지는 두 역할이 고객사에 제공하는 서비스와 인프라를 정리한 것입니다.
+    </p>
+    <div class="legend" aria-label="색 구분">
+      <span style="--c:var(--ko)"><i></i>Knowledge Officer가 맡는 일</span>
+      <span style="--c:var(--da)"><i></i>Digital Archivist가 맡는 일</span>
+    </div>
+
+    <div class="journey">
+      <div class="journey-head">
+        <h2>문서 한 건이 조직 안에서 지나는 길</h2>
+        <p>예시 시나리오입니다. 실제 고객 사례가 아닙니다.</p>
+      </div>
+      <div class="stations" id="stations" role="tablist" aria-label="문서의 여섯 단계">
+        <button class="station ko" role="tab" id="t1" aria-selected="true" aria-controls="p1" type="button">
+          <svg class="ic" aria-hidden="true"><use href="#i-folder-tree"/></svg>
+          <span class="st-name">분류한다</span><span class="st-by">Knowledge Officer</span>
+        </button>
+        <button class="station ko" role="tab" id="t2" aria-selected="false" aria-controls="p2" tabindex="-1" type="button">
+          <svg class="ic" aria-hidden="true"><use href="#i-search"/></svg>
+          <span class="st-name">찾는다</span><span class="st-by">Knowledge Officer</span>
+        </button>
+        <button class="station ko" role="tab" id="t3" aria-selected="false" aria-controls="p3" tabindex="-1" type="button">
+          <svg class="ic" aria-hidden="true"><use href="#i-bot"/></svg>
+          <span class="st-name">답한다</span><span class="st-by">Knowledge Officer</span>
+        </button>
+        <button class="station da" role="tab" id="t4" aria-selected="false" aria-controls="p4" tabindex="-1" type="button">
+          <svg class="ic" aria-hidden="true"><use href="#i-fingerprint"/></svg>
+          <span class="st-name">확정한다</span><span class="st-by">Digital Archivist</span>
+        </button>
+        <button class="station da" role="tab" id="t5" aria-selected="false" aria-controls="p5" tabindex="-1" type="button">
+          <svg class="ic" aria-hidden="true"><use href="#i-archive"/></svg>
+          <span class="st-name">보존한다</span><span class="st-by">Digital Archivist</span>
+        </button>
+        <button class="station da" role="tab" id="t6" aria-selected="false" aria-controls="p6" tabindex="-1" type="button">
+          <svg class="ic" aria-hidden="true"><use href="#i-scale"/></svg>
+          <span class="st-name">꺼낸다</span><span class="st-by">Digital Archivist</span>
+        </button>
+      </div>
+
+      <div class="panel" id="p1" role="tabpanel" aria-labelledby="t1" data-side="ko">
+        <p>2021년 프로젝트의 의사결정 메모 한 건이 있다고 합시다. 어디에 있고 무엇에 관한 문서인지, 분류체계와 메타데이터로 정리해 이름과 구조를 붙입니다.</p>
+        <p class="rel">관련 서비스<a href="#ko-inventory">지식자산 진단</a><a href="#ko-taxonomy">분류체계·온톨로지 설계</a></p>
+      </div>
+      <div class="panel" id="p2" role="tabpanel" aria-labelledby="t2" data-side="ko" hidden>
+        <p>"그때 왜 그 공급사를 골랐는지"를 묻는 사람이 이 메모를 찾을 수 있도록 색인합니다. 접근 권한이 없는 사람에게는 결과에 나타나지 않습니다.</p>
+        <p class="rel">관련 서비스<a href="#ko-kb">검색·AI 지식베이스 구축</a></p>
+      </div>
+      <div class="panel" id="p3" role="tabpanel" aria-labelledby="t3" data-side="ko" hidden>
+        <p>AI가 이 메모를 근거로 답하면, 어느 문서의 어느 버전을 근거로 썼는지 함께 보여 줍니다. 승인되지 않은 출처는 참조하지 않게 막습니다.</p>
+        <p class="rel">관련 서비스<a href="#ko-governance">AI 답변 거버넌스</a></p>
+      </div>
+      <div class="panel" id="p4" role="tabpanel" aria-labelledby="t4" data-side="da" hidden>
+        <p>메모의 해시값과 타임스탬프를 기록합니다. 나중에 "그때 이 내용이었다"는 점을 기술적으로 확인할 수 있습니다.</p>
+        <p class="rel">관련 서비스<a href="#da-integrity">무결성 검증 체계</a><a href="#da-policy">보존 정책·메타데이터 설계</a></p>
+      </div>
+      <div class="panel" id="p5" role="tabpanel" aria-labelledby="t5" data-side="da" hidden>
+        <p>변경할 수 없는 저장소와 서로 다른 사업자의 사본에 보관합니다. 오래된 파일 형식은 장기 보존 형식으로 옮기고, 옮기기 전후를 검증합니다.</p>
+        <p class="rel">관련 서비스<a href="#da-archive">장기 보존 아카이브 구축</a><a href="#da-worm">변경 불가 저장소 구성</a><a href="#da-format">포맷 마이그레이션</a></p>
+      </div>
+      <div class="panel" id="p6" role="tabpanel" aria-labelledby="t6" data-side="da" hidden>
+        <p>감사·소송·실사가 오면 해당 시점의 기록과 검증 자료를 묶어서 꺼냅니다. 법적 증거능력 판단은 법률 전문가와 법원의 영역이며, 이 서비스는 기술적 검증 자료까지 제공합니다.</p>
+        <p class="rel">관련 서비스<a href="#da-evidence">증빙 추출 체계</a></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="facts" aria-labelledby="why-now">
+  <div class="wrap">
+    <h2 id="why-now">지금 이 일이 필요한 이유</h2>
+    <ul class="fact-list">
+      <li><span>AI에 적합한 데이터가 뒷받침되지 않는 AI 프로젝트의 60%는 2026년까지 포기될 것으로 Gartner가 예측했습니다. (2025년 2월)<sup><a href="#src1" aria-label="출처 1">1</a></sup></span></li>
+      <li><span>대기업 직원은 하루 평균 약 3시간을 정보를 찾는 데 쓴다는 조사가 있습니다. Coveo가 미국·영국 직원 4,000명을 조사한 결과입니다. (2025년 4월)<sup><a href="#src2" aria-label="출처 2">2</a></sup></span></li>
+      <li><span>한국 AI 기본법이 2026년 1월 22일 시행되었습니다. 적용 대상과 의무는 사업자마다 다르므로 먼저 확인이 필요합니다.<sup><a href="#src3" aria-label="출처 3">3</a></sup></span></li>
+    </ul>
+  </div>
+</section>
+
+<section class="sec" id="services" aria-labelledby="svc-h">
+  <div class="wrap">
+    <h2 id="svc-h">고객사에 제공하는 서비스</h2>
+    <p class="sec-lead">행을 누르면 하는 일, 산출물, 사용하는 인프라가 열립니다. 한쪽만 맡기셔도 되고, 두 쪽을 이어서 맡기셔도 됩니다.</p>
+    <div class="catalog">
+      <div class="cat-col ko">
+        <h3>Knowledge Officer <small>지식을 설계하고 AI에 연결합니다</small></h3>
+
+        <details class="svc ko" id="ko-inventory"><summary><span class="svc-name">지식자산 진단</span><span class="svc-brief">어떤 지식이 어디에 있고, 어디서 막히는지 조사합니다</span><svg class="ic" aria-hidden="true"><use href="#i-chevron-down"/></svg></summary>
+          <div class="svc-body"><dl>
+            <dt>하는 일</dt><dd>문서·메신저·드라이브·업무 시스템에 흩어진 지식의 위치와 사용 현황을 조사하고, 사람에게만 있는 지식을 찾아냅니다.</dd>
+            <dt>산출물</dt><dd>지식자산 목록, 병목 지점 분석, 우선순위 제안서</dd>
+            <dt>사용하는 인프라</dt><dd>기존 협업 도구의 접근 권한과 관리자 보고서, 담당자 인터뷰</dd>
+          </dl></div></details>
+
+        <details class="svc ko" id="ko-taxonomy"><summary><span class="svc-name">분류체계·온톨로지 설계</span><span class="svc-brief">부서마다 다른 용어를 하나의 구조로 묶습니다</span><svg class="ic" aria-hidden="true"><use href="#i-chevron-down"/></svg></summary>
+          <div class="svc-body"><dl>
+            <dt>하는 일</dt><dd>용어사전, 분류 체계, 개념 사이의 관계를 정의하고 문서에 붙일 메타데이터 규칙을 만듭니다.</dd>
+            <dt>산출물</dt><dd>용어집, 분류체계 초안, 관계 모델, 메타데이터 규칙</dd>
+            <dt>사용하는 인프라</dt><dd>Dublin Core 같은 메타데이터 표준, JSON-LD 기반 연결 데이터</dd>
+          </dl></div></details>
+
+        <details class="svc ko" id="ko-kb"><summary><span class="svc-name">검색·AI 지식베이스 구축</span><span class="svc-brief">흩어진 문서를 하나의 질의응답 창구로 모읍니다</span><svg class="ic" aria-hidden="true"><use href="#i-chevron-down"/></svg></summary>
+          <div class="svc-body"><dl>
+            <dt>하는 일</dt><dd>문서를 수집·정제해 색인하고, 질문에 근거와 함께 답하는 검색 환경을 만듭니다. 문서의 접근 권한을 그대로 반영합니다.</dd>
+            <dt>산출물</dt><dd>지식베이스, 색인 파이프라인, 답변 품질을 재는 평가 질문 세트</dd>
+            <dt>사용하는 인프라</dt><dd>벡터 데이터베이스와 지식 그래프, 협업 도구 연동, 검색 증강 생성(RAG). 구체 제품은 고객사 환경에 맞춰 고릅니다.</dd>
+          </dl></div></details>
+
+        <details class="svc ko" id="ko-dataprep"><summary><span class="svc-name">데이터 정비·AI 준비도 점검</span><span class="svc-brief">AI가 읽기 전에 자료의 상태부터 바로잡습니다</span><svg class="ic" aria-hidden="true"><use href="#i-chevron-down"/></svg></summary>
+          <div class="svc-body"><dl>
+            <dt>하는 일</dt><dd>중복·구버전 문서를 가려내고, 민감정보를 식별해 다루는 기준을 정하며, 지식베이스에 넣기 전의 품질 기준을 세웁니다.</dd>
+            <dt>산출물</dt><dd>AI 준비도 점검 보고서, 데이터 품질 기준, 정제 규칙</dd>
+            <dt>사용하는 인프라</dt><dd>문서 변환·정제 파이프라인, 민감정보 탐지 도구</dd>
+          </dl></div></details>
+
+        <details class="svc ko" id="ko-governance"><summary><span class="svc-name">AI 답변 거버넌스</span><span class="svc-brief">AI가 승인된 근거로만 답하게 관리합니다</span><svg class="ic" aria-hidden="true"><use href="#i-chevron-down"/></svg></summary>
+          <div class="svc-body"><dl>
+            <dt>하는 일</dt><dd>AI가 참조할 지식의 승인 절차, 사람의 검토 단계, 답변 근거 표시, 오답 신고와 수정 흐름을 설계합니다.</dd>
+            <dt>산출물</dt><dd>지식 승인 정책, 가드레일 기준, 답변 평가 기준</dd>
+            <dt>사용하는 인프라</dt><dd>평가 질문 세트, 질의·답변 로그, 승인 워크플로</dd>
+          </dl></div></details>
+
+        <details class="svc ko" id="ko-tacit"><summary><span class="svc-name">암묵지 수집·인수인계</span><span class="svc-brief">사람에게만 있는 노하우를 문서로 남깁니다</span><svg class="ic" aria-hidden="true"><use href="#i-chevron-down"/></svg></summary>
+          <div class="svc-body"><dl>
+            <dt>하는 일</dt><dd>퇴직·이동 전에 담당자를 인터뷰하고, 의사결정의 배경과 판단 기준을 기록합니다.</dd>
+            <dt>산출물</dt><dd>인터뷰 기록, 노하우 문서, 오프보딩 체크리스트</dd>
+            <dt>사용하는 인프라</dt><dd>지식베이스 등록 절차와 분류체계</dd>
+          </dl></div></details>
+
+        <details class="svc ko" id="ko-metrics"><summary><span class="svc-name">지식 지표·운영 체계</span><span class="svc-brief">지식이 얼마나 쓰이는지 숫자로 봅니다</span><svg class="ic" aria-hidden="true"><use href="#i-chevron-down"/></svg></summary>
+          <div class="svc-body"><dl>
+            <dt>하는 일</dt><dd>지식이 얼마나 쓰이고 얼마나 최신인지 보는 지표를 정하고, 정기 점검과 개선 회의를 운영합니다.</dd>
+            <dt>산출물</dt><dd>지표 정의서, 대시보드, 점검 보고서</dd>
+            <dt>사용하는 인프라</dt><dd>검색·답변 로그, BI 도구</dd>
+          </dl></div></details>
+
+        <details class="svc ko" id="ko-handover"><summary><span class="svc-name">교육·운영 이관</span><span class="svc-brief">지식 체계와 보존 체계를 고객사가 직접 운영하도록 넘깁니다</span><svg class="ic" aria-hidden="true"><use href="#i-chevron-down"/></svg></summary>
+          <div class="svc-body"><dl>
+            <dt>하는 일</dt><dd>지식 쪽과 보존 쪽 운영 담당자를 모두 교육하고, 운영 매뉴얼과 거버넌스 회의체를 정리해 넘깁니다.</dd>
+            <dt>산출물</dt><dd>운영 매뉴얼, 교육 자료, 역할·책임 정의서</dd>
+            <dt>사용하는 인프라</dt><dd>고객사의 기존 문서·교육 환경</dd>
+          </dl></div></details>
+      </div>
+
+      <div class="cat-col da">
+        <h3>Digital Archivist <small>기록을 오래 열리고 검증되게 보존합니다</small></h3>
+
+        <details class="svc da" id="da-inventory"><summary><span class="svc-name">기록 인벤토리·보존 위험 분석</span><span class="svc-brief">무엇을 지켜야 하고, 무엇이 사라질 위험인지 가립니다</span><svg class="ic" aria-hidden="true"><use href="#i-chevron-down"/></svg></summary>
+          <div class="svc-body"><dl>
+            <dt>하는 일</dt><dd>보존해야 할 기록을 식별하고 파일 형식, 저장 위치, 서비스 종료·형식 노후 같은 소멸 위험을 평가합니다.</dd>
+            <dt>산출물</dt><dd>기록 목록, 위험 평가표, 보존 우선순위</dd>
+            <dt>사용하는 인프라</dt><dd>저장소 현황 조사, 파일 형식 식별 도구</dd>
+          </dl></div></details>
+
+        <details class="svc da" id="da-policy"><summary><span class="svc-name">보존 정책·메타데이터 설계</span><span class="svc-brief">얼마나 오래, 누가, 어떤 정보와 함께 보관할지 정합니다</span><svg class="ic" aria-hidden="true"><use href="#i-chevron-down"/></svg></summary>
+          <div class="svc-body"><dl>
+            <dt>하는 일</dt><dd>보존 기간, 접근 권한, 폐기 기준을 정하고, 기록과 함께 남길 서술·기술 메타데이터를 설계합니다.</dd>
+            <dt>산출물</dt><dd>보존 정책서, 메타데이터 스키마, 역할·권한 표</dd>
+            <dt>사용하는 인프라</dt><dd>Dublin Core, PREMIS 등 메타데이터 표준</dd>
+          </dl></div></details>
+
+        <details class="svc da" id="da-archive"><summary><span class="svc-name">장기 보존 아카이브 구축</span><span class="svc-brief">기록을 받아들이고 보관하고 꺼내는 체계를 세웁니다</span><svg class="ic" aria-hidden="true"><use href="#i-chevron-down"/></svg></summary>
+          <div class="svc-body"><dl>
+            <dt>하는 일</dt><dd>OAIS 참조 모델의 흐름(인입·보관·접근)에 맞춰 보존 시스템과 운영 절차를 구성합니다.</dd>
+            <dt>산출물</dt><dd>아카이브 구성도, 인입·접근 절차서, 운영 점검표</dd>
+            <dt>사용하는 인프라</dt><dd>Archivematica·Preservica·DSpace 같은 보존 시스템과 객체 스토리지. 구체 제품은 요건을 보고 고릅니다.</dd>
+          </dl></div></details>
+
+        <details class="svc da" id="da-integrity"><summary><span class="svc-name">무결성 검증 체계</span><span class="svc-brief">기록이 바뀌지 않았음을 확인할 수 있게 합니다</span><svg class="ic" aria-hidden="true"><use href="#i-chevron-down"/></svg></summary>
+          <div class="svc-body"><dl>
+            <dt>하는 일</dt><dd>기록마다 해시값을 남기고 주기적으로 다시 대조하며, 필요하면 외부 타임스탬프로 시점을 고정합니다.</dd>
+            <dt>산출물</dt><dd>무결성 점검 보고서, 검증 절차서, 이상 발생 시 대응 절차</dd>
+            <dt>사용하는 인프라</dt><dd>SHA-256 해시, OpenTimestamps 같은 타임스탬프 방식</dd>
+          </dl></div></details>
+
+        <details class="svc da" id="da-worm"><summary><span class="svc-name">변경 불가 저장소·다중 사본 구성</span><span class="svc-brief">보존 기간 동안 지워지거나 바뀌지 않게 보관합니다</span><svg class="ic" aria-hidden="true"><use href="#i-chevron-down"/></svg></summary>
+          <div class="svc-body"><dl>
+            <dt>하는 일</dt><dd>WORM(한 번 쓰면 바꿀 수 없는) 방식의 저장소를 구성하고, 서로 다른 사업자에 사본을 두어 서비스 종료나 계약 변경에 대비합니다. 업종별 보존 규제는 사전에 확인합니다.</dd>
+            <dt>산출물</dt><dd>저장소 구성서, 사본 배치 계획, 복구 점검 기록</dd>
+            <dt>사용하는 인프라</dt><dd>Amazon S3 Object Lock, Backblaze B2 같은 객체 잠금 저장소. 분산 스토리지(IPFS 등)는 보조 사본으로만 검토합니다.</dd>
+          </dl></div></details>
+
+        <details class="svc da" id="da-format"><summary><span class="svc-name">포맷 마이그레이션</span><span class="svc-brief">오래된 파일도 앞으로 열리게 옮깁니다</span><svg class="ic" aria-hidden="true"><use href="#i-chevron-down"/></svg></summary>
+          <div class="svc-body"><dl>
+            <dt>하는 일</dt><dd>장기 보존에 적합한 형식(PDF/A 등)으로 변환하고, 변환 전후의 내용이 같은지 검증합니다.</dd>
+            <dt>산출물</dt><dd>변환 규칙서, 변환 검증 보고서</dd>
+            <dt>사용하는 인프라</dt><dd>PDF/A 변환 도구, 변환 전후 비교 검증 스크립트</dd>
+          </dl></div></details>
+
+        <details class="svc da" id="da-evidence"><summary><span class="svc-name">증빙 추출 체계 (감사·소송·실사)</span><span class="svc-brief">요청이 오면 그 시점의 기록을 근거와 함께 꺼냅니다</span><svg class="ic" aria-hidden="true"><use href="#i-chevron-down"/></svg></summary>
+          <div class="svc-body"><dl>
+            <dt>하는 일</dt><dd>특정 시점·주제의 기록을 신속히 찾아 목록으로 만들고, 해시·타임스탬프·접근 이력 같은 검증 자료를 함께 묶습니다.</dd>
+            <dt>산출물</dt><dd>증빙 패키지 양식, 추출 절차서, 접근 이력 보고서</dd>
+            <dt>사용하는 인프라</dt><dd>아카이브 검색, 접근 로그. 증거능력 판단은 법률 전문가와 법원의 영역입니다.</dd>
+          </dl></div></details>
+
+        <details class="svc da" id="da-aidata"><summary><span class="svc-name">AI 학습·참조 데이터 출처 관리</span><span class="svc-brief">AI에 쓴 데이터의 출처와 버전을 남깁니다</span><svg class="ic" aria-hidden="true"><use href="#i-chevron-down"/></svg></summary>
+          <div class="svc-body"><dl>
+            <dt>하는 일</dt><dd>AI가 학습하거나 참조하는 데이터의 출처, 버전, 사용 권한, 변경 이력을 기록하고 보존합니다.</dd>
+            <dt>산출물</dt><dd>데이터 계보 기록, 사용 권한 표, 변경 이력 보고서</dd>
+            <dt>사용하는 인프라</dt><dd>메타데이터 스키마, 버전 관리가 되는 보존 저장소</dd>
+          </dl></div></details>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="sec sec-alt" id="infra" aria-labelledby="infra-h">
+  <div class="wrap">
+    <h2 id="infra-h">인프라는 이렇게 구성합니다</h2>
+    <p class="sec-lead">고객사가 이미 사용하는 시스템에서 출발해, 지식 레이어와 보존 레이어를 나란히 두고 통제 레이어로 묶는 구성입니다. 제품은 고정하지 않습니다.</p>
+    <div class="infra">
+      <div class="layer src"><h3>원천 시스템</h3><span class="who">고객사가 이미 가진 것</span>
+        <ul><li>협업 도구·메신저</li><li>문서 저장소·파일 서버</li><li>업무 시스템 (ERP·CRM 등)</li><li>이메일·회의 기록</li></ul></div>
+      <div class="layer ko"><h3>지식 레이어</h3><span class="who">Knowledge Officer 설계</span>
+        <ul><li>분류체계·메타데이터</li><li>검색 색인 (벡터 + 그래프)</li><li>권한 반영</li><li>AI 연결 (RAG·에이전트)</li><li>평가·모니터링</li></ul></div>
+      <div class="layer da"><h3>보존 레이어</h3><span class="who">Digital Archivist 설계</span>
+        <ul><li>인입 검증</li><li>보존용 메타데이터</li><li>해시·타임스탬프</li><li>변경 불가 저장소·다중 사본</li><li>포맷 관리</li></ul></div>
+      <div class="layer out"><h3>활용과 대응</h3><span class="who">사람이 사용하는 곳</span>
+        <ul><li>검색·AI 어시스턴트</li><li>지식 지표 대시보드</li><li>감사·소송·실사 대응 자료</li></ul></div>
+    </div>
+    <div class="control"><strong>통제 레이어 (두 역할이 함께 설계)</strong>
+      <span>거버넌스 정책 · 접근·감사 로그 · 규제 대응 (AI 기본법, EU AI Act 등) · 변경 관리</span></div>
+
+    <div class="together">
+      <h3>두 역할이 만나야 풀리는 문제</h3>
+      <div class="tg-grid">
+        <div class="tg"><b>AI 답변의 근거 추적</b><p>Knowledge Officer가 답변과 출처 문서를 연결하고, Digital Archivist가 그 출처가 그 시점에 그 내용이었음을 보존하고 검증합니다.</p></div>
+        <div class="tg"><b>퇴직·인수합병 때의 이전</b><p>사람에게 있던 지식은 문서와 분류체계로, 기록은 검증 가능한 상태로 함께 넘깁니다.</p></div>
+        <div class="tg"><b>AI 학습 데이터 정제</b><p>쓸 데이터를 가려 정리하는 일(데이터 정비)과, 그 데이터의 출처와 버전을 남기는 일(출처 관리)을 한 흐름으로 설계합니다.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="sec" id="process" aria-labelledby="proc-h">
+  <div class="wrap">
+    <h2 id="proc-h">진행 방식</h2>
+    <p class="sec-lead">모든 단계를 한꺼번에 시작하지 않습니다. 진단 범위를 먼저 정하고, 그 결과를 보고 다음 단계의 범위를 정합니다.</p>
+    <ol class="steps">
+      <li><b>진단</b><p>지식과 기록의 현황, 병목, 보존 위험을 조사하고 우선순위를 정합니다.</p></li>
+      <li><b>설계</b><p>분류체계, 보존 정책, 인프라 구성, 거버넌스 기준을 정하고 합의합니다. <a href="#deliverables">산출물 양식 보기</a></p></li>
+      <li><b>구축</b><p>지식베이스와 보존 아카이브를 만들고, 기존 데이터를 옮기고, 담당자를 교육합니다.</p></li>
+      <li><b>운영</b><p>지표를 보고 정기 점검하며, 고객사 담당자가 직접 운영하도록 넘깁니다.</p></li>
+    </ol>
+    <p class="note">기간과 비용은 범위에 따라 달라서 진단 범위를 정한 뒤에 안내드립니다.</p>
+  </div>
+</section>
+
+<section class="sec sec-alt" id="deliverables" aria-labelledby="del-h">
+  <div class="wrap">
+    <h2 id="del-h">설계 단계의 산출물은 이렇게 생겼습니다</h2>
+    <p class="sec-lead">진행 방식의 설계 단계에서 작성하는 문서의 양식 예시입니다. 표의 값은 가상이거나 빈 칸입니다. 실제 문서의 종류와 내용은 맡기는 범위와 고객사 환경에 맞춰 정합니다.</p>
+    <div class="docs">
+      <details class="svc doc" name="deliverable" id="doc-ontology" open><summary><span class="svc-name">온톨로지 설계서</span><span class="svc-brief">용어, 개념, 관계를 하나의 구조로 정의합니다 (Knowledge Officer)</span><svg class="ic" aria-hidden="true"><use href="#i-chevron-down"/></svg></summary>
+        <div class="doc-body"><p class="sheets"><b>포함 시트</b> 개요 · 표준 용어집 · 엔티티 정의 · 관계 정의 · 분류체계</p>
+        <div class="tbl-wrap" tabindex="0" role="region" aria-label="표준 용어집 양식 예시 표, 가로로 스크롤할 수 있습니다"><table class="sample"><caption>표준 용어집 시트: 양식 예시 (가상 값)</caption><thead><tr><th scope="col">용어ID</th><th scope="col">용어</th><th scope="col">정의</th><th scope="col">동의어·약어</th><th scope="col">상위 분류</th></tr></thead><tbody><tr><td>T-01</td><td>예: 용어 A</td><td>예: 이 조직에서 용어 A가 가리키는 대상을 한 문장으로 정의</td><td>예: 약어 A, 영문명</td><td>예: 분류 1</td></tr><tr><td>T-02</td><td>예: 용어 B</td><td>예: 용어 A와 구분되는 기준을 함께 적음</td><td>예: 없음</td><td>예: 분류 1</td></tr></tbody></table></div></div></details>
+      <details class="svc doc" name="deliverable" id="doc-architecture"><summary><span class="svc-name">아키텍처 설계서</span><span class="svc-brief">인프라 구성요소와 데이터 흐름을 정리합니다 (두 역할 공동)</span><svg class="ic" aria-hidden="true"><use href="#i-chevron-down"/></svg></summary>
+        <div class="doc-body"><p class="sheets"><b>포함 시트</b> 개요 · 도구 스택 비교 · 시스템 구성요소 · 데이터 흐름 · 비기능 요구사항</p>
+        <div class="tbl-wrap" tabindex="0" role="region" aria-label="시스템 구성요소 양식 예시 표, 가로로 스크롤할 수 있습니다"><table class="sample"><caption>시스템 구성요소 시트: 양식 예시 (가상 값)</caption><thead><tr><th scope="col">레이어</th><th scope="col">구성요소</th><th scope="col">설명</th><th scope="col">담당</th><th scope="col">의존성</th></tr></thead><tbody><tr><td>수집</td><td>예: 구성요소 A</td><td>예: 원천 시스템에서 원문을 가져옴</td><td>Knowledge Officer</td><td>예: 원천 시스템 접근 권한</td></tr><tr><td>보존</td><td>예: 구성요소 B</td><td>예: 기록의 해시를 남기고 주기적으로 대조함</td><td>Digital Archivist</td><td>예: 보존 저장소</td></tr></tbody></table></div></div></details>
+      <details class="svc doc" name="deliverable" id="doc-governance"><summary><span class="svc-name">거버넌스 정책문서</span><span class="svc-brief">보존, 접근 권한, 지표, 감사 기준을 정합니다 (두 역할 공동)</span><svg class="ic" aria-hidden="true"><use href="#i-chevron-down"/></svg></summary>
+        <div class="doc-body"><p class="sheets"><b>포함 시트</b> 개요 · 보존 정책 · 접근 권한 정책 · 지표 측정 기준 · 감사 정책</p>
+        <div class="tbl-wrap" tabindex="0" role="region" aria-label="보존 정책 양식 예시 표, 가로로 스크롤할 수 있습니다"><table class="sample"><caption>보존 정책 시트: 양식 예시 (가상 값, 기간과 근거는 고객사가 확인해 기재)</caption><thead><tr><th scope="col">자산 유형</th><th scope="col">보존 기간</th><th scope="col">보존 방식</th><th scope="col">근거</th><th scope="col">담당</th></tr></thead><tbody><tr><td>예: 자산 유형 A</td><td>[고객사 정책과 관련 법령 확인 후 기재]</td><td>예: 변경 불가 저장소</td><td>[근거 규정 기재]</td><td>Digital Archivist</td></tr><tr><td>예: 자산 유형 B</td><td>[확인 후 기재]</td><td>예: 읽기 전용 아카이브</td><td>[근거 규정 기재]</td><td>Knowledge Officer</td></tr></tbody></table></div></div></details>
+      <details class="svc doc" name="deliverable" id="doc-approval"><summary><span class="svc-name">설계승인서</span><span class="svc-brief">설계 결과를 고객사가 확인하고 승인하는 문서입니다</span><svg class="ic" aria-hidden="true"><use href="#i-chevron-down"/></svg></summary>
+        <div class="doc-body"><p class="sheets"><b>포함 시트</b> 승인 개요 · 승인 체크리스트 · 서명란 · 이슈 및 조건 사항</p>
+        <div class="tbl-wrap" tabindex="0" role="region" aria-label="승인 체크리스트 양식 예시 표, 가로로 스크롤할 수 있습니다"><table class="sample"><caption>승인 체크리스트 시트: 양식 예시 (상태는 고객사가 표시하는 빈 칸)</caption><thead><tr><th scope="col">항목</th><th scope="col">확인 내용</th><th scope="col">상태</th></tr></thead><tbody><tr><td>온톨로지 설계</td><td>예: 표준 용어가 현업에서 쓰는 용어와 일치하는가</td><td>[ ] 승인 / [ ] 조건부 / [ ] 보류</td></tr><tr><td>거버넌스 정책</td><td>예: 보존 기간과 접근 권한이 관련 규정에 부합하는가</td><td>[ ] 승인 / [ ] 조건부 / [ ] 보류</td></tr></tbody></table></div></div></details>
+    </div>
+  </div>
+</section>
+
+<section class="sec" id="trust" aria-labelledby="trust-h">
+  <div class="wrap">
+    <h2 id="trust-h">참조하는 기준과 검토하는 도구</h2>
+    <div class="trust">
+      <div>
+        <h3>설계할 때 참조하는 기준</h3>
+        <table class="std">
+          <tbody>
+            <tr><th>OAIS (ISO 14721:2025)</th><td>장기 보존 시스템의 참조 모델</td></tr>
+            <tr><th>ISO 30401</th><td>지식경영 시스템 요구사항</td></tr>
+            <tr><th>ISO/IEC 42001</th><td>AI 경영시스템 (제3자 인증 대상 표준)</td></tr>
+            <tr><th>NIST AI RMF 1.0</th><td>AI 위험관리 프레임워크</td></tr>
+            <tr><th>한국 AI 기본법</th><td>2026년 1월 22일 시행</td></tr>
+            <tr><th>EU AI Act</th><td>Digital Omnibus에 따라 고위험 의무 일정이 연기됨 (Annex III 2027-12-02, Annex I 2028-08-02).<sup><a href="#src4" aria-label="출처 4">4</a></sup></td></tr>
+            <tr><th>PDF/A-4 (ISO 19005-4)</th><td>장기 보존용 문서 형식</td></tr>
+            <tr><th>Dublin Core (ISO 15836), PREMIS, JSON-LD 1.1</th><td>서술·기술 메타데이터와 연결 데이터</td></tr>
+          </tbody>
+        </table>
+        <p class="disclaim">표준은 설계 때 참조하는 기준입니다. 고객사의 인증 취득을 대행하거나 법률 자문을 제공하지 않습니다. 위 일정은 2026년 11월 기준 공개 자료입니다.</p>
+      </div>
+      <div class="tools">
+        <h3>검토하는 도구 후보</h3>
+        <dl>
+          <dt>지식 쪽</dt><dd>Google Workspace와 Gemini Notebook(구 NotebookLM)<sup><a href="#src5" aria-label="출처 5">5</a></sup>, Microsoft 365 Copilot, Slack, Notion, Confluence, LlamaIndex, LangChain, 벡터 데이터베이스(Pinecone, Weaviate 등), GraphRAG, MCP</dd>
+          <dt>보존 쪽</dt><dd>Archivematica, Preservica, DSpace, Amazon S3 Object Lock, Backblaze B2, OpenTimestamps</dd>
+        </dl>
+        <p class="disclaim">고객사의 기존 도구와 요건에서 시작합니다. 위 목록은 검토 후보이며, 특정 제품과의 제휴나 구축 이력을 뜻하지 않습니다.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="sec sec-alt" id="glossary" aria-labelledby="gl-h">
+  <div class="wrap">
+    <h2 id="gl-h">용어 풀이</h2>
+    <p class="sec-lead">이 페이지에 나오는 기술 용어를 쉬운 말로 풀었습니다.</p>
+    <dl class="gloss">
+      <div><dt>RAG(검색 증강 생성)</dt><dd>AI가 답하기 전에 지정된 문서에서 관련 내용을 먼저 찾아 근거로 삼게 하는 방식입니다.</dd></div>
+      <div><dt>GraphRAG</dt><dd>문서 속 대상과 관계를 지식 그래프로 만들어 검색에 함께 쓰는 RAG 기법입니다. 같은 이름의 구현체도 있습니다.</dd></div>
+      <div><dt>MCP(Model Context Protocol)</dt><dd>AI 앱이 외부 도구와 자료에 연결하는 방식을 정한 개방형 프로토콜입니다.</dd></div>
+      <div><dt>온톨로지</dt><dd>조직에서 쓰는 용어와 그 사이의 관계를 정리한 약속된 구조입니다.</dd></div>
+      <div><dt>메타데이터</dt><dd>작성자, 날짜, 분류처럼 문서를 찾고 관리하는 데 쓰는 설명 정보입니다.</dd></div>
+      <div><dt>벡터 데이터베이스</dt><dd>문서의 의미를 숫자로 바꿔 저장해 두고, 뜻이 비슷한 문서를 찾아 주는 저장소입니다.</dd></div>
+      <div><dt>지식 그래프</dt><dd>사람, 문서, 프로젝트 같은 대상과 그 관계를 점과 선처럼 이어 저장한 구조입니다.</dd></div>
+      <div><dt>WORM</dt><dd>한 번 기록하면 정해진 보존 기간 동안 고치거나 지울 수 없게 하는 저장 방식입니다.</dd></div>
+      <div><dt>OAIS(ISO 14721)</dt><dd>디지털 기록을 장기 보존하는 시스템이 갖출 구성과 업무 흐름을 정리한 참조 모델입니다. 제품이나 인증이 아니라 설계의 기준 틀입니다.</dd></div>
+      <div><dt>해시(SHA-256)</dt><dd>파일 내용으로 계산해 내는 값입니다. 내용이 조금만 바뀌어도 값이 크게 달라져서 변경 여부를 확인하는 데 씁니다. 암호화와는 다릅니다.</dd></div>
+      <div><dt>타임스탬프</dt><dd>어떤 기록이 특정 시점에 존재했음을 남기는 표시입니다. 파일의 수정 시각과 달리, 외부에서 시점을 확인해 주는 방식을 말할 때 씁니다.</dd></div>
+      <div><dt>PDF/A(ISO 19005)</dt><dd>오랜 기간 같은 모양으로 열리도록 만든 장기 보존용 PDF 형식입니다.</dd></div>
+    </dl>
+  </div>
+</section>
+
+<section class="sec" id="faq" aria-labelledby="faq-h">
+  <div class="wrap">
+    <h2 id="faq-h">자주 묻는 질문</h2>
+    <div class="faq">
+      <details><summary>어떤 조직에 맞나요?<svg class="ic" aria-hidden="true"><use href="#i-chevron-down"/></svg></summary><p>지식이 특정 사람에게 몰려 있는 조직, AI 도입 전에 자료를 정리해야 하는 조직, 기록을 오래 보존하고 필요할 때 근거로 꺼내야 하는 조직입니다. 규모와 업종은 한정하지 않습니다.</p></details>
+      <details><summary>Knowledge Officer나 Digital Archivist 한쪽만 맡길 수 있나요?<svg class="ic" aria-hidden="true"><use href="#i-chevron-down"/></svg></summary><p>가능합니다. 다만 AI 답변의 근거 추적이나 감사 증빙처럼 두 영역이 만나는 부분은 함께 설계해야 결과가 이어집니다.</p></details>
+      <details><summary>클라우드와 온프레미스 중 무엇으로 구성하나요?<svg class="ic" aria-hidden="true"><use href="#i-chevron-down"/></svg></summary><p>고객사의 보안·규제 요건에 따라 정합니다. 설계 단계에서 데이터 위치, 접근 통제, 사본 배치를 함께 결정합니다.</p></details>
+      <details><summary>AI를 도입하기 전에 먼저 해야 하나요?<svg class="ic" aria-hidden="true"><use href="#i-chevron-down"/></svg></summary><p>보통 지식 현황 진단부터 시작하는 편이 좋습니다. 이미 AI를 쓰고 있다면 답변 근거 거버넌스부터 점검할 수 있습니다.</p></details>
+      <details><summary>기록의 법적 증거능력도 보장하나요?<svg class="ic" aria-hidden="true"><use href="#i-chevron-down"/></svg></summary><p>보장하지 않습니다. 해시, 타임스탬프, 접근 이력으로 "바뀌지 않았다"는 기술적 검증 자료를 만들어 드립니다. 증거능력을 인정할지는 법률 전문가와 법원이 판단하는 영역입니다.</p></details>
+      <details><summary>기간과 비용은 어떻게 되나요?<svg class="ic" aria-hidden="true"><use href="#i-chevron-down"/></svg></summary><p>범위에 따라 다릅니다. 진단 범위를 먼저 정한 뒤에 기간과 비용을 안내드립니다.</p></details>
+    </div>
+  </div>
+</section>
+
+<section class="sec sec-alt" id="selfcheck" aria-labelledby="sc-h">
+  <div class="wrap">
+    <h2 id="sc-h">상담 전에 스스로 점검해 보세요</h2>
+    <p class="sec-lead">해당되는 항목을 모두 선택하면 먼저 살펴볼 서비스를 알려 드립니다. 참고용 점검이며 점수나 등급을 매기지 않습니다. 선택한 내용은 직접 메일을 보내기 전까지 이 브라우저 밖으로 전송되거나 저장되지 않습니다.</p>
+    <div class="sc-grid">
+      <div class="cat-col ko" role="group" aria-labelledby="sc-ko">
+        <h3 id="sc-ko">Knowledge Officer 영역</h3>
+        <label class="chk"><input type="checkbox" data-role="ko" data-svc="ko-tacit" data-short="퇴직자 노하우 소실"><span>퇴직하거나 이동한 담당자의 노하우가 문서로 남지 않아 업무가 막힌 적이 있다.</span></label>
+        <label class="chk"><input type="checkbox" data-role="ko" data-svc="ko-inventory" data-short="자료 위치·검색 어려움"><span>필요한 자료가 어디에 있는지 몰라 찾는 데 오래 걸리거나, 팀마다 같은 자료를 따로 만든다.</span></label>
+        <label class="chk"><input type="checkbox" data-role="ko" data-svc="ko-taxonomy" data-short="부서별 용어 불일치"><span>부서마다 같은 대상을 다른 용어로 불러서 협업에 오해가 생긴 적이 있다.</span></label>
+        <label class="chk"><input type="checkbox" data-role="ko" data-svc="ko-governance" data-short="AI 답변 근거 확인"><span>AI(챗봇 등)를 도입했거나 도입할 계획인데, 답변의 근거 문서를 확인하기 어렵다.</span></label>
+        <label class="chk"><input type="checkbox" data-role="ko" data-svc="ko-dataprep" data-short="AI용 자료 상태 미파악"><span>AI에 읽힐 문서에 중복본, 구버전, 민감정보가 섞여 있는지 파악하기 어렵다.</span></label>
+      </div>
+      <div class="cat-col da" role="group" aria-labelledby="sc-da">
+        <h3 id="sc-da">Digital Archivist 영역</h3>
+        <label class="chk"><input type="checkbox" data-role="da" data-svc="da-worm" data-short="서비스 종료 대비 보존"><span>협업 도구나 클라우드 서비스에 있는 기록을, 서비스가 바뀌거나 종료될 때 어떻게 보존할지 아직 정해져 있지 않다.</span></label>
+        <label class="chk"><input type="checkbox" data-role="da" data-svc="da-format" data-short="옛 파일 형식 열람"><span>오래된 파일 형식의 자료가 지금 환경에서 잘 열리지 않거나, 앞으로 열리지 않을까 걱정된다.</span></label>
+        <label class="chk"><input type="checkbox" data-role="da" data-svc="da-evidence" data-short="특정 시점 자료 수집"><span>감사나 실사 요청을 받으면 특정 시점의 자료를 찾아 모으는 데 며칠 이상 걸린다.</span></label>
+        <label class="chk"><input type="checkbox" data-role="da" data-svc="da-integrity" data-short="변경 여부 확인 자료"><span>기록이 바뀌지 않았음을 보여 줄 자료를 바로 내기 어렵다.</span></label>
+        <label class="chk"><input type="checkbox" data-role="da" data-svc="da-aidata" data-short="AI 데이터 출처 기록"><span>AI가 학습하거나 참조하는 데이터의 출처와 버전을 기록하기 어렵다.</span></label>
+      </div>
+    </div>
+    <div class="sc-result">
+      <p id="scSummary" role="status" aria-live="polite">선택한 항목이 없습니다. 해당되는 항목을 선택하면 먼저 살펴볼 서비스를 알려 드립니다.</p>
+      <ul id="scList" class="sc-list"></ul>
+      <div class="sc-actions"><a id="scMail" class="btn sc-mail" href="#" hidden>선택한 항목으로 상담 요청하기</a><button id="scReset" class="btn sc-reset" type="button" hidden>선택 초기화</button></div>
+    </div>
+  </div>
+</section>
+
+<section class="cta" id="contact" aria-labelledby="cta-h">
+  <div class="wrap">
+    <h2 id="cta-h">어디서 막혀 있는지부터 이야기해 보세요</h2>
+    <p>아래 내용을 알려 주시면 상담을 준비하기 쉽습니다.</p>
+    <ul><li>회사명, 산업, 임직원 규모</li><li>관심 영역 (Knowledge Officer, Digital Archivist, 둘 다)</li><li>가장 큰 고민과 회신받을 연락처</li></ul>
+    <div class="cta-actions">
+      <a class="btn btn-main" href="mailto:kyle@panicstorms.com?subject=%5B%EB%8F%84%EC%9E%85%20%EC%83%81%EB%8B%B4%20%EC%9A%94%EC%B2%AD%5D%20%ED%9A%8C%EC%82%AC%EB%AA%85%20%2F%20%EB%8B%B4%EB%8B%B9%EC%9E%90&body=%EC%95%88%EB%85%95%ED%95%98%EC%84%B8%EC%9A%94.%20%EB%8F%84%EC%9E%85%20%EC%83%81%EB%8B%B4%EC%9D%84%20%EC%9A%94%EC%B2%AD%ED%95%A9%EB%8B%88%EB%8B%A4.%0D%0A%0D%0A1.%20%ED%9A%8C%EC%82%AC%EB%AA%85%3A%0D%0A2.%20%EB%8B%B4%EB%8B%B9%EC%9E%90%EB%AA%85%20%2F%20%EC%A7%81%EC%B1%85%3A%0D%0A3.%20%EC%82%B0%EC%97%85%20%EB%B6%84%EC%95%BC%3A%0D%0A4.%20%EC%9E%84%EC%A7%81%EC%9B%90%20%EA%B7%9C%EB%AA%A8%3A%0D%0A5.%20%EA%B4%80%EC%8B%AC%20%EC%98%81%EC%97%AD%20%28Knowledge%20Officer%20%2F%20Digital%20Archivist%20%2F%20%EB%91%98%20%EB%8B%A4%29%3A%0D%0A6.%20%EA%B0%80%EC%9E%A5%20%ED%81%B0%20%EA%B3%A0%EB%AF%BC%3A%0D%0A7.%20%ED%9A%8C%EC%8B%A0%EB%B0%9B%EC%9D%84%20%EC%97%B0%EB%9D%BD%EC%B2%98%3A">도입 상담 요청하기</a>
+      <button class="btn btn-ghost" id="copyMailBtn" type="button">이메일 주소 복사</button>
+    </div>
+    <p class="mail">메일 앱이 열리지 않으면 "이메일 주소 복사" 버튼으로 주소를 복사해 보내 주세요. <span id="copyMailMsg" role="status" aria-live="polite"></span></p>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <ol aria-label="출처">
+      <li id="src1">Gartner, "Lack of AI-Ready Data Puts AI Projects at Risk" (2025-02-26). <a href="https://www.gartner.com/en/newsroom/press-releases/2025-02-26-lack-of-ai-ready-data-puts-ai-projects-at-risk" rel="noopener noreferrer">보도자료</a></li>
+      <li id="src2">Coveo, 2025 EX Relevance Report (2025-04-29), 미국·영국 직원 4,000명 조사. <a href="https://ir.coveo.com/en/news-events/press-releases/detail/434/coveo-ex-relevance-report-reveals-42-of-information-fails" rel="noopener noreferrer">보도자료</a></li>
+      <li id="src3">국가법령정보센터, 인공지능 발전과 신뢰 기반 조성 등에 관한 기본법. 최초 시행일은 2026년 1월 22일이며, 링크는 이후 개정을 반영한 현행본입니다. <a href="https://www.law.go.kr/법령/인공지능발전과신뢰기반조성등에관한기본법" rel="noopener noreferrer">법령 보기</a></li>
+      <li id="src4">Gibson Dunn, EU AI Act omnibus agreement (2026), 2026년 5월 잠정 합의 내용. <a href="https://www.gibsondunn.com/eu-ai-act-omnibus-agreement-postponed-high-risk-deadlines-and-other-key-changes/" rel="noopener noreferrer">원문</a> 이후 2026년 7월 발효되었다는 보도가 있으나 EU 관보 원문은 확인하지 못했습니다. <a href="https://natlawreview.com/article/eu-digital-omnibus-ai-enters-force" rel="noopener noreferrer">보도</a></li>
+      <li id="src5">Google Workspace Updates, NotebookLM이 Gemini Notebook으로 바뀐 안내 (2026-07). <a href="https://workspaceupdates.googleblog.com/2026/07/notebooklm-now-gemini-notebook.html" rel="noopener noreferrer">원문</a></li>
+    </ol>
+    <p>© 2026 Panicstorms Co., Ltd. — Knowledge Officer × Digital Archivist</p>
+  </div>
+</footer>
+
+<script src="assets/app.js"></script>
+</body>
+</html>
